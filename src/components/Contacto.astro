@@ -41,9 +41,14 @@ const wa = whatsappUrl();
           </div>
           <div class="field">
             <label for="c-contacto">¿Cómo te contactamos?</label>
-            <input class="input" id="c-contacto" name="contacto" autocomplete="email" required aria-describedby="h-contacto e-contacto" />
+            <input class="input" id="c-contacto" name="contacto" autocomplete="email" required aria-describedby="h-contacto e-contacto e-contacto-formato" />
             <p class="hint" id="h-contacto">Mail o WhatsApp, lo que prefieras.</p>
             <p class="error" id="e-contacto" hidden>Dejanos un mail o un número para responderte.</p>
+            <p class="error" id="e-contacto-formato" hidden>Revisalo: tiene que ser un mail (nombre@dominio.com) o un número con código de área.</p>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label for="c-gotcha">No completar</label>
+            <input id="c-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
           </div>
           <button class="btn send" type="submit">
             <span class="send-label">Enviar mensaje</span>
@@ -90,6 +95,18 @@ const wa = whatsappUrl();
       el.setAttribute("aria-invalid", String(bad));
       if (err) err.hidden = !bad;
       if (bad && !firstInvalid) firstInvalid = el;
+    }
+    // El contacto tiene que servir para responder: un mail o un teléfono con al menos 8 dígitos.
+    const contacto = field("contacto");
+    const value = contacto.value.trim();
+    const formatErr = document.getElementById("e-contacto-formato")!;
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    const isPhone = !value.includes("@") && (value.match(/\d/g) ?? []).length >= 8;
+    const badFormat = !!value && !isEmail && !isPhone;
+    formatErr.hidden = !badFormat;
+    if (badFormat) {
+      contacto.setAttribute("aria-invalid", "true");
+      firstInvalid ??= contacto;
     }
     if (firstInvalid) {
       firstInvalid.focus();
@@ -142,11 +159,20 @@ const wa = whatsappUrl();
       el.setAttribute("aria-invalid", "false");
       const err = document.getElementById(`e-${el.name}`);
       if (err) err.hidden = true;
+      if (el.name === "contacto") document.getElementById("e-contacto-formato")!.hidden = true;
     }
   });
 </script>
 
 <style>
+  /* Campo trampa para bots: fuera de la pantalla, no se ve ni se enfoca. */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
   .box {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
