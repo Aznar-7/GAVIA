@@ -1,0 +1,111 @@
+---
+// Lo que ya construimos: solo trabajos que representan lo que ofrecemos hoy
+// (software). Completar stack y links reales de cada uno.
+const proyectos = [
+  {
+    nombre: "UTN Hub",
+    estado: "Software · en uso",
+    texto:
+      "Sistema de gestión académica para estudiantes de la UTN, con varias áreas y un bot que automatiza las inscripciones a materias.",
+    detalle: ["Backend", "Frontend", "Automatización"],
+    href: null,
+  },
+  {
+    nombre: "Flety",
+    estado: "Producto propio · en desarrollo",
+    texto:
+      "Plataforma para que los camiones no vuelvan vacíos: el transportista publica su ruta y encuentra cargas en su camino, en toda la Argentina.",
+    detalle: ["App móvil", "Mapas", "Matching de rutas"],
+    href: "#flety",
+  },
+];
+---
+
+<section class="section" id="proyectos" aria-labelledby="proyectos-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="proyectos-title">Lo que ya construimos.</h2>
+      <p>Somos un estudio nuevo y preferimos mostrarte trabajo real antes que promesas. Esto es lo que hicimos y lo que estamos construyendo.</p>
+    </div>
+
+    <ul class="log">
+      {
+        proyectos.map((p) => (
+          <li>
+            <div class="head">
+              <h3>{p.href ? <a href={p.href}>{p.nombre}</a> : p.nombre}</h3>
+              <span class="label">{p.estado}</span>
+            </div>
+            <p>{p.texto}</p>
+            <ul class="tags">
+              {p.detalle.map((d) => <li>{d}</li>)}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .log {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 2px solid var(--ink);
+  }
+  .log > li {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
+    gap: 16px 48px;
+    align-items: start;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--rule-strong);
+    transition: background-color 220ms var(--ease-out);
+  }
+  .log > li:hover {
+    background: linear-gradient(90deg, var(--white), transparent 85%);
+  }
+  .head {
+    display: grid;
+    gap: 8px;
+  }
+  h3 {
+    font-size: var(--fs-xl);
+    transition: color 220ms var(--ease-out), transform 300ms var(--ease-out);
+  }
+  h3 a {
+    text-decoration: none;
+  }
+  .log > li:hover h3 {
+    color: var(--signal-text);
+    transform: translateX(8px);
+  }
+  .log > li > p {
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .tags li {
+    padding: 5px 10px;
+    border: 1px solid var(--rule-strong);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+  @media (max-width: 860px) {
+    .log > li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .tags {
+      justify-content: start;
+    }
+  }
+</style>

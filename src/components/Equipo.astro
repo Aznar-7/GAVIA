@@ -1,0 +1,143 @@
+---
+// La tripulación, como lista de una bitácora: nombre, formación y dónde ver su
+// trabajo. Sumar los links de Agustín y Benjamín cuando estén.
+const equipo = [
+  {
+    nombre: "Vicente Aznar",
+    formacion: "Ingeniería en Sistemas",
+    linea: "Dos años desarrollando sistemas completos, de la base de datos a la pantalla.",
+    links: [
+      { label: "Portfolio", href: "https://vicenteaznar.dev" },
+      { label: "GitHub", href: "https://github.com/Aznar-7" },
+    ],
+  },
+  {
+    nombre: "Agustín García",
+    formacion: "Ingeniería en Sistemas",
+    linea: "Analiza cómo trabaja tu empresa y lo baja a requerimientos claros.",
+    links: [] as { label: string; href: string }[],
+  },
+  {
+    nombre: "Benjamín Viberti",
+    formacion: "Ingeniería en Computación",
+    linea: "Del hardware al software: sabe cómo funciona la máquina por dentro.",
+    links: [] as { label: string; href: string }[],
+  },
+];
+---
+
+<section class="section" id="equipo" aria-labelledby="equipo-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="equipo-title">Un equipo chico, a propósito.</h2>
+      <p>
+        Somos tres, en Córdoba, y cada uno conoce tu proyecto de punta a punta. Elegimos ser pocos para que la
+        persona que te escucha sea la misma que diseña y escribe tu sistema. Sin intermediarios ni comerciales.
+      </p>
+    </div>
+
+    <ol class="crew">
+      {
+        equipo.map((m, i) => (
+          <li>
+            <span class="coord n">{String(i + 1).padStart(2, "0")}</span>
+            <div class="who">
+              <h3>{m.nombre}</h3>
+              <p class="label">{m.formacion}</p>
+            </div>
+            <p class="linea">{m.linea}</p>
+            <p class="links">
+              {m.links.length > 0
+                ? m.links.map((l) => (
+                    <a href={l.href} target="_blank" rel="noopener">
+                      {l.label}
+                      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" /></svg>
+                    </a>
+                  ))
+                : <span class="soon">Portfolio en camino</span>}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .crew {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 2px solid var(--ink);
+  }
+  li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
+    gap: 10px 32px;
+    align-items: baseline;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--rule-strong);
+    transition: background-color 220ms var(--ease-out);
+  }
+  li:hover {
+    background: linear-gradient(90deg, var(--white), transparent 85%);
+  }
+  .n {
+    color: var(--muted);
+  }
+  .who {
+    display: grid;
+    gap: 6px;
+  }
+  h3 {
+    font-size: var(--fs-xl);
+  }
+  .linea {
+    color: var(--ink-soft);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    gap: 8px 20px;
+    font-weight: 600;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 2px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 260ms var(--ease-out);
+  }
+  .links a:hover {
+    background-size: 100% 2px;
+  }
+  .links svg {
+    width: 11px;
+    height: 11px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    transition: transform 260ms var(--ease-out);
+  }
+  .links a:hover svg {
+    transform: translate(2px, -2px);
+  }
+  .soon {
+    color: var(--muted);
+    font-weight: 500;
+  }
+  @media (max-width: 860px) {
+    li {
+      grid-template-columns: 2.5rem minmax(0, 1fr);
+    }
+    li > :not(.n) {
+      grid-column: 2;
+    }
+    .links {
+      justify-content: start;
+    }
+  }
+</style>
