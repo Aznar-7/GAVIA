@@ -1,0 +1,49 @@
+---
+// Marca: una G dibujada con un solo trazo, como un recorrido, que termina en un
+// punto de paso naranja (de dónde salimos y adónde llegamos). Al pasar el cursor por
+// un link que la contiene, el trazo se vuelve a dibujar.
+interface Props {
+  size?: number;
+  tone?: "ink" | "paper";
+}
+const { size = 26, tone = "ink" } = Astro.props;
+---
+
+<span class={`logo ${tone}`} style={`--s:${size}px`}>
+  <svg width={size * 1.05} height={size * 1.05} viewBox="0 0 48 48" aria-hidden="true">
+    <path class="trace" d="M40 9H9v30h30V26H26" pathLength="1" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="square"></path>
+    <rect x="20" y="21" width="11" height="11" fill="var(--signal)"></rect>
+  </svg>
+  <span class="word">gavia</span>
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--s) * 0.3);
+    color: var(--ink);
+  }
+  .logo.paper {
+    color: var(--paper);
+  }
+  .trace {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(a:hover) > .logo .trace {
+      animation: retrace 700ms var(--ease-out);
+    }
+  }
+  @keyframes retrace {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+  .word {
+    font: 800 var(--s) / 1 var(--display);
+    letter-spacing: -0.045em;
+    margin-top: -0.08em;
+  }
+</style>

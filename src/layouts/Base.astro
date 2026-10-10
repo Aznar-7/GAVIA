@@ -1,0 +1,203 @@
+---
+import "@fontsource-variable/bricolage-grotesque/opsz.css";
+import "@fontsource-variable/public-sans/wght.css";
+import "@fontsource/jetbrains-mono/500.css";
+import "../styles/global.css";
+import displayFont from "@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url";
+import bodyFont from "@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url";
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+}
+
+const { title, description, noindex = false } = Astro.props;
+const site = Astro.site ?? new URL("https://gaviasoftware.com");
+const ogImage = new URL("/og.png", site);
+const canonical = new URL(Astro.url.pathname, site);
+const org = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Gavia",
+  url: site.toString(),
+  description,
+  email: "hola@gaviasoftware.com",
+  address: { "@type": "PostalAddress", addressLocality: "Córdoba", addressCountry: "AR" },
+  areaServed: [
+    { "@type": "City", name: "Córdoba" },
+    { "@type": "Country", name: "Argentina" },
+  ],
+  knowsAbout: ["Desarrollo de software a medida", "Sistemas de gestión", "Aplicaciones web", "Aplicaciones móviles", "Integraciones", "Automatización"],
+  logo: new URL("/favicon.svg", site).toString(),
+  image: ogImage.toString(),
+};
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
+    <script is:inline>
+      // Entrada orquestada: solo con JS y sin "reducir movimiento"; después la página queda en su estado final.
+      // Pantalla de entrada (solo con JS, sin "reducir movimiento" y no en páginas internas):
+      // la marca se traza, el panel sube y recién ahí arranca la entrada del hero.
+      (() => {
+        const html = document.documentElement;
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const screen = location.pathname === "/" ;
+        const reveal = screen ? 1250 : 0;
+        if (screen) html.classList.add("intro-screen");
+        setTimeout(() => html.classList.add("intro"), reveal);
+        setTimeout(() => html.classList.remove("intro-screen"), reveal + 700);
+        setTimeout(() => html.classList.remove("intro"), reveal + 2800);
+      })();
+    </script>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#12243A" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Gavia" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {noindex && <meta name="robots" content="noindex" />}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(org)} />
+  </head>
+  <body>
+    <div class="loader" aria-hidden="true">
+      <div class="loader-mark">
+        <svg viewBox="0 0 48 48">
+          <path class="l-trace" d="M40 9H9v30h30V26H26" pathLength="1"></path>
+          <rect class="l-dot" x="20" y="21" width="11" height="11"></rect>
+        </svg>
+        <span class="l-word">gavia</span>
+      </div>
+      <span class="l-course"></span>
+    </div>
+    <a class="skip" href="#contenido">Saltar al contenido</a>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  /* Pantalla de entrada: oculta por defecto (sin JS no existe). */
+  .loader {
+    display: none;
+  }
+  html.intro-screen {
+    overflow: hidden;
+  }
+  html.intro-screen .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--paper);
+    animation: loader-out 650ms cubic-bezier(0.7, 0, 0.2, 1) 1150ms both;
+  }
+  .loader-mark {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .loader svg {
+    width: clamp(64px, 9vw, 104px);
+    height: clamp(64px, 9vw, 104px);
+    overflow: visible;
+  }
+  .l-trace {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 5.5;
+    stroke-linecap: square;
+    stroke-dasharray: 1;
+    animation: l-trace 750ms cubic-bezier(0.65, 0, 0.35, 1) 100ms both;
+  }
+  .l-dot {
+    fill: var(--signal);
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: l-pop 380ms cubic-bezier(0.2, 0.9, 0.3, 1) 760ms both;
+  }
+  .l-word {
+    font: 800 clamp(3.2rem, 7vw, 5.6rem) / 1 var(--display);
+    letter-spacing: -0.045em;
+    clip-path: inset(0 100% 0 0);
+    animation: l-word 520ms cubic-bezier(0.16, 1, 0.3, 1) 620ms both;
+  }
+  .l-course {
+    position: absolute;
+    left: 0;
+    bottom: 18%;
+    height: 3px;
+    width: 100%;
+    background: repeating-linear-gradient(90deg, var(--signal) 0 14px, transparent 14px 24px);
+    transform-origin: left;
+    animation: l-course 1100ms cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+  @keyframes l-trace {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes l-pop {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  @keyframes l-word {
+    to {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+  @keyframes l-course {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+  /* El panel sube y destapa la carta. */
+  @keyframes loader-out {
+    to {
+      clip-path: inset(0 0 100% 0);
+    }
+  }
+</style>
+
+<style>
+  .skip {
+    position: absolute;
+    left: 16px;
+    top: -60px;
+    z-index: 100;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 600;
+  }
+  .skip:focus {
+    top: 12px;
+  }
+</style>

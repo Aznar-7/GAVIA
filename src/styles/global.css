@@ -1,0 +1,291 @@
+/* Carta de rumbo: papel de carta náutica, tinta azul, una sola línea de rumbo en naranja. */
+:root {
+  --ink: #12243a;
+  --ink-soft: #2b3d54;
+  --muted: #4a5d73;
+  --paper: #f1f4f7;
+  --shoal: #dce6ee;
+  --shoal-deep: #c9d7e3;
+  --white: #ffffff;
+  --signal: #f06a2a;
+  --signal-hover: #d9561c;
+  --signal-text: #b4461a; /* naranja legible como texto sobre papel (4.9:1) */
+  --rule: rgb(18 36 58 / 0.16);
+  --rule-strong: rgb(18 36 58 / 0.55);
+  --danger: #b3261e;
+  --paper-soft: #c7d3df; /* texto secundario sobre azul (Flety) */
+  --placeholder: #66788c;
+
+  --display: "Bricolage Grotesque Variable", "Arial Narrow", system-ui, sans-serif;
+  --body: "Public Sans Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+
+  /* Escala tipográfica: todo tamaño de texto sale de acá. */
+  --fs-sm: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: 1.1875rem;
+  --fs-lead: clamp(1.1875rem, 1.5vw, 1.3125rem);
+  --fs-xl: clamp(1.5rem, 2.4vw, 2rem);
+  --fs-2xl: clamp(2.25rem, 4vw, 3.25rem);
+  --fs-3xl: clamp(2.25rem, 5vw, 4rem);
+
+  --max: 1560px;
+  --gutter: clamp(20px, 4.5vw, 80px);
+  --space-section: clamp(88px, 12vw, 168px);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: light;
+  interpolate-size: allow-keywords;
+  accent-color: var(--signal);
+  scrollbar-color: var(--ink-soft) var(--paper);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  caret-color: var(--signal);
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+h2 {
+  font-size: var(--fs-3xl);
+  font-weight: 800;
+}
+
+h3 {
+  font-size: var(--fs-xl);
+  letter-spacing: -0.015em;
+}
+
+p {
+  margin: 0;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+a:hover {
+  text-decoration-color: var(--signal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* Un elemento oculto queda oculto aunque un estilo le ponga display. */
+[hidden] {
+  display: none !important;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Rótulo corto en texto (no monoespaciado): para "Te llevás", roles, datos de contacto. */
+.label {
+  font: 600 0.8rem/1.3 var(--body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Medidas y coordenadas: el único uso del monoespaciado. */
+.coord {
+  font: 500 0.75rem/1.4 var(--mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Secciones: título y bajada apilados a la izquierda (nunca centrado). */
+.section {
+  padding-block: var(--space-section) 0;
+}
+.sec-head {
+  display: grid;
+  gap: 20px;
+  max-width: 980px;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+.sec-head p {
+  max-width: 58ch;
+  color: var(--ink-soft);
+  font-size: var(--fs-lg);
+}
+
+/* Botones: rectos, sin redondeo; el naranja es solo para la acción principal. */
+.btn {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.95em 1.4em;
+  border: 2px solid var(--ink);
+  background: var(--signal);
+  color: var(--ink);
+  font: 700 1rem/1 var(--body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 280ms var(--ease-out), transform 120ms var(--ease-out);
+}
+
+/* Hover: la tinta barre el botón de izquierda a derecha y la flecha avanza. */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 420ms var(--ease-out);
+}
+
+.btn:hover {
+  color: var(--paper);
+}
+
+.btn:hover::before {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn[disabled] {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.btn .arrow {
+  transition: transform 320ms var(--ease-out);
+}
+
+.btn:hover .arrow {
+  transform: translateX(5px);
+}
+
+/* Campos de formulario compartidos. */
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: var(--fs-sm);
+}
+
+.field .hint {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  padding: 0.85em 1em;
+  border: 2px solid var(--ink);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--ink);
+  font: 400 1rem/1.4 var(--body);
+  transition: box-shadow 160ms var(--ease-out), border-color 160ms var(--ease-out);
+}
+
+.input::placeholder {
+  color: var(--placeholder);
+}
+
+.input:hover {
+  border-color: var(--ink-soft);
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(240 106 42 / 0.45);
+}
+
+.input[aria-invalid="true"] {
+  border-color: var(--danger);
+}
+
+.error {
+  color: var(--danger);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+textarea.input {
+  min-height: 140px;
+  resize: vertical;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
