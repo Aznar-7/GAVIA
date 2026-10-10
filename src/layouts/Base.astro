@@ -3,6 +3,7 @@ import "@fontsource-variable/bricolage-grotesque/opsz.css";
 import "@fontsource-variable/public-sans/wght.css";
 import "@fontsource/jetbrains-mono/500.css";
 import "../styles/global.css";
+import { CONTACT_EMAIL } from "../config";
 import displayFont from "@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url";
 import bodyFont from "@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url";
 
@@ -22,7 +23,7 @@ const org = {
   name: "Gavia",
   url: site.toString(),
   description,
-  email: "hola@gaviasoftware.com",
+  email: CONTACT_EMAIL,
   address: { "@type": "PostalAddress", addressLocality: "Córdoba", addressCountry: "AR" },
   areaServed: [
     { "@type": "City", name: "Córdoba" },
@@ -49,7 +50,14 @@ const org = {
       (() => {
         const html = document.documentElement;
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        const screen = location.pathname === "/" ;
+        // La pantalla de la marca se muestra una vez por sesión y solo si se entra por arriba
+        // (no al llegar a una sección con #ancla): las visitas siguientes van directo al contenido.
+        let seen = false;
+        try {
+          seen = sessionStorage.getItem("gavia-intro") === "1";
+          sessionStorage.setItem("gavia-intro", "1");
+        } catch {}
+        const screen = location.pathname === "/" && !location.hash && !seen;
         const reveal = screen ? 1250 : 0;
         if (screen) html.classList.add("intro-screen");
         setTimeout(() => html.classList.add("intro"), reveal);

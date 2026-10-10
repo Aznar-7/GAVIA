@@ -39,6 +39,10 @@ const cargas = [
             <input id="flety-email" name="email" class="input" type="email" autocomplete="email" placeholder="tu@mail.com" aria-describedby="flety-msg" />
             <button class="btn" type="submit">Anotarme <Arrow /></button>
           </div>
+          <div class="hp" aria-hidden="true">
+            <label for="flety-gotcha">No completar</label>
+            <input id="flety-gotcha" name="_gotcha" tabindex="-1" autocomplete="off" />
+          </div>
           <p id="flety-msg" class="msg" aria-live="polite"></p>
         </fieldset>
       </form>
@@ -59,7 +63,7 @@ const cargas = [
         </figcaption>
       </figure>
 
-      <div class="phone" aria-label="Prototipo de la app de Flety para transportistas, con datos de ejemplo">
+      <div class="phone" role="figure" aria-label="Prototipo de la app de Flety para transportistas, con datos de ejemplo">
         <div class="screen">
           <div class="status"><span>9:41</span><span class="notch"></span><span>4G</span></div>
           <div class="app-head">
@@ -115,7 +119,7 @@ const cargas = [
     btn.disabled = true;
     if (msg) msg.textContent = "Anotándote…";
     try {
-      const r = await sendForm(`Lista de espera Flety: ${rol}`, { rol, email: email.value });
+      const r = await sendForm(`Lista de espera Flety: ${rol}`, { rol, email: email.value, _gotcha: (form.elements.namedItem("_gotcha") as HTMLInputElement).value });
       if (r === "mailto") {
         if (msg) msg.textContent = `Te armamos el mail. Si no se abrió, escribinos a ${CONTACT_EMAIL}.`;
       } else {
@@ -256,6 +260,7 @@ const cargas = [
           const total = seg.reduce((x, y) => x + y, 0);
           const DURATION = 9000;
           let start = 0;
+          let raf = 0;
           const tick = (t: number) => {
             if (!start) start = t;
             let d = (((t - start) % DURATION) / DURATION) * total;
@@ -265,9 +270,13 @@ const cargas = [
             const p0 = back[i];
             const p1 = back[i + 1];
             marker.setLngLat([p0[0] + (p1[0] - p0[0]) * k, p0[1] + (p1[1] - p0[1]) * k]);
-            requestAnimationFrame(tick);
+            raf = requestAnimationFrame(tick);
           };
-          requestAnimationFrame(tick);
+          // El camión solo anda mientras el mapa está en pantalla: fuera de vista no gasta batería.
+          new IntersectionObserver(([entry]) => {
+            cancelAnimationFrame(raf);
+            if (entry.isIntersecting) raf = requestAnimationFrame(tick);
+          }).observe(el);
         }
         el.closest(".map-wrap")?.classList.add("ready");
       });
@@ -276,7 +285,11 @@ const cargas = [
     }
   }
 
-  if (el) {
+  // Con "ahorro de datos" o conexión lenta no se baja el mapa (unos 800 KB): queda la carta dibujada.
+  const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+  const lowData = !!conn && (conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType ?? ""));
+
+  if (el && !lowData) {
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -291,6 +304,14 @@ const cargas = [
 </script>
 
 <style>
+  /* Campo trampa para bots: fuera de la pantalla, no se ve ni se enfoca. */
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
   .flety {
     margin-top: var(--space-section);
     padding-block: clamp(72px, 10vw, 140px);

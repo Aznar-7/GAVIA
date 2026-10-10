@@ -128,13 +128,14 @@ const secciones = [
     padding: 0;
     list-style: none;
     display: grid;
-    gap: 10px;
+    gap: 4px;
   }
   ul a {
+    display: inline-block;
     color: var(--paper);
     text-decoration: none;
     background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 1.5px no-repeat;
-    padding-bottom: 2px;
+    padding-block: 4px 3px;
     transition: background-size 260ms var(--ease-out);
   }
   ul a:hover {
