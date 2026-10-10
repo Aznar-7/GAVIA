@@ -31,7 +31,7 @@
 
   --max: 1560px;
   --gutter: clamp(20px, 4.5vw, 80px);
-  --space-section: clamp(88px, 12vw, 168px);
+  --space-section: clamp(72px, 12vw, 168px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   color-scheme: light;

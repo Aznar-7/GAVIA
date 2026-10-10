@@ -678,4 +678,25 @@ const check = "M2 7l4 4 8-9";
       border-left: 0;
     }
   }
+  /* Celular: el texto gana ancho y cada etapa ocupa menos alto. */
+  @media (max-width: 560px) {
+    .steps {
+      padding-left: 40px;
+    }
+    .steps::before,
+    .steps::after {
+      left: 12px;
+    }
+    .marker {
+      left: -40px;
+      top: 30px;
+      width: 28px;
+      height: 28px;
+      font-size: 0.78rem;
+    }
+    .step {
+      gap: 18px;
+      padding: 26px 0 34px;
+    }
+  }
 </style>

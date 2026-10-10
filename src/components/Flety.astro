@@ -289,7 +289,10 @@ const cargas = [
   const conn = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
   const lowData = !!conn && (conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType ?? ""));
 
-  if (el && !lowData) {
+  // Si el mapa no se muestra (celular), no se carga.
+  const shown = !!el && getComputedStyle(el.closest(".map-wrap") ?? el).display !== "none";
+
+  if (el && shown && !lowData) {
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -719,18 +722,31 @@ const cargas = [
       border-right: 1.5px solid var(--paper);
       border-bottom: 0;
     }
+    /* En el celular alcanza con el prototipo: sin mapa, la sección es más corta y no baja 800 KB. */
     .map-wrap {
-      aspect-ratio: 4 / 5;
+      display: none;
     }
     .stage {
       padding-bottom: 0;
+      margin-top: 8px;
     }
     .phone {
       position: relative;
       right: auto;
-      width: min(290px, 86%);
-      margin: -120px auto 0;
+      width: min(300px, 100%);
+      margin: 0 auto;
       transform: none;
+    }
+    .roles {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .roles span {
+      display: grid;
+      place-items: center;
+      height: 100%;
+      padding: 10px 8px;
+      text-align: center;
     }
     .legend {
       top: 12px;
