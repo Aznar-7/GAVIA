@@ -100,6 +100,14 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
         <span class="coord">Seguir el rumbo</span>
       </a>
 
+      <a class="strip" href="#como-trabajamos">
+        <svg viewBox="0 0 320 28" aria-hidden="true">
+          <line x1="10" y1="14" x2="310" y2="14" stroke="var(--signal)" stroke-width="3" stroke-dasharray="8 6"></line>
+          <rect x="2" y="6" width="16" height="16" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5"></rect>
+          {[78, 146, 214, 282].map((x) => <circle cx={x} cy="14" r="7" fill="var(--paper)" stroke="var(--ink)" stroke-width="2.5" />)}
+        </svg>
+        <span class="coord">De Excel y WhatsApp a tu sistema, en 5 etapas</span>
+      </a>
       <ol class="course-mobile" aria-label="El recorrido de un proyecto">
         <li class="from"><span class="coord">Salida: Excel y WhatsApp</span></li>
         {
@@ -431,7 +439,8 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       transform: rotate(0deg);
     }
   }
-  .course-mobile {
+  .course-mobile,
+  .strip {
     display: none;
   }
   /* Señal para bajar: una línea punteada que corre hacia abajo. */
@@ -493,7 +502,20 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
     .course {
       display: none;
     }
-    /* En el celular el recorrido se cuenta una sola vez, en "Cómo trabajamos". */
+    /* Rumbo compacto: adelanta el recorrido y lleva a "Cómo trabajamos". */
+    .strip {
+      display: grid;
+      gap: 10px;
+      margin-top: 8px;
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+    .strip svg {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+    /* En el celular el recorrido completo se cuenta una sola vez, en "Cómo trabajamos". */
     .course-mobile {
       display: none;
       margin: 8px 0 0;
