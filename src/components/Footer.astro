@@ -1,0 +1,189 @@
+---
+// Pie de página como el margen de una carta náutica: el cartucho de título con la
+// marca, la edición y la escala; la navegación y el contacto; y la vuelta al inicio.
+import Logo from "./Logo.astro";
+import { CONTACT_EMAIL, whatsappUrl } from "../config";
+const now = new Date();
+const year = now.getFullYear();
+const edicion = now.toLocaleDateString("es-AR", { month: "long", year: "numeric" });
+const wa = whatsappUrl();
+const secciones = [
+  { href: "#servicios", label: "Qué hacemos" },
+  { href: "#como-trabajamos", label: "Cómo trabajamos" },
+  { href: "#condiciones", label: "Condiciones" },
+  { href: "#proyectos", label: "Proyectos" },
+  { href: "#equipo", label: "Equipo" },
+  { href: "#preguntas", label: "Preguntas" },
+];
+---
+
+<footer>
+  <div class="wrap grid">
+    <div class="title-block">
+      <a href="#top" class="brand" aria-label="Gavia, volver al inicio"><Logo size={34} tone="paper" /></a>
+      <p class="mission">
+        Estudio de desarrollo de software a medida. Diseñamos, construimos y mantenemos sistemas para empresas de
+        Córdoba y de todo el país.
+      </p>
+      <dl class="meta">
+        <div><dt class="label">Carta</dt><dd class="coord">Nº 1 · Gavia</dd></div>
+        <div><dt class="label">Edición</dt><dd class="coord">{edicion}</dd></div>
+        <div><dt class="label">Posición</dt><dd class="coord">31°25′S · 64°11′O</dd></div>
+      </dl>
+    </div>
+
+    <nav aria-label="Pie de página" class="col">
+      <p class="label">Recorrido</p>
+      <ul>
+        {secciones.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+
+    <div class="col">
+      <p class="label">Producto</p>
+      <ul>
+        <li><a href="#flety">Flety</a></li>
+        <li><span class="soon">Más productos en camino</span></li>
+      </ul>
+    </div>
+
+    <div class="col">
+      <p class="label">Contacto</p>
+      <ul>
+        <li><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></li>
+        {wa && <li><a href={wa} target="_blank" rel="noopener">WhatsApp</a></li>}
+        <li>Córdoba, Argentina</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap bottom">
+    <p>© {year} Gavia. Hecho en Córdoba.</p>
+    <a href="#top" class="up">
+      <svg viewBox="0 0 24 40" aria-hidden="true"><path d="M12 38V4M4 12l8-8 8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="4 3"></path></svg>
+      Volver al inicio
+    </a>
+  </div>
+</footer>
+
+<style>
+  footer {
+    margin-top: var(--space-section);
+    background: var(--ink);
+    color: var(--paper);
+  }
+  footer ::selection {
+    background: var(--signal);
+    color: var(--ink);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) repeat(3, minmax(0, 2fr));
+    gap: 40px;
+    padding-block: clamp(56px, 7vw, 96px) 48px;
+  }
+  .title-block {
+    display: grid;
+    gap: 22px;
+    align-content: start;
+    padding: 24px;
+    border: 1.5px solid rgb(241 244 247 / 0.5);
+    outline: 1px solid rgb(241 244 247 / 0.25);
+    outline-offset: -7px;
+  }
+  .brand {
+    justify-self: start;
+    text-decoration: none;
+  }
+  .mission {
+    max-width: 40ch;
+    color: var(--paper-soft);
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 6px 28px;
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid rgb(241 244 247 / 0.25);
+  }
+  .meta dt {
+    color: var(--paper-soft);
+  }
+  .meta dd {
+    margin: 4px 0 0;
+    color: var(--paper);
+  }
+  .col {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+  }
+  .col .label {
+    color: var(--paper-soft);
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 10px;
+  }
+  ul a {
+    color: var(--paper);
+    text-decoration: none;
+    background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 1.5px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 260ms var(--ease-out);
+  }
+  ul a:hover {
+    background-size: 100% 1.5px;
+  }
+  .soon {
+    color: var(--paper-soft);
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-block: 24px 32px;
+    border-top: 1px solid rgb(241 244 247 / 0.2);
+    color: var(--paper-soft);
+    font-size: var(--fs-sm);
+  }
+  .up {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--paper);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .up svg {
+    width: 14px;
+    height: 24px;
+    color: var(--signal);
+    transition: transform 300ms var(--ease-out);
+  }
+  .up:hover svg {
+    transform: translateY(-4px);
+  }
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .title-block {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 560px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

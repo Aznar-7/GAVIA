@@ -1,0 +1,380 @@
+---
+import { CONTACT_EMAIL, whatsappUrl } from "../config";
+import Arrow from "./Arrow.astro";
+const wa = whatsappUrl();
+---
+
+<section class="section" id="contacto" aria-labelledby="contacto-title">
+  <div class="wrap">
+    <div class="box" data-contact>
+      <div class="side">
+        <h2 id="contacto-title">Contanos qué necesitás.</h2>
+        <p>Con dos o tres líneas alcanza. Del otro lado no hay un bot: te lee y te responde alguien del equipo, en menos de un día hábil.</p>
+        <ol class="next" aria-label="Qué pasa después de escribirnos">
+          <li><b>Nos escribís</b> con dos o tres líneas.</li>
+          <li><b>Te respondemos</b> y coordinamos una charla corta.</li>
+          <li><b>Te mandamos</b> una primera idea de alcance, sin compromiso.</li>
+        </ol>
+        <dl>
+          <div><dt class="label">Mail</dt><dd><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></dd></div>
+          {wa && <div><dt class="label">WhatsApp</dt><dd><a href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a></dd></div>}
+          <div><dt class="label">Dónde</dt><dd>Córdoba, Argentina</dd></div>
+        </dl>
+      </div>
+
+      <div class="main">
+        <form id="contact-form" novalidate>
+          <div class="field">
+            <label for="c-nombre">Nombre</label>
+            <input class="input" id="c-nombre" name="nombre" autocomplete="name" required aria-describedby="e-nombre" />
+            <p class="error" id="e-nombre" hidden>Decinos cómo te llamás.</p>
+          </div>
+          <div class="field">
+            <label for="c-empresa">Empresa <span class="hint">(opcional)</span></label>
+            <input class="input" id="c-empresa" name="empresa" autocomplete="organization" />
+          </div>
+          <div class="field">
+            <label for="c-mensaje">¿Qué necesitás?</label>
+            <textarea class="input" id="c-mensaje" name="mensaje" required aria-describedby="e-mensaje"
+              placeholder="Ej.: hoy llevamos los pedidos en Excel y queremos un sistema para el equipo de ventas."></textarea>
+            <p class="error" id="e-mensaje" hidden>Contanos aunque sea en una línea qué necesitás.</p>
+          </div>
+          <div class="field">
+            <label for="c-contacto">¿Cómo te contactamos?</label>
+            <input class="input" id="c-contacto" name="contacto" autocomplete="email" required aria-describedby="h-contacto e-contacto" />
+            <p class="hint" id="h-contacto">Mail o WhatsApp, lo que prefieras.</p>
+            <p class="error" id="e-contacto" hidden>Dejanos un mail o un número para responderte.</p>
+          </div>
+          <button class="btn send" type="submit">
+            <span class="send-label">Enviar mensaje</span>
+            <Arrow />
+            <span class="send-track" aria-hidden="true"></span>
+          </button>
+          <p class="status" id="c-status" role="status" aria-live="polite"></p>
+        </form>
+
+        <div class="done" id="c-done" hidden tabindex="-1">
+          <svg class="done-mark" viewBox="0 0 48 48" aria-hidden="true">
+            <path class="done-trace" d="M40 9H9v30h30V26H26" pathLength="1"></path>
+            <rect class="done-dot" x="20" y="21" width="11" height="11"></rect>
+          </svg>
+          <h3>Mensaje enviado.</h3>
+          <p id="c-done-text">Gracias. Te respondemos en menos de un día hábil.</p>
+          <button class="again" type="button" id="c-again">Enviar otro mensaje</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { sendForm, CONTACT_EMAIL } from "../config";
+  const box = document.querySelector<HTMLElement>("[data-contact]")!;
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const status = document.getElementById("c-status")!;
+  const done = document.getElementById("c-done")!;
+  const doneText = document.getElementById("c-done-text")!;
+  const button = form.querySelector<HTMLButtonElement>(".send")!;
+  const label = form.querySelector<HTMLElement>(".send-label")!;
+  const required = ["nombre", "mensaje", "contacto"];
+
+  const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    let firstInvalid: HTMLElement | null = null;
+    for (const name of required) {
+      const el = field(name);
+      const err = document.getElementById(`e-${name}`);
+      const bad = !el.value.trim();
+      el.setAttribute("aria-invalid", String(bad));
+      if (err) err.hidden = !bad;
+      if (bad && !firstInvalid) firstInvalid = el;
+    }
+    if (firstInvalid) {
+      firstInvalid.focus();
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    box.classList.add("is-sending");
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    label.textContent = "Enviando";
+    status.textContent = "";
+
+    try {
+      const result = await sendForm(`Proyecto: ${data.nombre}`, data);
+      if (result === "mailto") {
+        status.textContent = `Te armamos el mail listo para enviar. Si no se abrió tu correo, escribinos a ${CONTACT_EMAIL}.`;
+        return;
+      }
+      doneText.textContent =
+        result === "demo"
+          ? "Modo prueba: el envío real se activa al configurar el formulario. Así lo va a ver el cliente."
+          : `Gracias, ${data.nombre.split(" ")[0]}. Te respondemos a ${data.contacto} en menos de un día hábil.`;
+      box.classList.add("is-done");
+      form.hidden = true;
+      done.hidden = false;
+      done.focus();
+    } catch {
+      status.textContent = `No pudimos enviarlo. Probá de nuevo en un momento o escribinos a ${CONTACT_EMAIL}.`;
+    } finally {
+      box.classList.remove("is-sending");
+      button.disabled = false;
+      button.removeAttribute("aria-busy");
+      label.textContent = "Enviar mensaje";
+    }
+  });
+
+  document.getElementById("c-again")!.addEventListener("click", () => {
+    form.reset();
+    box.classList.remove("is-done");
+    done.hidden = true;
+    form.hidden = false;
+    field("nombre").focus();
+  });
+
+  // Al corregir un campo, el error se va en el momento.
+  form.addEventListener("input", (e) => {
+    const el = e.target as HTMLInputElement;
+    if (el.getAttribute("aria-invalid") === "true" && el.value.trim()) {
+      el.setAttribute("aria-invalid", "false");
+      const err = document.getElementById(`e-${el.name}`);
+      if (err) err.hidden = true;
+    }
+  });
+</script>
+
+<style>
+  .box {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    border: 2px solid var(--ink);
+    background: var(--white);
+  }
+  .side {
+    display: grid;
+    gap: 20px;
+    align-content: start;
+    padding: clamp(28px, 4vw, 56px);
+    background: var(--shoal);
+    border-right: 2px solid var(--ink);
+  }
+  .side h2 {
+    font-size: var(--fs-2xl);
+  }
+  .side > p {
+    color: var(--ink-soft);
+    font-size: var(--fs-lg);
+  }
+  .next {
+    margin: 0;
+    list-style: none;
+    counter-reset: n;
+    display: grid;
+    gap: 14px;
+    padding: 0 0 0 36px;
+  }
+  .next li {
+    counter-increment: n;
+    position: relative;
+    color: var(--ink-soft);
+  }
+  /* Tramo punteado entre un número y el siguiente; el último no tiene. */
+  .next li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: -26px;
+    top: 26px;
+    bottom: -12px;
+    border-left: 2px dashed var(--ink);
+  }
+  .next li::before {
+    content: counter(n);
+    position: absolute;
+    left: -36px;
+    top: 1px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    background: var(--shoal);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    font: 600 0.72rem var(--mono);
+    color: var(--ink);
+  }
+  .next b {
+    color: var(--ink);
+  }
+  dl {
+    display: grid;
+    gap: 16px;
+    margin: 12px 0 0;
+  }
+  dd {
+    margin: 4px 0 0;
+    font-weight: 600;
+  }
+  .main {
+    position: relative;
+    padding: clamp(28px, 4vw, 56px);
+  }
+  form {
+    display: grid;
+    gap: 22px;
+  }
+  form .btn {
+    justify-self: start;
+  }
+  .status {
+    min-height: 1.5em;
+    color: var(--ink-soft);
+  }
+
+  /* Enviando: los campos se apagan y una línea punteada corre por el botón. */
+  .send-track {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: repeating-linear-gradient(90deg, var(--paper) 0 8px, transparent 8px 14px);
+    opacity: 0;
+  }
+  .is-sending .send-track {
+    opacity: 1;
+    animation: run 700ms linear infinite;
+  }
+  .is-sending .send {
+    background: var(--ink);
+    color: var(--paper);
+    cursor: progress;
+  }
+  .is-sending .send :global(.arrow) {
+    animation: nudge 700ms var(--ease-out) infinite;
+  }
+  .is-sending .field {
+    opacity: 0.5;
+    transition: opacity 200ms;
+  }
+  @keyframes run {
+    to {
+      background-position: 14px 0;
+    }
+  }
+  @keyframes nudge {
+    50% {
+      transform: translateX(6px);
+    }
+  }
+
+  /* Enviado: la G se traza y aparece la confirmación. */
+  .done {
+    display: grid;
+    gap: 14px;
+    align-content: center;
+    justify-items: start;
+    min-height: 100%;
+    outline: none;
+  }
+  .done-mark {
+    width: 72px;
+    height: 72px;
+  }
+  .done-trace {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 5.5;
+    stroke-linecap: square;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+  .done-dot {
+    fill: var(--signal);
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+  .is-done .done-trace {
+    animation: trace 900ms var(--ease-out) both;
+  }
+  .is-done .done-dot {
+    animation: pop 500ms var(--ease-out) 750ms both;
+  }
+  .is-done .done h3,
+  .is-done .done p,
+  .is-done .done .again {
+    animation: rise-in 600ms var(--ease-out) both;
+  }
+  .is-done .done h3 {
+    animation-delay: 300ms;
+  }
+  .is-done .done p {
+    animation-delay: 420ms;
+  }
+  .is-done .done .again {
+    animation-delay: 540ms;
+  }
+  @keyframes trace {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+  @keyframes pop {
+    from {
+      transform: scale(0);
+    }
+    70% {
+      transform: scale(1.25);
+    }
+  }
+  @keyframes rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  .done h3 {
+    font-size: var(--fs-2xl);
+  }
+  .done p {
+    max-width: 44ch;
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+  }
+  .again {
+    margin-top: 8px;
+    padding: 0;
+    border: 0;
+    background: none;
+    font: 600 var(--fs-md) var(--body);
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+    cursor: pointer;
+  }
+  .again:hover {
+    text-decoration-color: var(--signal);
+  }
+
+  @media (max-width: 860px) {
+    .box {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .side {
+      border-right: 0;
+      border-bottom: 2px solid var(--ink);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .is-sending .send-track,
+    .is-sending .send :global(.arrow),
+    .is-done .done-trace,
+    .is-done .done-dot,
+    .is-done .done h3,
+    .is-done .done p,
+    .is-done .done .again {
+      animation: none;
+    }
+  }
+</style>
