@@ -6,6 +6,17 @@ export const WHATSAPP = "";
 export const whatsappUrl = (text = "Hola, quiero contarles un proyecto.") =>
   WHATSAPP ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}` : "";
 
+// Vercel Web Analytics (visitas, sin cookies). Activarlo primero en el panel de Vercel
+// (proyecto → Analytics → Enable) y después poner true; si no, el script da 404.
+export const ANALYTICS = false;
+
+// Perfiles de Gavia en redes. Vacío = no se muestra. Aparecen en el pie y en los datos para Google.
+export const SOCIAL: { label: string; href: string }[] = [
+  { label: "LinkedIn", href: "" },
+  { label: "Instagram", href: "" },
+  { label: "GitHub", href: "" },
+].filter((s) => s.href);
+
 // Endpoint que recibe los formularios y los reenvía por mail (por ejemplo, un form de
 // Formspree: "https://formspree.io/f/xxxxxxx"). Vacío = todavía no hay envío real.
 export const FORM_ENDPOINT = "";

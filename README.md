@@ -71,6 +71,7 @@ npm run dev        # http://localhost:4321
 | `npm run dev` | Servidor local con recarga en caliente. |
 | `npm run build` | Genera el sitio estático en `dist/`. |
 | `npm run preview` | Sirve `dist/` para revisarlo antes de publicar. |
+| `npm run check` | Revisa tipos y errores en los `.astro` (lo corre también GitHub en cada PR). |
 
 El sitio es 100% estático: Vercel lo detecta como proyecto Astro y no necesita configuración extra.
 
@@ -149,6 +150,8 @@ Lo que falta configurar está todo en [`src/config.ts`](src/config.ts):
 - [ ] **`CONTACT_EMAIL`**: crear la casilla `hola@gaviasoftware.com` (hoy no existe).
 - [ ] **`WHATSAPP`**: número en formato internacional sin `+` (ej. `5493511234567`). Vacío = no se muestra.
 - [ ] **`FORM_ENDPOINT`**: endpoint que recibe los formularios (por ejemplo, Formspree). Sin endpoint, en desarrollo el envío se simula y en producción abre un mail armado.
+- [ ] **`ANALYTICS`**: activar Web Analytics en el panel de Vercel y después ponerlo en `true`.
+- [ ] **`SOCIAL`**: cargar los links de LinkedIn, Instagram o GitHub cuando existan (aparecen en el pie y en los datos para Google).
 - [ ] **Dominio**: registrar `gaviasoftware.com` y apuntarlo a Vercel (ya está en `astro.config.mjs` y `robots.txt`).
 - [ ] **`og.png`**: si cambia el mensaje o la marca, abrir `/og` en 1200×630 y capturarla de nuevo en `public/og.png`.
 

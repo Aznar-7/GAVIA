@@ -46,16 +46,16 @@ const equipo = [
               <p class="label">{m.formacion}</p>
             </div>
             <p class="linea">{m.linea}</p>
-            <p class="links">
-              {m.links.length > 0
-                ? m.links.map((l) => (
-                    <a href={l.href} target="_blank" rel="noopener">
-                      {l.label}
-                      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" /></svg>
-                    </a>
-                  ))
-                : <span class="soon">Portfolio en camino</span>}
-            </p>
+            {m.links.length > 0 && (
+              <p class="links">
+                {m.links.map((l) => (
+                  <a href={l.href} target="_blank" rel="noopener">
+                    {l.label}
+                    <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" /></svg>
+                  </a>
+                ))}
+              </p>
+            )}
           </li>
         ))
       }
@@ -124,10 +124,6 @@ const equipo = [
   }
   .links a:hover svg {
     transform: translate(2px, -2px);
-  }
-  .soon {
-    color: var(--muted);
-    font-weight: 500;
   }
   @media (max-width: 860px) {
     li {

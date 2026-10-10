@@ -3,7 +3,8 @@ import "@fontsource-variable/bricolage-grotesque/opsz.css";
 import "@fontsource-variable/public-sans/wght.css";
 import "@fontsource/jetbrains-mono/500.css";
 import "../styles/global.css";
-import { CONTACT_EMAIL } from "../config";
+import { ANALYTICS, CONTACT_EMAIL, SOCIAL } from "../config";
+import Analytics from "@vercel/analytics/astro";
 import displayFont from "@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url";
 import bodyFont from "@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url";
 
@@ -32,6 +33,7 @@ const org = {
   knowsAbout: ["Desarrollo de software a medida", "Sistemas de gestión", "Aplicaciones web", "Aplicaciones móviles", "Integraciones", "Automatización"],
   logo: new URL("/favicon.svg", site).toString(),
   image: ogImage.toString(),
+  ...(SOCIAL.length > 0 && { sameAs: SOCIAL.map((s) => s.href) }),
 };
 ---
 
@@ -96,6 +98,7 @@ const org = {
     </div>
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <slot />
+    {ANALYTICS && !noindex && <Analytics />}
   </body>
 </html>
 
