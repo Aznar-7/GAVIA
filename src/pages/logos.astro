@@ -1,0 +1,309 @@
+---
+// Exploración de logo (página interna, no indexada). Cada opción se muestra en
+// grande, en la barra de navegación, como favicon y sobre fondo oscuro.
+import Base from "../layouts/Base.astro";
+
+const opciones = [
+  {
+    id: "punto",
+    nombre: "1 · Gavia con punto de partida",
+    idea: "Solo el nombre. El punto de la i es un punto de paso naranja del que sale el rumbo hacia arriba.",
+    por: "Es el más sobrio, como Globant o Stripe: el nombre es la marca. El rumbo aparece sin necesitar un dibujo aparte.",
+    riesgo: "Sin símbolo propio, el favicon tiene que ser una versión reducida (la g o el punto).",
+  },
+  {
+    id: "cursor",
+    nombre: "2 · Cursor con gavia",
+    idea: "El cursor de texto, el de cualquier editor de código, hace de mástil, y la vela naranja es la gavia.",
+    por: "Es el único que dice software y Gavia a la vez. Se entiende en una mirada.",
+    riesgo: "Si la vela queda chica, a 16 px se lee como una bandera.",
+  },
+  {
+    id: "ruta",
+    nombre: "3 · G de recorrido",
+    idea: "Una G dibujada con un solo trazo, como un recorrido, que termina en un punto de paso naranja.",
+    por: "Es propio y abstracto: sirve para Gavia y para cualquier producto futuro. Recuerda a un circuito y a una ruta.",
+    riesgo: "Es más abstracto: hay que acompañarlo con el nombre al principio.",
+  },
+  {
+    id: "ventana",
+    nombre: "4 · Ventana con rumbo",
+    idea: "Una ventana de aplicación con el rumbo trazado adentro.",
+    por: "Dice con claridad que hacemos software, apps y sistemas.",
+    riesgo: "Es el más literal: hay otras marcas de software con ventanas.",
+  },
+  {
+    id: "brujula",
+    nombre: "5 · Aguja (actual)",
+    idea: "La aguja de rumbo a 45° dentro de un círculo.",
+    por: "Ya está aplicada en la página.",
+    riesgo: "Se confunde con una brújula genérica y no dice software.",
+  },
+];
+---
+
+<Base title="Gavia · opciones de logo" description="Exploración de logo." noindex>
+  <main class="wrap page">
+    <h1>Opciones de logo</h1>
+    <p class="intro">
+      Cada opción se muestra en grande, en la barra de navegación, como ícono de pestaña (16 y 32 px) y sobre azul.
+      Elijan por cómo se ve a 16 px y en la barra: ahí la van a ver todos los días.
+    </p>
+
+    {
+      opciones.map((o) => (
+        <section class="opt" data-opt={o.id}>
+          <div class="info">
+            <h2>{o.nombre}</h2>
+            <p>{o.idea}</p>
+            <p><b>Por qué:</b> {o.por}</p>
+            <p class="risk"><b>Riesgo:</b> {o.riesgo}</p>
+          </div>
+          <div class="views">
+            <div class="big paper">
+              <span class={`mark m-${o.id} lg`} />
+            </div>
+            <div class="big ink">
+              <span class={`mark m-${o.id} lg on-ink`} />
+            </div>
+            <div class="nav">
+              <span class={`mark m-${o.id} sm`} />
+              <span class="links">Cómo trabajamos · Flety · Proyectos</span>
+            </div>
+            <div class="fav">
+              <span class={`tile t-${o.id} s16`} />
+              <span class={`tile t-${o.id} s32`} />
+              <span class="tab"><span class={`tile t-${o.id} s16`} /> Gavia | Software a medida</span>
+            </div>
+          </div>
+        </section>
+      ))
+    }
+  </main>
+
+  <!-- Símbolos reutilizables -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="s-cursor" viewBox="0 0 48 48">
+        <path d="M11 6h14M11 42h14M18 6v36" stroke="currentColor" stroke-width="4" fill="none"></path>
+        <path d="M20 9h19l4 15H20z" fill="var(--signal)"></path>
+      </symbol>
+      <symbol id="s-ruta" viewBox="0 0 48 48">
+        <path d="M40 9H9v30h30V26H26" stroke="currentColor" stroke-width="5.5" fill="none" stroke-linecap="square"></path>
+        <rect x="20" y="21" width="11" height="11" fill="var(--signal)"></rect>
+      </symbol>
+      <symbol id="s-ventana" viewBox="0 0 48 48">
+        <rect x="5" y="7" width="38" height="34" fill="none" stroke="currentColor" stroke-width="3.5"></rect>
+        <path d="M5 16h38" stroke="currentColor" stroke-width="3"></path>
+        <path d="M12 35l9-6 7 3 9-10" fill="none" stroke="var(--signal)" stroke-width="3.5" stroke-dasharray="5 3"></path>
+        <rect x="33" y="19" width="7" height="7" fill="var(--signal)"></rect>
+      </symbol>
+      <symbol id="s-brujula" viewBox="0 0 32 32">
+        <circle cx="16" cy="16" r="14.5" fill="none" stroke="currentColor" stroke-width="1.6"></circle>
+        <path d="M27 5 L19.2 19.2 L12.8 12.8 Z" fill="var(--signal)"></path>
+        <path d="M5 27 L12.8 12.8 L19.2 19.2 Z" fill="currentColor"></path>
+      </symbol>
+    </defs>
+  </svg>
+</Base>
+
+<script>
+  // Arma cada marca a partir de su id para no repetir el marcado.
+  const word = (extra = "") => `<span class="word">gavia${extra}</span>`;
+  const sym = (id: string) => `<svg class="sym"><use href="#s-${id}"/></svg>`;
+  const render: Record<string, () => string> = {
+    punto: () =>
+      `<span class="word">gav<span class="i">ı<b class="dot"></b><svg class="trail" viewBox="0 0 40 40"><path d="M2 38 L36 4" stroke-dasharray="4 3"/><path d="M28 4h8v8"/></svg></span>a</span>`,
+    cursor: () => sym("cursor") + word(),
+    ruta: () => sym("ruta") + word(),
+    ventana: () => sym("ventana") + word(),
+    brujula: () => sym("brujula") + word(),
+  };
+  const tile: Record<string, string> = {
+    punto: `<span class="tw">g</span><b class="tdot"></b>`,
+    cursor: `<svg><use href="#s-cursor"/></svg>`,
+    ruta: `<svg><use href="#s-ruta"/></svg>`,
+    ventana: `<svg><use href="#s-ventana"/></svg>`,
+    brujula: `<svg><use href="#s-brujula"/></svg>`,
+  };
+  document.querySelectorAll<HTMLElement>(".mark").forEach((el) => {
+    const id = [...el.classList].find((c) => c.startsWith("m-"))!.slice(2);
+    el.innerHTML = render[id]();
+  });
+  document.querySelectorAll<HTMLElement>(".tile").forEach((el) => {
+    const id = [...el.classList].find((c) => c.startsWith("t-"))!.slice(2);
+    el.innerHTML = tile[id];
+  });
+</script>
+
+<style is:global>
+  .page {
+    padding-block: 56px 120px;
+    display: grid;
+    gap: 48px;
+  }
+  .page h1 {
+    font-size: var(--fs-3xl);
+  }
+  .intro {
+    max-width: 62ch;
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+  }
+  .opt {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 40px;
+    padding-top: 40px;
+    border-top: 2px solid var(--ink);
+  }
+  .info {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+  }
+  .info h2 {
+    font-size: var(--fs-xl);
+  }
+  .info p {
+    color: var(--ink-soft);
+  }
+  .risk {
+    color: var(--muted);
+  }
+  .views {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .big {
+    display: grid;
+    place-items: center;
+    min-height: 200px;
+    border: 1px solid var(--rule-strong);
+  }
+  .big.paper {
+    background: var(--paper);
+  }
+  .big.ink {
+    background: var(--ink);
+  }
+  .nav,
+  .fav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px 20px;
+    background: var(--white);
+    border: 1px solid var(--rule-strong);
+  }
+  .links {
+    margin-left: auto;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    font-size: 13px;
+  }
+
+  /* Marcas */
+  .mark {
+    --s: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--s) * 0.3);
+    color: var(--ink);
+  }
+  .mark.lg {
+    --s: 72px;
+  }
+  .mark.on-ink {
+    color: var(--paper);
+  }
+  .mark .sym {
+    width: calc(var(--s) * 1.15);
+    height: calc(var(--s) * 1.15);
+  }
+  .mark .word {
+    position: relative;
+    font: 800 var(--s) / 1 var(--display);
+    letter-spacing: -0.045em;
+  }
+  .mark .i {
+    position: relative;
+  }
+  .mark .dot {
+    position: absolute;
+    left: 50%;
+    top: 0.02em;
+    width: 0.2em;
+    height: 0.2em;
+    transform: translateX(-50%);
+    background: var(--signal);
+  }
+  .mark .trail {
+    position: absolute;
+    left: 58%;
+    top: -0.62em;
+    width: 0.55em;
+    height: 0.55em;
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 3.5;
+  }
+
+  /* Íconos de pestaña */
+  .tile {
+    display: grid;
+    place-items: center;
+    position: relative;
+    background: var(--ink);
+    color: var(--paper);
+    flex: none;
+  }
+  .tile.s16 {
+    width: 16px;
+    height: 16px;
+  }
+  .tile.s32 {
+    width: 32px;
+    height: 32px;
+  }
+  .tile svg {
+    width: 82%;
+    height: 82%;
+  }
+  .tile .tw {
+    font: 800 calc(100% * 1) / 1 var(--display);
+  }
+  .s16 .tw {
+    font-size: 14px;
+    margin-top: -3px;
+  }
+  .s32 .tw {
+    font-size: 28px;
+    margin-top: -6px;
+  }
+  .tile .tdot {
+    position: absolute;
+    right: 12%;
+    top: 12%;
+    width: 22%;
+    height: 22%;
+    background: var(--signal);
+  }
+  @media (max-width: 860px) {
+    .opt {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .views {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

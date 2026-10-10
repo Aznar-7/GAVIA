@@ -1,0 +1,74 @@
+---
+// Plantilla de la imagen para compartir (1200×630). No se indexa: se captura a
+// public/og.png con una captura de pantalla cuando cambia la marca o el mensaje.
+import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
+---
+
+<Base title="Gavia · imagen para compartir" description="Plantilla de la imagen para compartir." noindex>
+  <div class="og">
+    <div class="top">
+      <Logo size={44} />
+      <span class="coord">31°25′S · 64°11′O — Córdoba, Argentina</span>
+    </div>
+    <p class="title">Software<br />con rumbo.</p>
+    <p class="sub">Diseñamos, construimos y mantenemos el software de tu empresa.</p>
+    <svg class="course" viewBox="0 0 520 360" aria-hidden="true">
+      <path d="M20 330 L140 250 L240 180 L340 120 L430 60 L500 20" fill="none" stroke="var(--signal)" stroke-width="4" stroke-dasharray="12 9"></path>
+      {[[140, 250], [240, 180], [340, 120], [430, 60]].map(([x, y]) => (
+        <circle cx={x} cy={y} r="10" fill="var(--paper)" stroke="var(--ink)" stroke-width="3.5" />
+      ))}
+      <rect x="10" y="320" width="20" height="20" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"></rect>
+    </svg>
+  </div>
+</Base>
+
+<style>
+  :global(body) {
+    margin: 0;
+  }
+  :global(.skip) {
+    display: none;
+  }
+  .og {
+    position: relative;
+    width: 1200px;
+    height: 630px;
+    padding: 56px 64px;
+    box-sizing: border-box;
+    background: var(--paper);
+    border: 3px solid var(--ink);
+    outline: 1.5px solid var(--ink);
+    outline-offset: -12px;
+    overflow: hidden;
+    background-image: linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 150px 150px;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .coord {
+    font-size: 15px;
+    color: var(--ink-soft);
+  }
+  .title {
+    margin-top: 70px;
+    font: 800 128px/0.88 var(--display);
+    letter-spacing: -0.045em;
+  }
+  .sub {
+    margin-top: 28px;
+    max-width: 30ch;
+    font-size: 28px;
+    color: var(--ink-soft);
+  }
+  .course {
+    position: absolute;
+    right: 56px;
+    bottom: 48px;
+    width: 520px;
+  }
+</style>

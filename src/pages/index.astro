@@ -1,0 +1,35 @@
+---
+import Base from "../layouts/Base.astro";
+import Nav from "../components/Nav.astro";
+import Hero from "../components/Hero.astro";
+import Servicios from "../components/Servicios.astro";
+import Ejemplos from "../components/Ejemplos.astro";
+import Proceso from "../components/Proceso.astro";
+import Condiciones from "../components/Condiciones.astro";
+import Flety from "../components/Flety.astro";
+import Proyectos from "../components/Proyectos.astro";
+import Equipo from "../components/Equipo.astro";
+import Preguntas from "../components/Preguntas.astro";
+import Contacto from "../components/Contacto.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base
+  title="Gavia | Desarrollo de software a medida en Córdoba"
+  description="Diseñamos, construimos y mantenemos software para empresas de Córdoba y Argentina. Precio cerrado por etapa y el código es tuyo."
+>
+  <Nav />
+  <main id="contenido">
+    <Hero />
+    <Servicios />
+    <Ejemplos />
+    <Proceso />
+    <Condiciones />
+    <Flety />
+    <Proyectos />
+    <Equipo />
+    <Preguntas />
+    <Contacto />
+  </main>
+  <Footer />
+</Base>
