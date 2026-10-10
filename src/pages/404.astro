@@ -1,0 +1,94 @@
+---
+// Página no encontrada: un punto fuera de la carta, con el rumbo de vuelta al inicio.
+import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
+import Arrow from "../components/Arrow.astro";
+---
+
+<Base title="Fuera de carta | Gavia" description="Esta página no existe. Volvé al inicio de Gavia." noindex>
+  <main id="contenido" class="lost">
+    <div class="chart">
+      <a href="/" class="home" aria-label="Gavia, ir al inicio"><Logo size={26} /></a>
+      <div class="copy">
+        <p class="coord code">Error 404 · posición desconocida</p>
+        <h1>Fuera de carta.</h1>
+        <p class="lead">Esta página no existe o cambió de lugar. El rumbo de vuelta está acá abajo.</p>
+        <a class="btn" href="/">Volver al inicio <Arrow /></a>
+      </div>
+      <svg class="course" viewBox="0 0 420 300" aria-hidden="true">
+        <path d="M30 260 L150 180 L250 130" fill="none" stroke="var(--signal)" stroke-width="4"></path>
+        <path d="M250 130 L380 40" fill="none" stroke="var(--signal)" stroke-width="3" stroke-dasharray="10 8"></path>
+        <rect x="20" y="250" width="20" height="20" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"></rect>
+        <circle cx="150" cy="180" r="10" fill="var(--paper)" stroke="var(--ink)" stroke-width="3"></circle>
+        <circle cx="250" cy="130" r="10" fill="var(--signal)" stroke="var(--ink)" stroke-width="3"></circle>
+        <text x="330" y="44" text-anchor="end" class="q">?</text>
+      </svg>
+    </div>
+  </main>
+</Base>
+
+<style>
+  .lost {
+    min-height: 100svh;
+    padding: 12px;
+    display: flex;
+  }
+  .chart {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 40px;
+    padding: clamp(80px, 10vw, 140px) var(--gutter) clamp(48px, 6vw, 96px);
+    border: 2px solid var(--ink);
+    outline: 1px solid var(--ink);
+    outline-offset: -9px;
+    background-image: linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 160px 160px;
+  }
+  .home {
+    position: absolute;
+    top: 32px;
+    left: var(--gutter);
+    text-decoration: none;
+  }
+  .copy {
+    display: grid;
+    gap: 24px;
+    justify-items: start;
+  }
+  .code {
+    color: var(--signal-text);
+  }
+  h1 {
+    font-size: clamp(3.2rem, 7vw, 6rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .lead {
+    max-width: 34ch;
+    font-size: var(--fs-lead);
+    color: var(--ink-soft);
+  }
+  .course {
+    width: 100%;
+    max-width: 520px;
+    justify-self: end;
+  }
+  .q {
+    font: 800 64px var(--display);
+    fill: var(--ink);
+  }
+  @media (max-width: 860px) {
+    .chart {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .course {
+      justify-self: start;
+      max-width: 320px;
+    }
+  }
+</style>

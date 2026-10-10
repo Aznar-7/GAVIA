@@ -128,13 +128,14 @@ const secciones = [
     padding: 0;
     list-style: none;
     display: grid;
-    gap: 10px;
+    gap: 4px;
   }
   ul a {
+    display: inline-block;
     color: var(--paper);
     text-decoration: none;
     background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 1.5px no-repeat;
-    padding-bottom: 2px;
+    padding-block: 4px 3px;
     transition: background-size 260ms var(--ease-out);
   }
   ul a:hover {
@@ -180,10 +181,23 @@ const secciones = [
   }
   @media (max-width: 560px) {
     .grid {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 20px;
+    }
+    .col:last-child {
+      grid-column: 1 / -1;
+    }
+    .title-block {
+      padding: 20px;
     }
     .meta {
-      grid-template-columns: minmax(0, 1fr);
+      grid-template-columns: repeat(2, auto);
+    }
+    .meta div:last-child {
+      grid-column: 1 / -1;
+    }
+    .up {
+      white-space: nowrap;
     }
   }
 </style>

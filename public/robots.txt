@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /og
+Disallow: /logos
 
 Sitemap: https://gaviasoftware.com/sitemap-index.xml

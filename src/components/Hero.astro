@@ -51,7 +51,7 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
           <input id="quick-need" name="need" class="input" type="text" autocomplete="off" placeholder="Ej.: un sistema de pedidos" />
           <button class="btn" type="submit">Contanos tu idea <Arrow /></button>
         </form>
-        <p class="note">Te llevamos al formulario con esto ya escrito. Te lee y te responde alguien del equipo, en menos de un día hábil.</p>
+        <p class="note">Te llevamos al formulario con esto ya escrito. Te responde alguien del equipo en menos de un día hábil, y la primera charla es gratis.</p>
       </div>
 
       <figure class="course">
@@ -481,14 +481,21 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
     }
   }
   @media (max-width: 640px) {
+    .hero {
+      padding: 8px 8px 0;
+    }
+    .inner {
+      padding-block: 48px 40px;
+    }
     .cartouche {
       display: none;
     }
     .course {
       display: none;
     }
+    /* En el celular el recorrido se cuenta una sola vez, en "Cómo trabajamos". */
     .course-mobile {
-      display: grid;
+      display: none;
       margin: 8px 0 0;
       padding: 0 0 0 26px;
       list-style: none;

@@ -8,7 +8,8 @@ const proyectos = [
     texto:
       "Sistema de gestión académica para estudiantes de la UTN, con varias áreas y un bot que automatiza las inscripciones a materias.",
     detalle: ["Backend", "Frontend", "Automatización"],
-    href: null,
+    href: "https://utnhub.com.ar",
+    sitio: "utnhub.com.ar",
   },
   {
     nombre: "Flety",
@@ -17,6 +18,7 @@ const proyectos = [
       "Plataforma para que los camiones no vuelvan vacíos: el transportista publica su ruta y encuentra cargas en su camino, en toda la Argentina.",
     detalle: ["App móvil", "Mapas", "Matching de rutas"],
     href: "#flety",
+    sitio: null,
   },
 ];
 ---
@@ -33,8 +35,20 @@ const proyectos = [
         proyectos.map((p) => (
           <li>
             <div class="head">
-              <h3>{p.href ? <a href={p.href}>{p.nombre}</a> : p.nombre}</h3>
+              <h3>
+                {p.sitio ? (
+                  <a href={p.href} target="_blank" rel="noopener">{p.nombre}</a>
+                ) : (
+                  <a href={p.href}>{p.nombre}</a>
+                )}
+              </h3>
               <span class="label">{p.estado}</span>
+              {p.sitio && (
+                <a class="site" href={p.href} target="_blank" rel="noopener">
+                  {p.sitio}
+                  <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" /></svg>
+                </a>
+              )}
             </div>
             <p>{p.texto}</p>
             <ul class="tags">
@@ -80,6 +94,23 @@ const proyectos = [
   .log > li:hover h3 {
     color: var(--signal-text);
     transform: translateX(8px);
+  }
+  .site {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding-block: 4px;
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    text-decoration-color: var(--signal);
+  }
+  .site svg {
+    width: 11px;
+    height: 11px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
   }
   .log > li > p {
     font-size: var(--fs-lg);

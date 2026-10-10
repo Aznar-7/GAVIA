@@ -34,7 +34,8 @@ Clients typically contact by WhatsApp or email. Typical engagement: discovery me
 - Own product: **Flety** (working name, kept): a backhaul freight app so trucks don't return empty (any A → B route across Argentina; grain Córdoba → port is only an example). Uber/PedidosYa-style: loads and routes matched between truckers and shippers. In development; no users yet.
 - Team: Vicente Aznar (2 years full-stack developer), Agustín García, possibly Benjamín Viberti (third founder, undecided). Engineering students in Córdoba.
 - Not yet incorporated; corporate email and domain pending (gaviasoftware.com looked available).
-- Undecided: final logo, guarantee terms, whether first meeting is free.
+- First meeting (discovery call) is free and without commitment (decided 2026-10-10).
+- Undecided: final logo, guarantee terms.
 
 ## Brand Commitments
 

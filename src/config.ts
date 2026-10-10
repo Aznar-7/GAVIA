@@ -13,12 +13,18 @@ export const FORM_ENDPOINT = "";
 export type SendResult = "sent" | "demo" | "mailto";
 
 /**
- * Envía un formulario sin salir de la página.
+ * Envía un formulario sin salir de la página. Los formularios incluyen un campo trampa
+ * "_gotcha" que solo completan los bots.
  * - Con FORM_ENDPOINT: POST real; tira error si el servidor no lo acepta.
  * - Sin endpoint, en desarrollo: simula el envío para poder ver la animación ("demo").
  * - Sin endpoint, en producción: abre el mail armado como último recurso ("mailto").
  */
 export async function sendForm(subject: string, fields: Record<string, string>): Promise<SendResult> {
+  // Trampa para bots: el campo "_gotcha" está oculto para las personas. Si viene completo, se
+  // simula el envío y no se manda nada.
+  const { _gotcha, ...data } = fields;
+  if (_gotcha) return "sent";
+  fields = data;
   if (FORM_ENDPOINT) {
     const res = await fetch(FORM_ENDPOINT, {
       method: "POST",

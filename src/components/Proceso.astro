@@ -127,7 +127,7 @@ const check = "M2 7l4 4 8-9";
 
               <details class="preview-wrap" open>
               <summary class="preview-toggle">Ver ejemplo de lo que recibís</summary>
-              <div class="preview" aria-label={`Ejemplo de lo que recibís en ${e.nombre}`}>
+              <div class="preview" role="group" aria-label={`Ejemplo de lo que recibís en ${e.nombre}`}>
                 <span class="sample">Ejemplo</span>
                 {i === 0 && (
                   <div class="doc">
@@ -676,6 +676,27 @@ const check = "M2 7l4 4 8-9";
     .meta div + div {
       padding-left: 0;
       border-left: 0;
+    }
+  }
+  /* Celular: el texto gana ancho y cada etapa ocupa menos alto. */
+  @media (max-width: 560px) {
+    .steps {
+      padding-left: 40px;
+    }
+    .steps::before,
+    .steps::after {
+      left: 12px;
+    }
+    .marker {
+      left: -40px;
+      top: 30px;
+      width: 28px;
+      height: 28px;
+      font-size: 0.78rem;
+    }
+    .step {
+      gap: 18px;
+      padding: 26px 0 34px;
     }
   }
 </style>
