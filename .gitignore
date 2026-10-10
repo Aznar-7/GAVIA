@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.impeccable/config.local.json
+.impeccable/review/
+CLAUDE.md
+.claude
+.impeccable
+.playwright-mcp
