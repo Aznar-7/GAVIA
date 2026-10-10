@@ -1,0 +1,681 @@
+---
+// Cómo trabajamos: la interacción firma del sitio. A la izquierda, una carta fija con el
+// rumbo en bordadas (como un velero que avanza contra el viento). El tramo hecho se
+// dibuja en continuo a medida que bajás; el planificado sigue punteado. A la derecha,
+// cada etapa con una vista previa de lo que te llevás (contenido de ejemplo, marcado).
+// Sin JS o con movimiento reducido, el rumbo se ve completo.
+const etapas = [
+  {
+    nombre: "Relevamiento",
+    hacemos:
+      "Nos sentamos con vos y con quienes van a usar el sistema. Entendemos cómo trabajan hoy, qué se repite y qué se rompe.",
+    recibis: "Un documento de requerimientos para leer y aprobar.",
+    tuParte: "Una o dos charlas, y mostrarnos cómo trabajan hoy.",
+  },
+  {
+    nombre: "Propuesta",
+    hacemos: "Con los requerimientos aprobados, definimos alcance, plazos y precio, dividido en etapas.",
+    recibis: "Una propuesta con precio cerrado por etapa.",
+    tuParte: "Elegir con qué etapa arrancamos.",
+  },
+  {
+    nombre: "Desarrollo",
+    hacemos: "Construimos en ciclos cortos. Cada dos semanas te mostramos avances que podés usar, no capturas.",
+    recibis: "Una versión para probar en cada entrega.",
+    tuParte: "Probar cada entrega y contarnos qué ajustar.",
+  },
+  {
+    nombre: "Puesta en marcha",
+    hacemos: "Instalamos, migramos tus datos y capacitamos a tu equipo hasta que lo usen solos.",
+    recibis: "El sistema funcionando y un manual de uso.",
+    tuParte: "Sumar a tu equipo a la capacitación.",
+  },
+  {
+    nombre: "Mantenimiento",
+    hacemos: "Soporte, mejoras y monitoreo con un abono mensual. Seguimos cerca después de la entrega.",
+    recibis: "Un reporte mensual de lo que se hizo.",
+    tuParte: "Es opcional: lo contratás solo si querés.",
+  },
+];
+
+// Rumbo en bordadas: seis puntos, cinco tramos del mismo largo.
+const pts = [
+  { x: 230, y: 590 },
+  { x: 390, y: 480 },
+  { x: 210, y: 370 },
+  { x: 390, y: 260 },
+  { x: 210, y: 150 },
+  { x: 390, y: 40 },
+];
+const d = pts.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
+const bearing = (a: { x: number; y: number }, b: { x: number; y: number }) => {
+  const deg = (Math.atan2(b.x - a.x, a.y - b.y) * 180) / Math.PI;
+  return String(Math.round((deg + 360) % 360)).padStart(3, "0");
+};
+const legs = pts.slice(1).map((p, i) => ({
+  x: (pts[i].x + p.x) / 2,
+  y: (pts[i].y + p.y) / 2,
+  b: bearing(pts[i], p),
+}));
+const check = "M2 7l4 4 8-9";
+---
+
+<section class="section" id="como-trabajamos" aria-labelledby="proceso-title">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 id="proceso-title">Sabés qué pasa en cada etapa.</h2>
+      <p>Cada etapa termina en algo que podés leer, probar o firmar. Así se ve un proyecto con nosotros, de principio a fin.</p>
+    </div>
+
+    <div class="layout" data-proceso style="--p:1" data-current="0">
+      <div class="panel">
+        <figure class="chart" aria-hidden="true">
+          <svg viewBox="0 0 580 630">
+            <g class="lines">
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((i) => <line x1={i * 70 + 10} x2={i * 70 + 10} y1="0" y2="630" />)}
+              {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => <line y1={i * 70} y2={i * 70} x1="0" x2="580" />)}
+            </g>
+            <path class="planned" d={d}></path>
+            <path class="done-path" d={d} pathLength="1"></path>
+            {
+              legs.map((l) => (
+                <text class="bearing" x={l.x + 14} y={l.y + 4}>{l.b}°</text>
+              ))
+            }
+            <g class="start">
+              <rect x={pts[0].x - 8} y={pts[0].y - 8} width="16" height="16"></rect>
+              <text class="lbl" x={pts[0].x + 18} y={pts[0].y + 5}>SALIDA</text>
+            </g>
+            {
+              etapas.map((e, i) => {
+                const p = pts[i + 1];
+                const left = p.x < 300;
+                return (
+                  <g class="wp" data-i={i}>
+                    <circle class="halo" cx={p.x} cy={p.y} r="22" />
+                    <circle class="dot" cx={p.x} cy={p.y} r="14" />
+                    <text class="num" x={p.x} y={p.y + 5}>{i + 1}</text>
+                    <text class="name" x={left ? p.x - 24 : p.x + 24} y={p.y + 6} text-anchor={left ? "end" : "start"}>
+                      {e.nombre}
+                    </text>
+                  </g>
+                );
+              })
+            }
+          </svg>
+        </figure>
+        <p class="legend">
+          <span class="key dash"></span>planificado
+          <span class="key solid"></span>hecho
+          <span class="coord">rumbo en grados</span>
+        </p>
+      </div>
+
+      <ol class="steps">
+        {
+          etapas.map((e, i) => (
+            <li class="step" id={`etapa-${i + 1}`} data-step={i}>
+              <span class="marker" aria-hidden="true">{i + 1}</span>
+              <div class="text">
+                <h3>{e.nombre}</h3>
+                <p>{e.hacemos}</p>
+                <dl class="meta">
+                  <div><dt class="label">Te llevás</dt><dd>{e.recibis}</dd></div>
+                  <div><dt class="label">Tu parte</dt><dd>{e.tuParte}</dd></div>
+                </dl>
+              </div>
+
+              <details class="preview-wrap" open>
+              <summary class="preview-toggle">Ver ejemplo de lo que recibís</summary>
+              <div class="preview" aria-label={`Ejemplo de lo que recibís en ${e.nombre}`}>
+                <span class="sample">Ejemplo</span>
+                {i === 0 && (
+                  <div class="doc">
+                    <p class="doc-title">Requerimientos <span class="coord">v1.0</span></p>
+                    <ul class="reqs">
+                      <li><b>Hace</b> Cargar pedidos de clientes desde el celular</li>
+                      <li><b>Hace</b> Mostrar en qué estado está cada pedido</li>
+                      <li><b>Hace</b> Avisar cuando falta stock de un producto</li>
+                      <li><b>Tiene que</b> Funcionar con mala señal</li>
+                    </ul>
+                    <div class="flow" aria-label="Flujo de un pedido">
+                      {["Pedido", "Preparación", "Entrega", "Cobro"].map((f, k) => (
+                        <>
+                          {k > 0 && <svg class="flow-arrow" viewBox="0 0 22 10" aria-hidden="true"><path d="M0 5h19M15 1l5 4-5 4" /></svg>}
+                          <span class="flow-box">{f}</span>
+                        </>
+                      ))}
+                    </div>
+                    <p class="approved">
+                      <svg viewBox="0 0 16 14" width="16" height="14"><path d={check} /></svg>
+                      Aprobado por el cliente
+                    </p>
+                  </div>
+                )}
+                {i === 1 && (
+                  <table class="plan">
+                    <thead>
+                      <tr><th>Etapa</th><th>Incluye</th><th>Plazo</th><th>Precio</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>1</td><td>Pedidos y clientes</td><td class="coord">3 sem.</td><td>Cerrado</td></tr>
+                      <tr><td>2</td><td>Stock y alertas</td><td class="coord">2 sem.</td><td>Cerrado</td></tr>
+                      <tr><td>3</td><td>Reportes</td><td class="coord">2 sem.</td><td>Cerrado</td></tr>
+                    </tbody>
+                    <tfoot>
+                      <tr><td colspan="4">Pagás etapa por etapa y podés frenar después de cualquiera.</td></tr>
+                    </tfoot>
+                  </table>
+                )}
+                {i === 2 && (
+                  <div class="sprints">
+                    {[1, 2, 3, 4, 5, 6, 7, 8].map((w) => (
+                      <div class={w % 2 === 0 ? "wk demo" : "wk"}>
+                        <span class="coord">S{w}</span>
+                      </div>
+                    ))}
+                    <p class="sprints-key"><span class="tick" /> Entrega para probar, cada 2 semanas</p>
+                  </div>
+                )}
+                {i === 3 && (
+                  <ul class="checklist">
+                    {["Datos migrados desde tus planillas", "Usuarios creados para tu equipo", "Capacitación hecha", "Manual de uso entregado"].map((t) => (
+                      <li>
+                        <svg viewBox="0 0 16 14" width="16" height="14"><path d={check} /></svg>
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                {i === 4 && (
+                  <div class="doc">
+                    <p class="doc-title">Reporte mensual</p>
+                    <ul class="reqs">
+                      <li><b>Seguridad</b> Actualizaciones aplicadas</li>
+                      <li><b>Mejoras</b> Dos pedidos del equipo, entregados</li>
+                      <li><b>Respaldo</b> Copias de seguridad verificadas</li>
+                      <li><b>Próximo mes</b> Exportar pedidos a Excel</li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+              </details>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-proceso]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (root && !reduce) {
+    const list = root.querySelector<HTMLElement>(".steps")!;
+    const steps = [...root.querySelectorAll<HTMLElement>(".step")];
+    const wps = [...root.querySelectorAll<SVGGElement>(".wp")];
+    const n = steps.length;
+    root.classList.add("js");
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const r = list.getBoundingClientRect();
+      const mid = window.innerHeight * 0.55;
+      const p = Math.min(1, Math.max(0, (mid - r.top) / r.height));
+      root.style.setProperty("--p", p.toFixed(4));
+      const current = Math.min(n - 1, Math.floor(p * n));
+      root.dataset.current = String(current);
+      steps.forEach((s, i) => {
+        s.classList.toggle("is-current", i === current);
+        s.classList.toggle("is-done", i < current);
+      });
+      wps.forEach((w, i) => {
+        w.classList.toggle("is-current", i === current);
+        w.classList.toggle("is-done", p >= (i + 1) / n - 0.001);
+      });
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  }
+  // En celular, los ejemplos arrancan plegados.
+  if (matchMedia("(max-width: 900px)").matches) {
+    document.querySelectorAll<HTMLDetailsElement>(".preview-wrap").forEach((d) => (d.open = false));
+  }
+</script>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(32px, 6vw, 112px);
+  }
+
+  /* Carta fija */
+  .panel {
+    position: sticky;
+    top: 92px;
+    align-self: start;
+    display: grid;
+    gap: 16px;
+  }
+  .chart {
+    margin: 0;
+    border: 2px solid var(--ink);
+    outline: 1px solid var(--ink);
+    outline-offset: -7px;
+    background: var(--paper);
+    padding: 18px;
+  }
+  .chart svg {
+    display: block;
+    margin-inline: auto;
+    width: 100%;
+    max-height: calc(100svh - 220px);
+    overflow: visible;
+  }
+  .lines line {
+    stroke: var(--ink);
+    stroke-opacity: 0.08;
+  }
+  .planned {
+    fill: none;
+    stroke: var(--signal);
+    stroke-opacity: 0.55;
+    stroke-width: 3;
+    stroke-dasharray: 9 8;
+  }
+  .done-path {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 4;
+    stroke-dasharray: var(--p) 1;
+  }
+  .bearing {
+    font: 500 13px var(--mono);
+    fill: var(--muted);
+  }
+  .start rect {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 2.5;
+  }
+  .lbl {
+    font: 500 13px var(--mono);
+    letter-spacing: 0.06em;
+    fill: var(--ink-soft);
+  }
+  .halo {
+    fill: var(--signal);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.5);
+    transition: opacity 300ms var(--ease-out), transform 400ms var(--ease-out);
+  }
+  .dot {
+    fill: var(--ink);
+    stroke: var(--ink);
+    stroke-width: 2.5;
+    transition: fill 300ms var(--ease-out);
+  }
+  .num {
+    font: 600 14px var(--mono);
+    text-anchor: middle;
+    fill: var(--paper);
+    transition: fill 300ms var(--ease-out);
+  }
+  .name {
+    font: 700 19px var(--body);
+    fill: var(--ink);
+    transition: fill 300ms var(--ease-out);
+  }
+  .js .wp:not(.is-done) .dot {
+    fill: var(--paper);
+  }
+  .js .wp:not(.is-done) .num {
+    fill: var(--ink);
+  }
+  .js .wp:not(.is-done):not(.is-current) .name {
+    fill: var(--muted);
+  }
+  .js .wp.is-current .halo {
+    opacity: 0.25;
+    transform: scale(1);
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .key {
+    width: 24px;
+    border-top: 3px dashed var(--signal);
+  }
+  .key.solid {
+    margin-left: 12px;
+    border-top-style: solid;
+  }
+  .legend .coord {
+    margin-left: auto;
+  }
+
+  /* Etapas */
+  .steps {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .step {
+    position: relative;
+    display: grid;
+    gap: 28px;
+    padding: 48px 0 64px;
+    border-top: 1px solid var(--rule-strong);
+    min-height: 62svh;
+    align-content: start;
+    scroll-margin-top: 100px;
+  }
+  .marker {
+    display: none;
+  }
+  .text {
+    display: grid;
+    gap: 14px;
+  }
+  h3 {
+    font-size: var(--fs-2xl);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    transition: color 300ms var(--ease-out);
+  }
+  .js .step.is-current h3 {
+    color: var(--signal-text);
+  }
+  .text > p {
+    max-width: 50ch;
+    font-size: var(--fs-lg);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
+    margin: 6px 0 0;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .meta div {
+    display: grid;
+    gap: 6px;
+    padding: 14px 20px 0 0;
+  }
+  .meta div + div {
+    padding-left: 20px;
+    border-left: 1px solid var(--rule-strong);
+  }
+  .meta dd {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  /* En escritorio el ejemplo siempre se ve; en celular se pliega para acortar la página. */
+  .preview-toggle {
+    display: none;
+  }
+  /* Vista previa del entregable: una hoja de papel, sin sombras. */
+  .preview {
+    position: relative;
+    padding: clamp(24px, 3vw, 40px);
+    background: var(--white);
+    border: 1px solid var(--ink);
+  }
+  .sample {
+    position: absolute;
+    top: -1px;
+    right: -1px;
+    padding: 3px 10px;
+    background: var(--ink);
+    color: var(--paper);
+    font: 600 0.72rem/1.4 var(--body);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .doc-title {
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    padding-bottom: 12px;
+    margin-bottom: 6px;
+    border-bottom: 2px solid var(--ink);
+    font: 700 1.2rem/1.2 var(--display);
+  }
+  .reqs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .reqs li {
+    display: grid;
+    grid-template-columns: 7.5em minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-soft);
+  }
+  .reqs b {
+    color: var(--ink);
+  }
+  .flow {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 18px;
+  }
+  .flow-box {
+    padding: 8px 12px;
+    border: 1.5px solid var(--ink);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+  }
+  .flow-arrow {
+    width: 22px;
+    height: 10px;
+  }
+  .preview .flow-arrow path {
+    stroke-width: 2;
+  }
+  .approved,
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .approved {
+    margin-top: 16px;
+  }
+  .preview svg path {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2.4;
+  }
+  .plan {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .plan th {
+    text-align: left;
+    font: 600 0.78rem var(--body);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0 12px 10px 0;
+    border-bottom: 2px solid var(--ink);
+  }
+  .plan td.coord {
+    white-space: nowrap;
+  }
+  .plan td {
+    padding: 12px 12px 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .plan tfoot td {
+    border: 0;
+    padding-top: 16px;
+    font-weight: 700;
+  }
+  .sprints {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .wk {
+    position: relative;
+    height: 72px;
+    display: grid;
+    align-content: end;
+    padding: 6px;
+    border: 1px solid var(--rule-strong);
+    background: var(--paper);
+  }
+  .wk.demo {
+    border-color: var(--ink);
+  }
+  .wk.demo::after {
+    content: "";
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 10px;
+    height: 10px;
+    background: var(--signal);
+  }
+  .sprints-key {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    color: var(--ink-soft);
+  }
+  .tick {
+    width: 10px;
+    height: 10px;
+    background: var(--signal);
+  }
+  .checklist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+  }
+  .checklist li {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .checklist svg {
+    flex: none;
+  }
+
+  /* Celular: sin carta fija; una línea de rumbo vertical recorre las etapas. */
+  @media (max-width: 900px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .panel {
+      display: none;
+    }
+    .steps {
+      position: relative;
+      padding-left: 48px;
+    }
+    .steps::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 0;
+      bottom: 0;
+      border-left: 3px dashed var(--signal);
+      opacity: 0.6;
+    }
+    .steps::after {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 0;
+      width: 3px;
+      height: calc(var(--p) * 100%);
+      background: var(--signal);
+    }
+    .step {
+      min-height: 0;
+      padding: 36px 0 48px;
+    }
+    .marker {
+      position: absolute;
+      left: -48px;
+      top: 40px;
+      z-index: 1;
+      display: grid;
+      place-items: center;
+      width: 33px;
+      height: 33px;
+      border-radius: 50%;
+      border: 2.5px solid var(--ink);
+      background: var(--ink);
+      color: var(--paper);
+      font: 600 0.85rem var(--mono);
+      transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out);
+    }
+    .js .step:not(.is-done):not(.is-current) .marker {
+      background: var(--paper);
+      color: var(--ink);
+    }
+    .js .step.is-current .marker {
+      background: var(--signal);
+      color: var(--ink);
+    }
+    .preview {
+      padding: 22px 18px;
+    }
+    .preview-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--ink);
+      font-weight: 600;
+      cursor: pointer;
+      list-style: none;
+    }
+    .preview-toggle::-webkit-details-marker {
+      display: none;
+    }
+    .preview-wrap[open] .preview-toggle {
+      margin-bottom: 14px;
+    }
+    .reqs li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+    }
+    .meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .meta div + div {
+      padding-left: 0;
+      border-left: 0;
+    }
+  }
+</style>
