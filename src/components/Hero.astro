@@ -1,0 +1,545 @@
+---
+// Primera pantalla: la carta de navegación a todo el ancho. A la izquierda la promesa
+// y la acción; a la derecha el rumbo, que se traza al cargar. Cada punto de paso
+// es un link a su etapa: hover y foco lo resaltan y muestran qué te llevás.
+const route = [
+  { x: 40, y: 520 },
+  { x: 175, y: 425 },
+  { x: 290, y: 335 },
+  { x: 400, y: 255 },
+  { x: 495, y: 175 },
+  { x: 585, y: 85 },
+];
+const etapas = [
+  { name: "Relevamiento", gets: "requerimientos por escrito" },
+  { name: "Propuesta", gets: "precio cerrado por etapa" },
+  { name: "Desarrollo", gets: "una entrega cada 2 semanas" },
+  { name: "Puesta en marcha", gets: "sistema andando + manual" },
+  { name: "Mantenimiento", gets: "soporte y reporte mensual" },
+];
+import Arrow from "./Arrow.astro";
+import Logo from "./Logo.astro";
+const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
+---
+
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="chart" data-chart>
+    <div class="layer grid" aria-hidden="true"></div>
+    <svg class="layer shoals" viewBox="0 0 800 600" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">
+      <path d="M800 190c-130 12-240 80-282 186s-30 176 46 224h236z" fill="var(--shoal)"></path>
+      <path d="M800 290c-96 10-170 64-190 148s4 132 54 162h136z" fill="var(--shoal-deep)" opacity=".55"></path>
+      <path d="M800 140c-160 14-290 88-344 214" fill="none" stroke="var(--ink)" stroke-opacity=".2" stroke-dasharray="2 5"></path>
+      <path d="M800 100c-200 20-350 110-410 260" fill="none" stroke="var(--ink)" stroke-opacity=".12" stroke-dasharray="2 5"></path>
+    </svg>
+
+    <div class="cartouche" aria-hidden="true">
+      <span class="maker"><Logo size={16} /><span class="coord">Carta de rumbo Nº 1</span></span>
+      <span class="coord">Córdoba, Argentina</span>
+      <span class="coord readout"><span data-lat>31°25′S</span> · <span data-lon>64°11′O</span></span>
+    </div>
+
+    <div class="inner">
+      <div class="copy">
+        <h1 id="hero-title"><span class="line"><span>Software a medida,</span></span><span class="line"><span>con rumbo.</span></span></h1>
+        <p class="lead">
+          Somos un estudio de desarrollo en Córdoba. Diseñamos, construimos y mantenemos sistemas para
+          empresas: antes de escribir una línea de código trazamos el recorrido con vos, y sabés qué recibís en
+          cada parada.
+        </p>
+        <form class="quick" id="quick-form" novalidate>
+          <label for="quick-need" class="sr-only">Contanos en una línea qué necesitás</label>
+          <input id="quick-need" name="need" class="input" type="text" autocomplete="off" placeholder="Ej.: un sistema de pedidos" />
+          <button class="btn" type="submit">Contanos tu idea <Arrow /></button>
+        </form>
+        <p class="note">Te llevamos al formulario con esto ya escrito. Te lee y te responde alguien del equipo, en menos de un día hábil.</p>
+      </div>
+
+      <figure class="course">
+        <svg viewBox="0 0 760 580" aria-labelledby="course-title">
+          <title id="course-title">El recorrido de un proyecto con Gavia, de Excel y WhatsApp al mantenimiento</title>
+          <defs>
+            <mask id="draw-mask" maskUnits="userSpaceOnUse">
+              <path class="draw" d={d} pathLength="1" fill="none" stroke="#fff" stroke-width="14"></path>
+            </mask>
+          </defs>
+          <path d={d} fill="none" stroke="var(--signal)" stroke-width="3" stroke-dasharray="10 8" mask="url(#draw-mask)"></path>
+          <g class="start">
+            <rect x="32" y="512" width="16" height="16" fill="var(--paper)" stroke="var(--ink)" stroke-width="2"></rect>
+            <text class="t-label" x="24" y="556">Salida: Excel y WhatsApp</text>
+          </g>
+          {
+            etapas.map((e, i) => {
+              const p = route[i + 1];
+              const last = i === etapas.length - 1;
+              const tx = last ? p.x - 22 : p.x + 22;
+              return (
+                <a class="wp" href={`#etapa-${i + 1}`} style={`--i:${i}`} aria-label={`${e.name}: ${e.gets}`}>
+                  <circle class="hit" cx={p.x} cy={p.y} r="34" />
+                  <circle class="ring" cx={p.x} cy={p.y} r="16" />
+                  <circle class="dot" cx={p.x} cy={p.y} r="9" />
+                  <text class="t-name" x={tx} y={p.y - 6} text-anchor={last ? "end" : "start"}>{e.name}</text>
+                  <text class="t-label gets" x={tx} y={p.y + 17} text-anchor={last ? "end" : "start"}>{e.gets}</text>
+                </a>
+              );
+            })
+          }
+        </svg>
+        <svg class="rose" viewBox="-60 -60 120 120" aria-hidden="true" data-rose>
+          <circle r="56" fill="none" stroke="var(--ink)" stroke-width="1"></circle>
+          <circle r="44" fill="none" stroke="var(--ink)" stroke-width="1" stroke-dasharray="1.5 4"></circle>
+          <g class="needle" data-needle>
+            <path d="M0-56L7 0L0 56L-7 0Z" fill="var(--ink)"></path>
+            <path d="M0-56L7 0L-7 0Z" fill="var(--signal)"></path>
+          </g>
+          <path d="M-56 0L0-7L56 0L0 7Z" fill="var(--ink)" opacity=".3"></path>
+        </svg>
+      </figure>
+
+      <a class="cue" href="#servicios">
+        <span class="cue-line" aria-hidden="true"></span>
+        <span class="coord">Seguir el rumbo</span>
+      </a>
+
+      <ol class="course-mobile" aria-label="El recorrido de un proyecto">
+        <li class="from"><span class="coord">Salida: Excel y WhatsApp</span></li>
+        {
+          etapas.map((e, i) => (
+            <li>
+              <a href={`#etapa-${i + 1}`}>
+                <strong>{e.name}</strong>
+                <span>{e.gets}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Formulario rápido: lleva al formulario completo con el mensaje ya escrito.
+  const form = document.getElementById("quick-form") as HTMLFormElement | null;
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const need = (form.elements.namedItem("need") as HTMLInputElement).value.trim();
+    const target = document.getElementById("c-mensaje") as HTMLTextAreaElement | null;
+    if (target && need) target.value = need;
+    document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+    // Enfocar el primer campo obligatorio que siga vacío.
+    window.setTimeout(() => {
+      const empty = [...document.querySelectorAll<HTMLInputElement>("#contact-form [required]")].find((f) => !f.value.trim());
+      empty?.focus({ preventScroll: true });
+    }, 700);
+  });
+
+  // La carta responde al cursor: lectura de coordenadas como un plotter y un leve
+  // desplazamiento de las capas. Sin movimiento si el usuario lo pidió.
+  const chart = document.querySelector<HTMLElement>("[data-chart]");
+  const lat = chart?.querySelector<HTMLElement>("[data-lat]");
+  const lon = chart?.querySelector<HTMLElement>("[data-lon]");
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fmt = (deg: number, hemi: string) => {
+    const a = Math.abs(deg);
+    const m = Math.round((a - Math.floor(a)) * 60) % 60;
+    return `${Math.floor(a)}°${String(m).padStart(2, "0")}′${hemi}`;
+  };
+  const rose = chart?.querySelector<SVGElement>("[data-rose]");
+  const needle = chart?.querySelector<SVGGElement>("[data-needle]");
+  let needleAngle = 0;
+  let frame = 0;
+  chart?.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const r = chart.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - 0.5;
+      const ny = (e.clientY - r.top) / r.height - 0.5;
+      if (lat && lon) {
+        lat.textContent = fmt(-31.42 - ny * 0.3, "S");
+        lon.textContent = fmt(-64.18 + nx * 0.4, "O");
+      }
+      if (!reduce) {
+        chart.style.setProperty("--mx", String(nx));
+        chart.style.setProperty("--my", String(ny));
+        // La aguja apunta al cursor, por el camino más corto.
+        if (rose && needle) {
+          const rr = rose.getBoundingClientRect();
+          const target = (Math.atan2(e.clientX - (rr.left + rr.width / 2), -(e.clientY - (rr.top + rr.height / 2))) * 180) / Math.PI;
+          needleAngle += ((((target - needleAngle) % 360) + 540) % 360) - 180;
+          needle.style.transform = `rotate(${needleAngle}deg)`;
+        }
+      }
+    });
+  });
+  chart?.addEventListener("pointerleave", () => {
+    // Al salir, la aguja vuelve al norte.
+    needleAngle = Math.round(needleAngle / 360) * 360;
+    if (needle) needle.style.transform = `rotate(${needleAngle}deg)`;
+    chart.style.setProperty("--mx", "0");
+    chart.style.setProperty("--my", "0");
+    if (lat && lon) {
+      lat.textContent = "31°25′S";
+      lon.textContent = "64°11′O";
+    }
+  });
+</script>
+
+<style>
+  .hero {
+    padding: 12px 12px 0;
+  }
+  /* Carta a todo el ancho: doble filete y escala de grados arriba y abajo. */
+  .chart {
+    --mx: 0;
+    --my: 0;
+    position: relative;
+    min-height: calc(100svh - 82px);
+    display: flex;
+    border: 2px solid var(--ink);
+    outline: 1px solid var(--ink);
+    outline-offset: -9px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .chart::before,
+  .chart::after {
+    content: "";
+    position: absolute;
+    left: 8px;
+    right: 8px;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--ink) 0 48px, transparent 48px 96px);
+    z-index: 2;
+  }
+  .chart::before {
+    top: 8px;
+  }
+  .chart::after {
+    bottom: 8px;
+  }
+  .layer {
+    position: absolute;
+    inset: -24px;
+    transition: transform 600ms var(--ease-out);
+  }
+  /* Meridianos y paralelos de la carta. */
+  .grid {
+    z-index: -2;
+    background-image: linear-gradient(var(--rule) 1px, transparent 1px),
+      linear-gradient(90deg, var(--rule) 1px, transparent 1px);
+    background-size: 160px 160px;
+    opacity: 0.6;
+    transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px));
+  }
+  .shoals {
+    z-index: -1;
+    width: calc(100% + 48px);
+    height: calc(100% + 48px);
+    transform: translate(calc(var(--mx) * -22px), calc(var(--my) * -16px));
+  }
+  .inner {
+    width: 100%;
+    max-width: 1720px;
+    margin-inline: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(24px, 4vw, 72px);
+    padding: clamp(40px, 6vw, 96px) var(--gutter);
+  }
+  .copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 28px;
+    min-width: 0;
+  }
+  .cartouche {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 3;
+    display: grid;
+    gap: 4px;
+    padding: 10px 14px;
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    text-align: right;
+  }
+  .readout {
+    color: var(--signal-text);
+  }
+  .maker {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    gap: 12px;
+    padding-bottom: 6px;
+    margin-bottom: 2px;
+    border-bottom: 1px solid var(--rule-strong);
+  }
+  h1 .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+  h1 .line > span {
+    display: block;
+  }
+  h1 {
+    font-size: clamp(2.9rem, 5.6vw, 5.4rem);
+    font-weight: 800;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+  }
+  .lead {
+    max-width: 36ch;
+    font-size: var(--fs-lead);
+    line-height: 1.5;
+    color: var(--ink-soft);
+  }
+  .quick {
+    display: flex;
+    max-width: 600px;
+  }
+  .quick .input {
+    flex: 1;
+    min-width: 0;
+    border-right: 0;
+    font-size: var(--fs-md);
+    padding: 1.05em 1.1em;
+  }
+  .quick .btn {
+    white-space: nowrap;
+  }
+  .note {
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .course {
+    position: relative;
+    margin: 0;
+    align-self: center;
+    min-width: 0;
+  }
+  .course > svg:first-child {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  /* Trazado al cargar: la máscara revela el rumbo punteado de punta a punta. */
+  /* Estado final por defecto (visible en capturas y sin JS); el trazado es una mejora. */
+  .draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
+  }
+    :global(html.intro) .draw {
+    animation: draw 1.8s var(--ease-out) 250ms both;
+  }
+  @keyframes draw {
+    from {
+      stroke-dashoffset: 1;
+    }
+  }
+  :global(html.intro) .wp,
+  :global(html.intro) .start {
+    animation: appear 600ms var(--ease-out) both;
+    animation-delay: calc(450ms + var(--i, -0.6) * 280ms);
+  }
+  @keyframes appear {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .wp {
+    cursor: pointer;
+    outline: none;
+  }
+  .hit {
+    fill: transparent;
+  }
+  .ring {
+    fill: var(--signal);
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    transform: scale(0.4);
+    transition: opacity 260ms var(--ease-out), transform 360ms var(--ease-out);
+  }
+  .dot {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 3;
+    transition: fill 200ms var(--ease-out), stroke 200ms var(--ease-out);
+  }
+  .t-name {
+    font: 700 24px var(--body);
+    fill: var(--ink);
+    transition: fill 200ms var(--ease-out);
+  }
+  .t-label {
+    font: 500 16px var(--body);
+    fill: var(--ink-soft);
+    transition: fill 200ms var(--ease-out);
+  }
+  .wp:hover .ring,
+  .wp:focus-visible .ring {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+  .wp:hover .dot,
+  .wp:focus-visible .dot {
+    fill: var(--signal);
+    stroke: var(--ink);
+  }
+  .wp:hover .gets,
+  .wp:focus-visible .gets {
+    fill: var(--signal-text);
+  }
+  .wp:focus-visible .t-name {
+    text-decoration: underline;
+  }
+  .rose {
+    position: absolute;
+    right: 0;
+    bottom: -40px;
+    width: clamp(90px, 8vw, 130px);
+  }
+  .needle {
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transition: transform 1100ms var(--ease-out);
+  }
+  :global(html.intro) .needle {
+    animation: settle 2.4s var(--ease-out) 300ms both;
+  }
+  @keyframes settle {
+    0% {
+      transform: rotate(-70deg);
+    }
+    60% {
+      transform: rotate(8deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+  .course-mobile {
+    display: none;
+  }
+  /* Señal para bajar: una línea punteada que corre hacia abajo. */
+  .cue {
+    position: absolute;
+    left: var(--gutter);
+    bottom: 34px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .cue-line {
+    position: relative;
+    width: 2px;
+    height: 44px;
+    overflow: hidden;
+    background: repeating-linear-gradient(var(--signal) 0 6px, transparent 6px 11px);
+  }
+  .cue:hover {
+    color: var(--ink);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .cue-line {
+      animation: flow 1.6s linear infinite;
+    }
+  }
+  @keyframes flow {
+    to {
+      background-position: 0 22px;
+    }
+  }
+
+  @media (max-width: 1080px) {
+    .cue {
+      display: none;
+    }
+    .inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .chart {
+      min-height: 0;
+    }
+    .rose {
+      display: none;
+    }
+  }
+  @media (max-width: 640px) {
+    .cartouche {
+      display: none;
+    }
+    .course {
+      display: none;
+    }
+    .course-mobile {
+      display: grid;
+      margin: 8px 0 0;
+      padding: 0 0 0 26px;
+      list-style: none;
+      position: relative;
+    }
+    .course-mobile::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 10px;
+      bottom: 22px;
+      border-left: 3px dashed var(--signal);
+    }
+    .course-mobile li {
+      position: relative;
+      padding: 10px 0;
+    }
+    .course-mobile li::before {
+      content: "";
+      position: absolute;
+      left: -26px;
+      top: 15px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--paper);
+      border: 3px solid var(--ink);
+    }
+    .course-mobile .from::before {
+      border-radius: 0;
+    }
+    .course-mobile a {
+      display: grid;
+      text-decoration: none;
+    }
+    .course-mobile strong {
+      font-size: var(--fs-md);
+    }
+    .course-mobile span:not(.coord) {
+      font-size: var(--fs-sm);
+      color: var(--ink-soft);
+    }
+    .quick {
+      flex-direction: column;
+    }
+    .quick .input {
+      border-right: 2px solid var(--ink);
+      border-bottom: 0;
+    }
+    .quick .btn {
+      justify-content: center;
+    }
+  }
+</style>

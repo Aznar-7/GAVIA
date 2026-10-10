@@ -1,0 +1,266 @@
+---
+import Logo from "./Logo.astro";
+
+const links = [
+  { href: "#como-trabajamos", label: "Cómo trabajamos" },
+  { href: "#condiciones", label: "Condiciones" },
+  { href: "#flety", label: "Flety" },
+  { href: "#proyectos", label: "Proyectos" },
+  { href: "#equipo", label: "Equipo" },
+];
+---
+
+<header class="nav" data-nav>
+  <div class="wrap row">
+    <a href="#top" class="home" aria-label="Gavia, ir al inicio"><Logo size={24} /></a>
+    <nav aria-label="Secciones" id="nav-links">
+      <ul>
+        {links.map((l) => <li><a href={l.href} data-spy={l.href.slice(1)}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <a class="cta" href="#contacto"><span class="long">Contanos tu proyecto</span><span class="short">Escribinos</span></a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">
+      <span class="sr-only">Abrir menú</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
+  </div>
+  <!-- Progreso de lectura: el rumbo de la página, punteado lo que falta y continuo lo leído. -->
+  <div class="progress" aria-hidden="true"><span></span></div>
+</header>
+
+<script>
+  const nav = document.querySelector<HTMLElement>("[data-nav]")!;
+  const bar = nav.querySelector<HTMLElement>(".progress span")!;
+  const menu = nav.querySelector<HTMLButtonElement>(".menu")!;
+  const links = [...nav.querySelectorAll<HTMLAnchorElement>("[data-spy]")];
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      const max = document.documentElement.scrollHeight - innerHeight;
+      bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
+      nav.classList.toggle("scrolled", scrollY > 8);
+    });
+  };
+  addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  // Sección activa: se marca el link de la sección que ocupa el centro de la pantalla.
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        links.forEach((l) => l.toggleAttribute("aria-current", l.dataset.spy === e.target.id));
+      }
+    },
+    { rootMargin: "-50% 0px -50% 0px" },
+  );
+  document.querySelectorAll("main section[id]").forEach((s) => io.observe(s));
+
+  // Menú de celular.
+  const setOpen = (open: boolean) => {
+    nav.classList.toggle("open", open);
+    menu.setAttribute("aria-expanded", String(open));
+    menu.querySelector(".sr-only")!.textContent = open ? "Cerrar menú" : "Abrir menú";
+  };
+  menu.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
+  links.forEach((l) => l.addEventListener("click", () => setOpen(false)));
+  addEventListener("keydown", (e) => e.key === "Escape" && setOpen(false));
+</script>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgb(241 244 247 / 0.94);
+    backdrop-filter: saturate(1.4) blur(8px);
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms var(--ease-out);
+  }
+  .nav.scrolled {
+    border-bottom-color: var(--rule);
+  }
+  :global(html.intro) .nav {
+    animation: nav-in 700ms var(--ease-out) both;
+  }
+  @keyframes nav-in {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    min-height: 68px;
+  }
+  .home {
+    text-decoration: none;
+  }
+  nav {
+    margin-left: auto;
+  }
+  ul {
+    display: flex;
+    gap: 28px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  ul a {
+    font-size: var(--fs-sm);
+    font-weight: 500;
+    text-decoration: none;
+    background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 2px no-repeat;
+    padding-bottom: 3px;
+    transition: background-size 260ms var(--ease-out), color 200ms var(--ease-out);
+  }
+  ul a:hover,
+  ul a[aria-current] {
+    background-size: 100% 2px;
+  }
+  ul a[aria-current] {
+    font-weight: 700;
+  }
+  .cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 10px 16px;
+    border: 2px solid var(--ink);
+    font-weight: 700;
+    font-size: var(--fs-sm);
+    text-decoration: none;
+    transition: color 280ms var(--ease-out);
+  }
+  .cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--ink);
+    transform: scaleY(0);
+    transform-origin: bottom;
+    transition: transform 320ms var(--ease-out);
+  }
+  .cta:hover {
+    color: var(--paper);
+  }
+  .cta:hover::before {
+    transform: scaleY(1);
+  }
+  .progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: repeating-linear-gradient(90deg, rgb(18 36 58 / 0.18) 0 8px, transparent 8px 14px);
+  }
+  .progress span {
+    display: block;
+    height: 100%;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .menu {
+    display: none;
+  }
+
+  @media (max-width: 960px) {
+    .cta {
+      margin-left: auto;
+    }
+    .menu {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      border: 2px solid var(--ink);
+      background: transparent;
+      cursor: pointer;
+    }
+    .bars,
+    .bars::before,
+    .bars::after {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--ink);
+      transition: transform 260ms var(--ease-out), opacity 200ms;
+    }
+    .bars {
+      position: relative;
+    }
+    .bars::before,
+    .bars::after {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+    .bars::before {
+      top: -6px;
+    }
+    .bars::after {
+      top: 6px;
+    }
+    .open .bars {
+      background: transparent;
+    }
+    .open .bars::before {
+      transform: translateY(6px) rotate(45deg);
+    }
+    .open .bars::after {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+    nav {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      margin: 0;
+      background: var(--paper);
+      border-bottom: 2px solid var(--ink);
+      clip-path: inset(0 0 100% 0);
+      visibility: hidden;
+      transition: clip-path 360ms var(--ease-out), visibility 0s 360ms;
+    }
+    .open nav {
+      clip-path: inset(0 0 0 0);
+      visibility: visible;
+      transition: clip-path 360ms var(--ease-out);
+    }
+    ul {
+      flex-direction: column;
+      gap: 0;
+      padding: 8px var(--gutter) 16px;
+    }
+    ul a {
+      display: block;
+      padding: 14px 0;
+      font-size: var(--fs-lg);
+      border-bottom: 1px solid var(--rule);
+      background: none;
+    }
+  }
+  .cta {
+    white-space: nowrap;
+  }
+  .short {
+    display: none;
+  }
+  @media (max-width: 520px) {
+    .long {
+      display: none;
+    }
+    .short {
+      display: inline;
+    }
+  }
+</style>
