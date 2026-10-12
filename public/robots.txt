@@ -3,4 +3,4 @@ Allow: /
 Disallow: /og
 Disallow: /logos
 
-Sitemap: https://gaviasoftware.com/sitemap-index.xml
+Sitemap: https://www.gaviasoftware.com/sitemap-index.xml

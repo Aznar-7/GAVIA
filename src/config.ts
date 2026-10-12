@@ -1,5 +1,5 @@
-// Datos de contacto en un solo lugar. El mail todavía no existe: crearlo antes de publicar.
-export const CONTACT_EMAIL = "hola@gaviasoftware.com";
+// Datos de contacto en un solo lugar.
+export const CONTACT_EMAIL = "equipo@gaviasoftware.com";
 
 // Número de WhatsApp en formato internacional sin "+" (ej. 5493511234567). Vacío = no se muestra.
 export const WHATSAPP = "";
@@ -12,14 +12,14 @@ export const ANALYTICS = false;
 
 // Perfiles de Gavia en redes. Vacío = no se muestra. Aparecen en el pie y en los datos para Google.
 export const SOCIAL: { label: string; href: string }[] = [
-  { label: "LinkedIn", href: "" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/company/gavia-software" },
   { label: "Instagram", href: "" },
   { label: "GitHub", href: "" },
 ].filter((s) => s.href);
 
-// Endpoint que recibe los formularios y los reenvía por mail (por ejemplo, un form de
-// Formspree: "https://formspree.io/f/xxxxxxx"). Vacío = todavía no hay envío real.
-export const FORM_ENDPOINT = "";
+// Formulario de Formspree que recibe los envíos (contacto y lista de Flety) y los reenvía a
+// equipo@. Las respuestas se ven en formspree.io. Vacío = no hay envío real.
+export const FORM_ENDPOINT = "https://formspree.io/f/xgaozdej";
 
 export type SendResult = "sent" | "demo" | "mailto";
 

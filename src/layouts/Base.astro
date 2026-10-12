@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { title, description, noindex = false } = Astro.props;
-const site = Astro.site ?? new URL("https://gaviasoftware.com");
+const site = Astro.site ?? new URL("https://www.gaviasoftware.com");
 const ogImage = new URL("/og.png", site);
 const canonical = new URL(Astro.url.pathname, site);
 const org = {
