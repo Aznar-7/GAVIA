@@ -147,12 +147,12 @@ La **G de recorrido**: una G dibujada con un solo trazo, como una ruta o un circ
 
 Lo que falta configurar está todo en [`src/config.ts`](src/config.ts):
 
-- [ ] **`CONTACT_EMAIL`**: crear la casilla `hola@gaviasoftware.com` (hoy no existe).
+- [x] **`CONTACT_EMAIL`**: `equipo@gaviasoftware.com`.
 - [ ] **`WHATSAPP`**: número en formato internacional sin `+` (ej. `5493511234567`). Vacío = no se muestra.
 - [ ] **`FORM_ENDPOINT`**: endpoint que recibe los formularios (por ejemplo, Formspree). Sin endpoint, en desarrollo el envío se simula y en producción abre un mail armado.
 - [ ] **`ANALYTICS`**: activar Web Analytics en el panel de Vercel y después ponerlo en `true`.
-- [ ] **`SOCIAL`**: cargar los links de LinkedIn, Instagram o GitHub cuando existan (aparecen en el pie y en los datos para Google).
-- [ ] **Dominio**: registrar `gaviasoftware.com` y apuntarlo a Vercel (ya está en `astro.config.mjs` y `robots.txt`).
+- [x] **`SOCIAL`**: LinkedIn cargado. Sumar Instagram o GitHub del estudio cuando existan.
+- [ ] **Dominio**: `www.gaviasoftware.com` ya está comprado y cargado en `astro.config.mjs` y `robots.txt`; falta apuntarlo a Vercel (con `www` como dominio principal).
 - [ ] **`og.png`**: si cambia el mensaje o la marca, abrir `/og` en 1200×630 y capturarla de nuevo en `public/og.png`.
 
 ---
@@ -162,8 +162,8 @@ Lo que falta configurar está todo en [`src/config.ts`](src/config.ts):
 | | Formación | En el barco |
 |---|---|---|
 | **Vicente Aznar** · [GitHub](https://github.com/Aznar-7) · [Portfolio](https://vicenteaznar.dev) | Ingeniería en Sistemas | Dos años desarrollando sistemas completos, de la base de datos a la pantalla. |
-| **Agustín García** | Ingeniería en Sistemas | Analiza cómo trabaja tu empresa y lo baja a requerimientos claros. |
-| **Benjamín Viberti** | Ingeniería en Computación | Del hardware al software: sabe cómo funciona la máquina por dentro. |
+| **Agustín García** · [GitHub](https://github.com/agusgarcia74) | Ingeniería en Sistemas | Analiza cómo trabaja tu empresa y lo baja a requerimientos claros. |
+| **Benjamín Viberti** · [GitHub](https://github.com/benjaviberti) | Ingeniería en Computación | Del hardware al software: sabe cómo funciona la máquina por dentro. |
 
 El nombre viene de **G**arcía · **A**znar · **VI**berti + **IA**. La gavia es la vela alta de un barco: la que se ve primero desde lejos.
 
@@ -172,5 +172,6 @@ El nombre viene de **G**arcía · **A**znar · **VI**berti + **IA**. La gavia es
 <p align="center">
   <img src="public/favicon.svg" alt="" width="28"><br>
   <b>Software con rumbo.</b><br>
-  <sub>Hecho en Córdoba, Argentina.</sub>
+  <sub>Hecho en Córdoba, Argentina.</sub><br>
+  <sub><a href="https://www.gaviasoftware.com">gaviasoftware.com</a> · <a href="mailto:equipo@gaviasoftware.com">equipo@gaviasoftware.com</a> · <a href="https://www.linkedin.com/company/gavia-software">LinkedIn</a></sub>
 </p>
