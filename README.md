@@ -149,7 +149,7 @@ Lo que falta configurar está todo en [`src/config.ts`](src/config.ts):
 
 - [x] **`CONTACT_EMAIL`**: `equipo@gaviasoftware.com`.
 - [ ] **`WHATSAPP`**: número en formato internacional sin `+` (ej. `5493511234567`). Vacío = no se muestra.
-- [ ] **`FORM_ENDPOINT`**: endpoint que recibe los formularios (por ejemplo, Formspree). Sin endpoint, en desarrollo el envío se simula y en producción abre un mail armado.
+- [x] **`FORM_ENDPOINT`**: Formspree (`formspree.io/f/xgaozdej`), reenvía a `equipo@`. Contacto y lista de Flety llegan con asuntos distintos.
 - [ ] **`ANALYTICS`**: activar Web Analytics en el panel de Vercel y después ponerlo en `true`.
 - [x] **`SOCIAL`**: LinkedIn cargado. Sumar Instagram o GitHub del estudio cuando existan.
 - [ ] **Dominio**: `www.gaviasoftware.com` ya está comprado y cargado en `astro.config.mjs` y `robots.txt`; falta apuntarlo a Vercel (con `www` como dominio principal).

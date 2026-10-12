@@ -17,9 +17,9 @@ export const SOCIAL: { label: string; href: string }[] = [
   { label: "GitHub", href: "" },
 ].filter((s) => s.href);
 
-// Endpoint que recibe los formularios y los reenvía por mail (por ejemplo, un form de
-// Formspree: "https://formspree.io/f/xxxxxxx"). Vacío = todavía no hay envío real.
-export const FORM_ENDPOINT = "";
+// Formulario de Formspree que recibe los envíos (contacto y lista de Flety) y los reenvía a
+// equipo@. Las respuestas se ven en formspree.io. Vacío = no hay envío real.
+export const FORM_ENDPOINT = "https://formspree.io/f/xgaozdej";
 
 export type SendResult = "sent" | "demo" | "mailto";
 

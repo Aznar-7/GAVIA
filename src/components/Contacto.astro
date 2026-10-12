@@ -121,6 +121,8 @@ const wa = whatsappUrl();
     status.textContent = "";
 
     try {
+      // Si dejó un mail, "Responder" en el correo le contesta directo a esa persona.
+      if (isEmail) data._replyto = value;
       const result = await sendForm(`Proyecto: ${data.nombre}`, data);
       if (result === "mailto") {
         status.textContent = `Te armamos el mail listo para enviar. Si no se abrió tu correo, escribinos a ${CONTACT_EMAIL}.`;
