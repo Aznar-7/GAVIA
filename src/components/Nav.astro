@@ -231,6 +231,12 @@ const links = [
       visibility: hidden;
       transition: clip-path 360ms var(--ease-out), visibility 0s 360ms;
     }
+    /* Cerrado, el menú no debe sumar alto: la barra es sticky y al final de la página
+       el panel oculto estiraba el scroll con un hueco vacío debajo del pie. */
+    .nav:not(.open) {
+      overflow: clip;
+      overflow-clip-margin: 2px;
+    }
     .open nav {
       clip-path: inset(0 0 0 0);
       visibility: visible;

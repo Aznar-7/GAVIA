@@ -114,21 +114,57 @@ const casos = [
     font-weight: 700;
     color: var(--ink);
   }
+  /* Celular: los casos pasan a una tira de hojas que se desliza con el pulgar (como las
+     vidrieras de Mercado Libre). La hoja siguiente asoma para avisar que hay más. */
   @media (max-width: 760px) {
+    .ledger {
+      display: flex;
+      gap: 12px;
+      margin-inline: calc(var(--gutter) * -1);
+      padding: 20px var(--gutter) 4px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: var(--gutter);
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+      border-top: 0;
+    }
+    .ledger::-webkit-scrollbar {
+      display: none;
+    }
     .head {
       display: none;
     }
     .row {
+      flex: 0 0 min(80%, 320px);
+      scroll-snap-align: start;
       grid-template-columns: minmax(0, 1fr);
-      gap: 10px;
+      grid-template-rows: auto auto 1fr;
+      align-items: start;
+      gap: 14px;
+      padding: 22px 20px 24px;
+      background: var(--white);
+      border: 1px solid var(--ink);
+      border-top-width: 2px;
     }
+    .hoy {
+      font-size: var(--fs-md);
+      color: var(--muted);
+      text-decoration-color: var(--rule-strong);
+    }
+    /* El rumbo de "hoy" a "con un sistema": punteado, termina en flecha. */
     .via {
-      display: none;
+      color: var(--signal-text);
     }
-    /* Lo resuelto lleva el rumbo continuo (hecho) a la izquierda. */
+    .line {
+      border-top-width: 2px;
+    }
     .con {
-      padding-left: 14px;
-      border-left: 3px solid var(--signal);
+      align-self: end;
+      font-size: var(--fs-xl);
+    }
+    .cta-line {
+      margin-top: 24px;
     }
   }
 </style>

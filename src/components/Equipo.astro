@@ -140,4 +140,16 @@ const equipo = [
       justify-content: start;
     }
   }
+  /* Celular: el número no aporta y le roba una columna al texto. */
+  @media (max-width: 560px) {
+    li {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    li > :not(.n) {
+      grid-column: 1;
+    }
+    .n {
+      display: none;
+    }
+  }
 </style>

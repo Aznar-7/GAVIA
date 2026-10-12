@@ -672,6 +672,23 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
     .course {
       display: none;
     }
+    .copy {
+      gap: 24px;
+    }
+    /* Los bajíos quedan abajo, detrás del rumbo, no detrás del texto. */
+    .shoals {
+      top: auto;
+      height: 46%;
+    }
+    /* La nota repite lo que ya dice el botón; en el celular se gana una pantalla menos. */
+    .note {
+      display: none;
+    }
+    .facts {
+      flex-direction: column;
+      gap: 10px;
+      margin-top: -4px;
+    }
     /* Rumbo compacto: adelanta el recorrido y lleva a "Cómo trabajamos". */
     .strip {
       display: grid;
