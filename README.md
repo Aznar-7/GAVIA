@@ -151,7 +151,7 @@ Lo que falta configurar está todo en [`src/config.ts`](src/config.ts):
 - [ ] **`WHATSAPP`**: número en formato internacional sin `+` (ej. `5493511234567`). Vacío = no se muestra.
 - [x] **`FORM_ENDPOINT`**: Formspree (`formspree.io/f/xgaozdej`), reenvía a `equipo@`. Contacto y lista de Flety llegan con asuntos distintos.
 - [ ] **`ANALYTICS`**: activar Web Analytics en el panel de Vercel y después ponerlo en `true`.
-- [x] **`SOCIAL`**: LinkedIn cargado. Sumar Instagram o GitHub del estudio cuando existan.
+- [x] **`SOCIAL`**: LinkedIn e Instagram cargados. Sumar el GitHub del estudio cuando exista.
 - [ ] **Dominio**: `www.gaviasoftware.com` ya está comprado y cargado en `astro.config.mjs` y `robots.txt`; falta apuntarlo a Vercel (con `www` como dominio principal).
 - [ ] **`og.png`**: si cambia el mensaje o la marca, abrir `/og` en 1200×630 y capturarla de nuevo en `public/og.png`.
 
@@ -173,5 +173,5 @@ El nombre viene de **G**arcía · **A**znar · **VI**berti + **IA**. La gavia es
   <img src="public/favicon.svg" alt="" width="28"><br>
   <b>Software con rumbo.</b><br>
   <sub>Hecho en Córdoba, Argentina.</sub><br>
-  <sub><a href="https://www.gaviasoftware.com">gaviasoftware.com</a> · <a href="mailto:equipo@gaviasoftware.com">equipo@gaviasoftware.com</a> · <a href="https://www.linkedin.com/company/gavia-software">LinkedIn</a></sub>
+  <sub><a href="https://www.gaviasoftware.com">gaviasoftware.com</a> · <a href="mailto:equipo@gaviasoftware.com">equipo@gaviasoftware.com</a> · <a href="https://www.linkedin.com/company/gavia-software">LinkedIn</a> · <a href="https://www.instagram.com/gaviasoftware">Instagram</a></sub>
 </p>

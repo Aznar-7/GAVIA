@@ -43,7 +43,7 @@ export const TEAM: { nombre: string; formacion: string; linea: string; links: { 
 // Perfiles de Gavia en redes. Vacío = no se muestra. Aparecen en el pie y en los datos para Google.
 export const SOCIAL: { label: string; href: string }[] = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/gavia-software" },
-  { label: "Instagram", href: "" },
+  { label: "Instagram", href: "https://www.instagram.com/gaviasoftware" },
   { label: "GitHub", href: "" },
 ].filter((s) => s.href);
 
