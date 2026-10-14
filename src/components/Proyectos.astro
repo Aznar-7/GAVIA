@@ -120,17 +120,16 @@ const proyectos = [
     display: flex;
     flex-wrap: wrap;
     justify-content: end;
-    gap: 8px;
+    gap: 6px 20px;
     margin: 0;
     padding: 0;
     list-style: none;
+    font: 600 0.8rem/1.4 var(--body);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
   }
-  .tags li {
-    padding: 5px 10px;
-    border: 1px solid var(--rule-strong);
-    font-size: var(--fs-sm);
-    font-weight: 600;
-  }
+  /* Tipos y tecnologías como una línea de rótulos, no como chips. */
   @media (max-width: 860px) {
     .log > li {
       grid-template-columns: minmax(0, 1fr);

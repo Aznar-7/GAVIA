@@ -149,8 +149,23 @@ const casos = [
     }
     .hoy {
       font-size: var(--fs-md);
+      color: var(--ink-soft);
+      text-decoration: none;
+    }
+    .hoy::before,
+    .con::before {
+      display: block;
+      margin-bottom: 6px;
+      font: 600 0.75rem/1.3 var(--body);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
       color: var(--muted);
-      text-decoration-color: var(--rule-strong);
+    }
+    .hoy::before {
+      content: "Hoy";
+    }
+    .con::before {
+      content: "Con un sistema";
     }
     /* El rumbo de "hoy" a "con un sistema": punteado, termina en flecha. */
     .via {
