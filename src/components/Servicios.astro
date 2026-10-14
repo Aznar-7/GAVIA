@@ -67,22 +67,16 @@
   .kinds {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin: 4px 0 6px;
+    gap: 6px 20px;
+    margin: 0;
     padding: 0;
     list-style: none;
+    font: 600 0.8rem/1.4 var(--body);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
   }
-  .kinds li {
-    padding: 6px 12px;
-    border: 1px solid var(--rule-strong);
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    transition: border-color 200ms var(--ease-out), background-color 200ms var(--ease-out);
-  }
-  .kinds li:hover {
-    border-color: var(--ink);
-    background: var(--white);
-  }
+  /* Tipos y tecnologías como una línea de rótulos, no como chips. */
   article a {
     justify-self: start;
     padding-block: 6px;
@@ -99,21 +93,6 @@
     }
     article + article {
       border-top: 1px solid var(--rule-strong);
-    }
-    /* Los tipos de sistema en una sola fila que se desliza, en vez de tres renglones de chips. */
-    .kinds {
-      flex-wrap: nowrap;
-      margin-inline: calc(var(--gutter) * -1);
-      padding-inline: var(--gutter);
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .kinds::-webkit-scrollbar {
-      display: none;
-    }
-    .kinds li {
-      flex: none;
-      white-space: nowrap;
     }
   }
 </style>
