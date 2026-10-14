@@ -1,5 +1,5 @@
 ---
-import { CONTACT_EMAIL, whatsappUrl } from "../config";
+import { CONTACT_EMAIL, TEAM, whatsappUrl } from "../config";
 import Arrow from "./Arrow.astro";
 const wa = whatsappUrl();
 ---
@@ -9,7 +9,7 @@ const wa = whatsappUrl();
     <div class="box" data-contact>
       <div class="side">
         <h2 id="contacto-title">Contanos qué necesitás.</h2>
-        <p>Con dos o tres líneas alcanza. Del otro lado no hay un bot: te lee y te responde alguien del equipo, en menos de un día hábil.</p>
+        <p>Con dos o tres líneas alcanza. Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]}, en menos de un día hábil. Sin bots ni vendedores.</p>
         <ol class="next" aria-label="Qué pasa después de escribirnos">
           <li><b>Nos escribís</b> con dos o tres líneas.</li>
           <li><b>Te respondemos</b> y coordinamos una primera charla, gratis.</li>

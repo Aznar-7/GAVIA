@@ -3,7 +3,7 @@ import "@fontsource-variable/bricolage-grotesque/opsz.css";
 import "@fontsource-variable/public-sans/wght.css";
 import "@fontsource/jetbrains-mono/500.css";
 import "../styles/global.css";
-import { ANALYTICS, CONTACT_EMAIL, SOCIAL } from "../config";
+import { ANALYTICS, CONTACT_EMAIL, SOCIAL, TEAM } from "../config";
 import Analytics from "@vercel/analytics/astro";
 import displayFont from "@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url";
 import bodyFont from "@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url";
@@ -18,22 +18,53 @@ const { title, description, noindex = false } = Astro.props;
 const site = Astro.site ?? new URL("https://www.gaviasoftware.com");
 const ogImage = new URL("/og.png", site);
 const canonical = new URL(Astro.url.pathname, site);
+// Datos para buscadores y asistentes de IA: quién es Gavia, quiénes la hacen y qué ofrece.
+const orgId = new URL("/#gavia", site).toString();
 const org = {
   "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "Gavia",
-  url: site.toString(),
-  description,
-  email: CONTACT_EMAIL,
-  address: { "@type": "PostalAddress", addressLocality: "Córdoba", addressCountry: "AR" },
-  areaServed: [
-    { "@type": "City", name: "Córdoba" },
-    { "@type": "Country", name: "Argentina" },
+  "@graph": [
+    {
+      "@type": ["Organization", "ProfessionalService"],
+      "@id": orgId,
+      name: "Gavia",
+      alternateName: "Gavia Software",
+      url: site.toString(),
+      description,
+      email: CONTACT_EMAIL,
+      foundingDate: "2026-10",
+      foundingLocation: { "@type": "Place", name: "Córdoba, Argentina" },
+      address: { "@type": "PostalAddress", addressLocality: "Córdoba", addressRegion: "Córdoba", addressCountry: "AR" },
+      areaServed: [
+        { "@type": "City", name: "Córdoba" },
+        { "@type": "Country", name: "Argentina" },
+      ],
+      founder: TEAM.map((m) => ({
+        "@type": "Person",
+        name: m.nombre,
+        jobTitle: "Cofundador",
+        ...(m.links.length > 0 && { sameAs: m.links.map((l) => l.href) }),
+      })),
+      knowsAbout: ["Desarrollo de software a medida", "Sistemas de gestión", "Aplicaciones web", "Aplicaciones móviles", "Integraciones", "Automatización"],
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: "Servicios",
+        itemListElement: ["Sistemas de gestión a medida", "Aplicaciones web y móviles", "Integraciones entre sistemas", "Automatización de procesos", "Mantenimiento de software"].map((name) => ({
+          "@type": "Offer",
+          itemOffered: { "@type": "Service", name, areaServed: "AR" },
+        })),
+      },
+      logo: new URL("/favicon.svg", site).toString(),
+      image: ogImage.toString(),
+      ...(SOCIAL.length > 0 && { sameAs: SOCIAL.map((s) => s.href) }),
+    },
+    {
+      "@type": "WebSite",
+      url: site.toString(),
+      name: "Gavia",
+      inLanguage: "es-AR",
+      publisher: { "@id": orgId },
+    },
   ],
-  knowsAbout: ["Desarrollo de software a medida", "Sistemas de gestión", "Aplicaciones web", "Aplicaciones móviles", "Integraciones", "Automatización"],
-  logo: new URL("/favicon.svg", site).toString(),
-  image: ogImage.toString(),
-  ...(SOCIAL.length > 0 && { sameAs: SOCIAL.map((s) => s.href) }),
 };
 ---
 
