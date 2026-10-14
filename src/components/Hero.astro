@@ -44,9 +44,8 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       <div class="copy">
         <h1 id="hero-title"><span class="line"><span>Software a medida,</span></span> <span class="line"><span>con rumbo.</span></span></h1>
         <p class="lead">
-          Somos un estudio de tres personas en Córdoba. Diseñamos, construimos y mantenemos el sistema de tu
-          empresa, y antes de escribir código te damos por escrito qué vamos a hacer, en qué etapas y cuánto
-          cuesta cada una.
+          Somos tres, en Córdoba. Construimos y mantenemos el sistema de tu empresa, y antes de empezar te damos
+          por escrito qué vas a recibir y cuánto cuesta cada etapa.
         </p>
         <form class="quick" id="quick-form" novalidate>
           <label for="quick-need" class="sr-only">Contanos en una línea qué necesitás</label>
@@ -62,17 +61,9 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
             </li>
           ))}
         </ul>
-        <!-- Celular: el antes y el después del rumbo, sin la carta entera. -->
+        <!-- Celular: el producto. La pantalla del sistema asoma al pie de la primera pantalla. -->
         <figure class="duo" aria-hidden="true">
-          <svg viewBox="0 -6 360 392">
-            <g transform="translate(0 6) scale(0.9) translate(-112 -462)"><Extremos part="planilla" /></g>
-            <text class="t-label" x="176" y="40">Hoy: Excel</text>
-            <text class="t-label" x="176" y="60">y WhatsApp</text>
-            <path d="M30 112 V226 H50" fill="none" stroke="var(--signal)" stroke-width="3" stroke-dasharray="10 8"></path>
-            <g transform="translate(56 120) scale(1.2) translate(-612 76)"><Extremos part="pantalla" /></g>
-            <rect x="44" y="220" width="12" height="12" fill="var(--signal)" stroke="var(--ink)" stroke-width="2"></rect>
-            <text class="t-label" x="360" y="382" text-anchor="end">Con un sistema a medida</text>
-          </svg>
+          <svg viewBox="608 -78 262 194"><Extremos part="pantalla" /></svg>
         </figure>
         <p class="note">Te llevamos al formulario con esto ya escrito. Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]} en menos de un día hábil.</p>
       </div>
@@ -537,14 +528,15 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       display: none;
     }
   }
-  /* Celular: sin la carta. Papel liso, el título, una acción directa y el antes/después
-     del rumbo (planilla → sistema). Escribir en un campo del hero desde el teléfono es
-     fricción: el botón lleva al formulario completo. */
+  /* Celular, como las apps grandes: la primera pantalla tiene título, una bajada corta, una
+     sola acción y el producto asomando abajo para invitar a seguir. Sin la carta ni los
+     decorados, y sin campo de texto (escribir en el hero desde el teléfono es fricción). */
   @media (max-width: 640px) {
     .hero {
       padding: 0;
     }
     .chart {
+      min-height: calc(100svh - 70px);
       border: 0;
       outline: 0;
     }
@@ -559,36 +551,42 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       display: none;
     }
     .inner {
-      padding-block: 36px 8px;
+      padding-block: 32px 0;
     }
     .copy {
-      gap: 22px;
+      justify-content: flex-start;
+      gap: 20px;
     }
     h1 {
-      font-size: clamp(2.9rem, 13vw, 3.6rem);
+      font-size: clamp(2.8rem, 12.5vw, 3.5rem);
+    }
+    .lead {
+      font-size: var(--fs-lg);
     }
     .go {
       display: inline-flex;
       justify-content: center;
-      padding-block: 1.1em;
+      min-height: 56px;
     }
     .facts {
-      gap: 6px 16px;
+      flex-direction: column;
+      gap: 6px;
       margin-top: -6px;
       font-size: var(--fs-sm);
       letter-spacing: 0;
       text-transform: none;
+      color: var(--ink-soft);
+    }
+    .facts svg {
+      width: 11px;
     }
     .duo {
       display: block;
-      margin: 18px 0 0;
-      padding-top: 26px;
-      border-top: 1px solid var(--rule-strong);
+      margin: 12px calc(var(--gutter) * -0.25) 0;
     }
     .duo svg {
       width: 100%;
       height: auto;
-      overflow: visible;
     }
   }
 </style>
