@@ -1,0 +1,113 @@
+---
+// Atajos para escribir, siempre a mano después del hero y escondidos en Contacto (donde ya
+// están todas las formas de escribirnos).
+// - Escritorio: WhatsApp flotante, solo si hay número en config.ts.
+// - Celular: barra fija abajo, bajo el pulgar, con "Contanos tu proyecto" y WhatsApp al lado
+//   si hay número. Reemplaza al botón de la barra de arriba.
+import Arrow from "./Arrow.astro";
+import { whatsappUrl } from "../config";
+const wa = whatsappUrl();
+const waIcon = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M4 4h16v12H10l-6 5z" fill="none" stroke="currentColor" stroke-width="2"></path><rect x="8" y="9" width="2.4" height="2.4" fill="var(--signal)"></rect><rect x="12" y="9" width="2.4" height="2.4" fill="currentColor"></rect></svg>`;
+---
+
+<div class="atajos" data-atajos hidden>
+  {
+    wa && (
+      <a class="wa" href={wa} target="_blank" rel="noopener">
+        <Fragment set:html={waIcon} />
+        <span>WhatsApp</span>
+      </a>
+    )
+  }
+  <a class="btn bar" href="#contacto">Contanos tu proyecto <Arrow /></a>
+</div>
+
+<script>
+  const box = document.querySelector<HTMLElement>("[data-atajos]");
+  const hero = document.getElementById("top");
+  const contacto = document.getElementById("contacto");
+  if (box && hero && contacto) {
+    let inHero = true;
+    let reached = false;
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === hero) inHero = e.isIntersecting;
+        // Desde que Contacto entra en pantalla y hacia abajo (pie incluido), no hace falta.
+        else reached = e.isIntersecting || e.boundingClientRect.top < 0;
+      }
+      box.hidden = inHero || reached;
+    });
+    io.observe(hero);
+    io.observe(contacto);
+  }
+</script>
+
+<style>
+  .bar {
+    display: none;
+  }
+  .wa {
+    position: fixed;
+    right: clamp(16px, 3vw, 32px);
+    bottom: clamp(16px, 3vw, 32px);
+    z-index: 40;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 52px;
+    padding: 0 18px;
+    border: 2px solid var(--paper);
+    outline: 2px solid var(--ink);
+    background: var(--ink);
+    color: var(--paper);
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 200ms var(--ease-out), color 200ms var(--ease-out);
+  }
+  .wa:hover {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  /* Celular: una barra al pie, con margen para la barra de gestos del teléfono. */
+  @media (max-width: 640px) {
+    .atajos {
+      position: fixed;
+      inset: auto 0 0;
+      z-index: 40;
+      display: flex;
+      gap: 8px;
+      padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
+      background: rgb(241 244 247 / 0.94);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--rule-strong);
+      animation: rise 260ms var(--ease-out);
+    }
+    .bar {
+      display: inline-flex;
+      flex: 1;
+      justify-content: center;
+      min-height: 52px;
+    }
+    .wa {
+      position: static;
+      flex: none;
+      justify-content: center;
+      width: 56px;
+      padding: 0;
+      border-color: var(--ink);
+      outline: 0;
+    }
+    .wa span {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0 0 0 0);
+    }
+  }
+  @keyframes rise {
+    from {
+      transform: translateY(100%);
+    }
+  }
+</style>
