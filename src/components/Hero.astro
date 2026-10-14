@@ -20,6 +20,7 @@ const etapas = [
 import Arrow from "./Arrow.astro";
 import Logo from "./Logo.astro";
 import Extremos from "./Extremos.astro";
+import { TEAM } from "../config";
 const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
 ---
 
@@ -43,9 +44,9 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
       <div class="copy">
         <h1 id="hero-title"><span class="line"><span>Software a medida,</span></span> <span class="line"><span>con rumbo.</span></span></h1>
         <p class="lead">
-          Somos un estudio de desarrollo en Córdoba. Diseñamos, construimos y mantenemos sistemas para
-          empresas: antes de escribir una línea de código trazamos el recorrido con vos, y sabés qué recibís en
-          cada parada.
+          Somos un estudio de tres personas en Córdoba. Diseñamos, construimos y mantenemos el sistema de tu
+          empresa, y antes de escribir código te damos por escrito qué vamos a hacer, en qué etapas y cuánto
+          cuesta cada una.
         </p>
         <form class="quick" id="quick-form" novalidate>
           <label for="quick-need" class="sr-only">Contanos en una línea qué necesitás</label>
@@ -73,7 +74,7 @@ const d = route.map((p, i) => `${i ? "L" : "M"}${p.x} ${p.y}`).join(" ");
             <text class="t-label" x="360" y="382" text-anchor="end">Con un sistema a medida</text>
           </svg>
         </figure>
-        <p class="note">Te llevamos al formulario con esto ya escrito. Te responde alguien del equipo en menos de un día hábil.</p>
+        <p class="note">Te llevamos al formulario con esto ya escrito. Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]} en menos de un día hábil.</p>
       </div>
 
       <figure class="course">

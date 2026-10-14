@@ -10,6 +10,36 @@ export const whatsappUrl = (text = "Hola, quiero contarles un proyecto.") =>
 // (proyecto → Analytics → Enable) y después poner true; si no, el script da 404.
 export const ANALYTICS = false;
 
+// El equipo: lo usan la sección Equipo, Contacto y los datos para Google.
+export const TEAM: { nombre: string; formacion: string; linea: string; links: { label: string; href: string }[] }[] = [
+  {
+    nombre: "Vicente Aznar",
+    formacion: "Ingeniería en Sistemas",
+    linea: "Dos años desarrollando sistemas completos, de la base de datos a la pantalla.",
+    links: [
+      { label: "Portfolio", href: "https://vicenteaznar.dev" },
+      { label: "GitHub", href: "https://github.com/Aznar-7" },
+    ],
+  },
+  {
+    nombre: "Agustín García",
+    formacion: "Ingeniería en Sistemas",
+    linea: "Analiza cómo trabaja tu empresa y lo baja a requerimientos claros.",
+    links: [
+      { label: "GitHub", href: "https://github.com/agusgarcia74" },
+    ],
+  },
+  {
+    nombre: "Benjamín Viberti",
+    formacion: "Ingeniería en Computación",
+    linea: "Del hardware al software: sabe cómo funciona la máquina por dentro.",
+    links: [
+      { label: "GitHub", href: "https://github.com/benjaviberti" },
+    ],
+  },
+];
+
+
 // Perfiles de Gavia en redes. Vacío = no se muestra. Aparecen en el pie y en los datos para Google.
 export const SOCIAL: { label: string; href: string }[] = [
   { label: "LinkedIn", href: "https://www.linkedin.com/company/gavia-software" },
