@@ -33,7 +33,7 @@ Clients typically contact by WhatsApp or email. Typical engagement: discovery me
 - Services at launch: custom software development, and own products. IoT/hardware is NOT offered yet (do not show hardware projects or claims). Consulting not offered as a standalone line yet.
 - Own product: **Flety** (working name, kept): a backhaul freight app so trucks don't return empty (any A → B route across Argentina; grain Córdoba → port is only an example). Uber/PedidosYa-style: loads and routes matched between truckers and shippers. In development; no users yet.
 - Team: Vicente Aznar (2 years full-stack developer), Agustín García, possibly Benjamín Viberti (third founder, undecided). Engineering students in Córdoba.
-- Not yet incorporated. Domain: www.gaviasoftware.com (bought 2026-10). Official email: equipo@gaviasoftware.com. LinkedIn: linkedin.com/company/gavia-software.
+- Not yet incorporated. Domain: www.gaviasoftware.com (bought 2026-10). Official email: equipo@gaviasoftware.com. LinkedIn: linkedin.com/company/gavia-software. Instagram: instagram.com/gaviasoftware.
 - First meeting (discovery call) is free and without commitment (decided 2026-10-10).
 - Undecided: final logo, guarantee terms.
 
