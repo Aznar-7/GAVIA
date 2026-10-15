@@ -27,6 +27,7 @@ export const TEAM: { nombre: string; formacion: string; linea: string; links: { 
     linea: "Analiza cómo trabaja tu empresa y lo baja a requerimientos claros.",
     links: [
       { label: "GitHub", href: "https://github.com/agusgarcia74" },
+      { label: "Portfolio", href: "https://juan-agustin-garcia.vercel.app/" },
     ],
   },
   {
