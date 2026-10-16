@@ -2,11 +2,11 @@
 import Logo from "./Logo.astro";
 
 const links = [
+  { href: "#servicios", label: "Servicios" },
   { href: "#como-trabajamos", label: "Cómo trabajamos" },
-  { href: "#condiciones", label: "Condiciones" },
-  { href: "#flety", label: "Flety" },
   { href: "#proyectos", label: "Proyectos" },
   { href: "#equipo", label: "Equipo" },
+  { href: "#preguntas", label: "Preguntas" },
 ];
 ---
 
@@ -18,33 +18,20 @@ const links = [
         {links.map((l) => <li><a href={l.href} data-spy={l.href.slice(1)}>{l.label}</a></li>)}
       </ul>
     </nav>
-    <a class="cta" href="#contacto"><span class="long">Contanos tu proyecto</span><span class="short">Escribinos</span></a>
+    <a class="btn cta" href="#contacto">Contanos tu proyecto</a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">
       <span class="sr-only">Abrir menú</span>
       <span class="bars" aria-hidden="true"></span>
     </button>
   </div>
-  <!-- Progreso de lectura: el rumbo de la página, punteado lo que falta y continuo lo leído. -->
-  <div class="progress" aria-hidden="true"><span></span></div>
 </header>
 
 <script>
   const nav = document.querySelector<HTMLElement>("[data-nav]")!;
-  const bar = nav.querySelector<HTMLElement>(".progress span")!;
   const menu = nav.querySelector<HTMLButtonElement>(".menu")!;
   const links = [...nav.querySelectorAll<HTMLAnchorElement>("[data-spy]")];
 
-  let ticking = false;
-  const onScroll = () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      ticking = false;
-      const max = document.documentElement.scrollHeight - innerHeight;
-      bar.style.transform = `scaleX(${max > 0 ? scrollY / max : 0})`;
-      nav.classList.toggle("scrolled", scrollY > 8);
-    });
-  };
+  const onScroll = () => nav.classList.toggle("scrolled", scrollY > 8);
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
@@ -76,28 +63,18 @@ const links = [
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgb(241 244 247 / 0.94);
-    backdrop-filter: saturate(1.4) blur(8px);
+    background: rgb(255 255 255 / 0.96);
     border-bottom: 1px solid transparent;
     transition: border-color 200ms var(--ease-out);
   }
   .nav.scrolled {
-    border-bottom-color: var(--rule);
-  }
-  :global(html.intro) .nav {
-    animation: nav-in 700ms var(--ease-out) both;
-  }
-  @keyframes nav-in {
-    from {
-      opacity: 0;
-      transform: translateY(-8px);
-    }
+    border-bottom-color: var(--line);
   }
   .row {
     display: flex;
     align-items: center;
     gap: 32px;
-    min-height: 68px;
+    min-height: 72px;
   }
   .home {
     text-decoration: none;
@@ -112,62 +89,29 @@ const links = [
     padding: 0;
     list-style: none;
   }
+  /* Subrayado naranja que crece de izquierda a derecha al pasar el cursor y en la sección activa. */
   ul a {
+    padding-block: 6px;
     font-size: var(--fs-sm);
     font-weight: 500;
+    color: var(--ink-soft);
     text-decoration: none;
     background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 2px no-repeat;
-    padding-bottom: 3px;
-    transition: background-size 260ms var(--ease-out), color 200ms var(--ease-out);
+    transition: color 160ms var(--ease-out), background-size 260ms var(--ease-out);
   }
   ul a:hover,
   ul a[aria-current] {
+    color: var(--ink);
     background-size: 100% 2px;
   }
   ul a[aria-current] {
     font-weight: 700;
   }
   .cta {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    padding: 10px 16px;
-    border: 2px solid var(--ink);
-    font-weight: 700;
+    min-height: 44px;
+    padding-block: 0.6em;
     font-size: var(--fs-sm);
-    text-decoration: none;
-    transition: color 280ms var(--ease-out);
-  }
-  .cta::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background: var(--ink);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 320ms var(--ease-out);
-  }
-  .cta:hover {
-    color: var(--paper);
-  }
-  .cta:hover::before {
-    transform: scaleY(1);
-  }
-  .progress {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, rgb(18 36 58 / 0.18) 0 8px, transparent 8px 14px);
-  }
-  .progress span {
-    display: block;
-    height: 100%;
-    background: var(--signal);
-    transform: scaleX(0);
-    transform-origin: left;
+    white-space: nowrap;
   }
   .menu {
     display: none;
@@ -182,7 +126,8 @@ const links = [
       place-items: center;
       width: 44px;
       height: 44px;
-      border: 2px solid var(--ink);
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-sm);
       background: transparent;
       cursor: pointer;
     }
@@ -225,11 +170,11 @@ const links = [
       left: 0;
       right: 0;
       margin: 0;
-      background: var(--paper);
-      border-bottom: 2px solid var(--ink);
+      background: var(--white);
+      border-bottom: 1px solid var(--line);
       clip-path: inset(0 0 100% 0);
       visibility: hidden;
-      transition: clip-path 360ms var(--ease-out), visibility 0s 360ms;
+      transition: clip-path 300ms var(--ease-out), visibility 0s 300ms;
     }
     /* Cerrado, el menú no debe sumar alto: la barra es sticky y al final de la página
        el panel oculto estiraba el scroll con un hueco vacío debajo del pie. */
@@ -240,7 +185,7 @@ const links = [
     .open nav {
       clip-path: inset(0 0 0 0);
       visibility: visible;
-      transition: clip-path 360ms var(--ease-out);
+      transition: clip-path 300ms var(--ease-out);
     }
     ul {
       flex-direction: column;
@@ -251,22 +196,8 @@ const links = [
       display: block;
       padding: 14px 0;
       font-size: var(--fs-lg);
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid var(--line);
       background: none;
-    }
-  }
-  .cta {
-    white-space: nowrap;
-  }
-  .short {
-    display: none;
-  }
-  @media (max-width: 520px) {
-    .long {
-      display: none;
-    }
-    .short {
-      display: inline;
     }
   }
   /* Celular: la acción vive en la barra de abajo (Atajos), bajo el pulgar. */

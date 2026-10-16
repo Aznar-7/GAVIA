@@ -1,50 +1,43 @@
 ---
 // Pie de página como el margen de una carta náutica: el cartucho de título con la
-// marca, la edición y la escala; la navegación y el contacto; y la vuelta al inicio.
+// marca; la navegación y el contacto; y la vuelta al inicio. Se usa también en /flety,
+// por eso los links a secciones llevan "/".
 import Logo from "./Logo.astro";
 import { CONTACT_EMAIL, SOCIAL, whatsappUrl } from "../config";
-const now = new Date();
-const year = now.getFullYear();
-const edicion = now.toLocaleDateString("es-AR", { month: "long", year: "numeric" });
+const year = new Date().getFullYear();
 const wa = whatsappUrl();
 const secciones = [
-  { href: "#servicios", label: "Qué hacemos" },
-  { href: "#como-trabajamos", label: "Cómo trabajamos" },
-  { href: "#condiciones", label: "Condiciones" },
-  { href: "#proyectos", label: "Proyectos" },
-  { href: "#equipo", label: "Equipo" },
-  { href: "#preguntas", label: "Preguntas" },
+  { href: "/#servicios", label: "Servicios" },
+  { href: "/#como-trabajamos", label: "Cómo trabajamos" },
+  { href: "/#condiciones", label: "Condiciones" },
+  { href: "/#proyectos", label: "Proyectos" },
+  { href: "/#equipo", label: "Equipo" },
+  { href: "/#preguntas", label: "Preguntas" },
 ];
 ---
 
 <footer>
   <div class="wrap grid">
     <div class="title-block">
-      <a href="#top" class="brand" aria-label="Gavia, volver al inicio"><Logo size={34} tone="paper" /></a>
+      <a href="/" class="brand" aria-label="Gavia, volver al inicio"><Logo size={34} tone="paper" /></a>
       <p class="mission">
         Estudio de desarrollo de software a medida. Diseñamos, construimos y mantenemos sistemas para empresas de
         Córdoba y de todo el país.
       </p>
-      <dl class="meta">
-        <div><dt class="label">Carta</dt><dd class="coord">Nº 1 · Gavia</dd></div>
-        <div><dt class="label">Edición</dt><dd class="coord">{edicion}</dd></div>
-        <div><dt class="label">Posición</dt><dd class="coord">31°25′S · 64°11′O</dd></div>
-      </dl>
     </div>
 
     <nav aria-label="Pie de página" class="col">
-      <p class="label">Recorrido</p>
+      <p class="label">Secciones</p>
       <ul>
         {secciones.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
       </ul>
     </nav>
 
     <div class="col">
-      <p class="label">Producto</p>
+      <p class="label">Proyectos</p>
       <ul>
-        <li><a href="#flety">Flety</a></li>
-        <li><a href="#proyectos">UTN Hub</a></li>
-        <li><span class="soon">Más productos en camino</span></li>
+        <li><a href="/flety">Flety</a></li>
+        <li><a href="https://utnhub.com.ar" target="_blank" rel="noopener">UTN Hub</a></li>
       </ul>
     </div>
 
@@ -62,7 +55,7 @@ const secciones = [
   <div class="wrap bottom">
     <p>© {year} Gavia. Hecho en Córdoba.</p>
     <a href="#top" class="up">
-      <svg viewBox="0 0 24 40" aria-hidden="true"><path d="M12 38V4M4 12l8-8 8 8" fill="none" stroke="currentColor" stroke-width="2.4" stroke-dasharray="4 3"></path></svg>
+      <svg viewBox="0 0 24 40" aria-hidden="true"><path d="M12 38V4M4 12l8-8 8 8" fill="none" stroke="currentColor" stroke-width="2.4"></path></svg>
       Volver al inicio
     </a>
   </div>
@@ -70,7 +63,6 @@ const secciones = [
 
 <style>
   footer {
-    margin-top: var(--space-section);
     background: var(--ink);
     color: var(--paper);
   }
@@ -88,10 +80,6 @@ const secciones = [
     display: grid;
     gap: 22px;
     align-content: start;
-    padding: 24px;
-    border: 1.5px solid rgb(241 244 247 / 0.5);
-    outline: 1px solid rgb(241 244 247 / 0.25);
-    outline-offset: -7px;
   }
   .brand {
     justify-self: start;
@@ -100,22 +88,6 @@ const secciones = [
   .mission {
     max-width: 40ch;
     color: var(--paper-soft);
-  }
-  .meta {
-    display: grid;
-    grid-template-columns: repeat(3, auto);
-    justify-content: start;
-    gap: 6px 28px;
-    margin: 0;
-    padding-top: 16px;
-    border-top: 1px solid rgb(241 244 247 / 0.25);
-  }
-  .meta dt {
-    color: var(--paper-soft);
-  }
-  .meta dd {
-    margin: 4px 0 0;
-    color: var(--paper);
   }
   .col {
     display: grid;
@@ -130,21 +102,20 @@ const secciones = [
     padding: 0;
     list-style: none;
     display: grid;
-    gap: 4px;
+    gap: 0;
   }
   ul a {
     display: inline-block;
     color: var(--paper);
     text-decoration: none;
     background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 1.5px no-repeat;
-    padding-block: 4px 3px;
+    /* Área táctil de 44px; el subrayado queda pegado al texto. */
+    padding-block: 11px;
+    background-position: left calc(100% - 9px);
     transition: background-size 260ms var(--ease-out);
   }
   ul a:hover {
     background-size: 100% 1.5px;
-  }
-  .soon {
-    color: var(--paper-soft);
   }
   .bottom {
     display: flex;
@@ -161,6 +132,7 @@ const secciones = [
     align-items: center;
     gap: 10px;
     color: var(--paper);
+    padding-block: 10px;
     text-decoration: none;
     font-weight: 600;
   }
@@ -188,12 +160,6 @@ const secciones = [
     }
     .col:last-child {
       grid-column: 1 / -1;
-    }
-    .title-block {
-      padding: 20px;
-    }
-    .meta {
-      display: none;
     }
     .up {
       white-space: nowrap;
