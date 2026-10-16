@@ -1,23 +1,31 @@
 ---
-// La tripulación, como lista de una bitácora: nombre, formación y dónde ver su trabajo.
+// Quiénes somos: nombre, formación, qué hace cada uno y dónde ver su trabajo.
+// Las iniciales ocupan el lugar de la foto hasta que tengamos fotos del equipo: se cambia
+// sumando `foto` a cada integrante en config.ts.
 import { TEAM as equipo } from "../config";
+const iniciales = (n: string) =>
+  n
+    .split(" ")
+    .map((p) => p[0])
+    .slice(0, 2)
+    .join("");
 ---
 
-<section class="section" id="equipo" aria-labelledby="equipo-title">
+<section class="section tint" id="equipo" aria-labelledby="equipo-title">
   <div class="wrap">
     <div class="sec-head">
       <h2 id="equipo-title">Un equipo chico, a propósito.</h2>
       <p>
-        Somos tres, en Córdoba, y cada uno conoce tu proyecto de punta a punta. Elegimos ser pocos para que la
-        persona que te escucha sea la misma que diseña y escribe tu sistema. Sin intermediarios ni comerciales.
+        Elegimos ser pocos para que la persona que te escucha sea la misma que diseña y escribe tu sistema. Cada
+        uno conoce tu proyecto de punta a punta, y el que te responde es siempre uno de nosotros.
       </p>
     </div>
 
-    <ol class="crew">
+    <ul class="crew">
       {
-        equipo.map((m, i) => (
+        equipo.map((m) => (
           <li>
-            <span class="coord n">{String(i + 1).padStart(2, "0")}</span>
+            <span class="avatar" aria-hidden="true">{iniciales(m.nombre)}</span>
             <div class="who">
               <h3>{m.nombre}</h3>
               <p class="label">{m.formacion}</p>
@@ -28,7 +36,7 @@ import { TEAM as equipo } from "../config";
                 {m.links.map((l) => (
                   <a href={l.href} target="_blank" rel="noopener">
                     {l.label}
-                    <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5" /></svg>
+                    <span class="sr-only"> de {m.nombre} (se abre en otra pestaña)</span>
                   </a>
                 ))}
               </p>
@@ -36,38 +44,54 @@ import { TEAM as equipo } from "../config";
           </li>
         ))
       }
-    </ol>
+    </ul>
   </div>
 </section>
 
 <style>
   .crew {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
     margin: 0;
     padding: 0;
     list-style: none;
-    border-top: 2px solid var(--ink);
   }
   li {
     display: grid;
-    grid-template-columns: 3rem minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
-    gap: 10px 32px;
-    align-items: baseline;
-    padding: 28px 0;
-    border-bottom: 1px solid var(--rule-strong);
-    transition: background-color 220ms var(--ease-out);
+    grid-template-rows: auto auto 1fr auto;
+    gap: 14px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), transform 220ms var(--ease-out);
   }
-  li:hover {
-    background: linear-gradient(90deg, var(--white), transparent 85%);
+  @media (hover: hover) {
+    li:hover {
+      border-color: var(--line-strong);
+      box-shadow: var(--shadow);
+      transform: translateY(-2px);
+    }
   }
-  .n {
-    color: var(--muted);
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--white);
+    font-weight: 700;
+    font-size: var(--fs-lg);
+    letter-spacing: 0.02em;
   }
   .who {
     display: grid;
-    gap: 6px;
+    gap: 2px;
   }
   h3 {
-    font-size: var(--fs-xl);
+    font-size: var(--fs-lg);
   }
   .linea {
     color: var(--ink-soft);
@@ -75,54 +99,41 @@ import { TEAM as equipo } from "../config";
   .links {
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
-    gap: 8px 20px;
+    gap: 0 20px;
+    padding-top: 6px;
+    border-top: 1px solid var(--line);
     font-weight: 600;
+    font-size: var(--fs-sm);
   }
   .links a {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 2px no-repeat;
-    padding-bottom: 2px;
-    transition: background-size 260ms var(--ease-out);
+    display: inline-block;
+    padding-block: 11px;
+    text-decoration-color: var(--line-strong);
   }
   .links a:hover {
-    background-size: 100% 2px;
+    text-decoration-color: var(--signal);
   }
-  .links svg {
-    width: 11px;
-    height: 11px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    transition: transform 260ms var(--ease-out);
-  }
-  .links a:hover svg {
-    transform: translate(2px, -2px);
-  }
-  @media (max-width: 860px) {
-    li {
-      grid-template-columns: 2.5rem minmax(0, 1fr);
-    }
-    li > :not(.n) {
-      grid-column: 2;
-    }
-    .links {
-      justify-content: start;
-    }
-  }
-  /* Celular: el número no aporta y le roba una columna al texto. */
-  @media (max-width: 560px) {
-    li {
+  @media (max-width: 960px) {
+    .crew {
       grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
     }
-    li > :not(.n) {
-      grid-column: 1;
+    li {
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: none;
+      column-gap: 18px;
+      padding: 22px;
     }
-    .n {
-      display: none;
+    .avatar {
+      grid-row: span 3;
+      width: 52px;
+      height: 52px;
+      font-size: 1.05rem;
+    }
+    .who,
+    .linea,
+    .links {
+      grid-column: 2;
     }
   }
 </style>

@@ -1,42 +1,57 @@
 ---
-// Lo que ya construimos. UTN Hub va como caso completo: qué hace y qué significa eso para
-// una empresa (es la prueba de las automatizaciones e integraciones que vendemos).
+// Lo que ya construimos. UTN Hub va como caso: se lee desde el lado del cliente (qué gana una
+// empresa) y UTN Hub aparece como la prueba de que ya lo hicimos, no al revés.
 // Todo lo que dice sale del código de UTN Hub; no sumar números de uso sin un dato real.
+// Las capturas son del sistema real, con datos de prueba (src/assets/utnhub).
+import { Image } from "astro:assets";
+import capInscribot from "../assets/utnhub/inscribot.png";
+import capManager from "../assets/utnhub/utn-manager.png";
+import capProyectos from "../assets/utnhub/proyectos.png";
 const caso = {
   nombre: "UTN Hub",
-  estado: "Software · en uso",
+  estado: "En uso",
   href: "https://utnhub.com.ar",
   sitio: "utnhub.com.ar",
   texto:
-    "Plataforma para estudiantes de la UTN Córdoba: materias, calendario, foros y materiales en un solo lugar, más dos robots que trabajan solos.",
+    "Lo hicimos para los estudiantes de la UTN Córdoba: un sistema que se conecta con los de la facultad y hace trámites solo. Es lo mismo que armamos para una empresa.",
   hace: [
     {
-      t: "Un robot que se inscribe solo",
-      d: "InscriBot vigila el Sysacad y te anota en la materia apenas se libera un cupo. Avisa por Telegram con una captura.",
-      empresa: "Ese trámite que alguien de tu equipo repite a mano todos los días, hecho solo.",
+      t: "Trámites que se hacen solos",
+      empresa: "Ese trámite que alguien de tu equipo repite a mano todos los días lo hace un robot, y te avisa cuando terminó.",
+      prueba: "InscriBot vigila el sistema de la facultad y anota al estudiante apenas se libera un cupo. Avisa por Telegram con una captura.",
+      img: capInscribot,
+      alt: "InscriBot en UTN Hub: el registro de actividad muestra cómo encuentra un cupo y confirma la inscripción solo.",
     },
     {
-      t: "Conectado a sistemas que ya existen",
-      d: "UTN Manager lee el aula virtual y Autogestión, detecta qué cambió, avisa y agenda las entregas en el calendario.",
-      empresa: "Los sistemas que ya usás, conectados entre sí, sin cargar dos veces lo mismo.",
+      t: "Tus sistemas, conectados",
+      empresa: "Los programas que ya usás se pasan los datos entre sí. Nadie carga dos veces lo mismo.",
+      prueba: "UTN Manager lee el aula virtual y la autogestión, detecta qué cambió y agenda las entregas en el calendario.",
+      img: capManager,
+      alt: "UTN Manager en UTN Hub: próximas entregas y novedades traídas del aula virtual, con botón para agendarlas.",
     },
     {
-      t: "La gestión de todos los días",
-      d: "Foros por materia, materiales compartidos, tableros de proyecto y permutas de comisión con emparejamiento automático.",
-      empresa: "Pedidos, stock, turnos o lo que maneje tu equipo, en un solo sistema.",
+      t: "El día a día, en un solo lugar",
+      empresa: "Pedidos, stock, turnos o lo que maneje tu equipo, en un sistema en vez de planillas y chats.",
+      prueba: "Materias, materiales, foros, tableros de proyecto y cambios de comisión con emparejamiento automático.",
+      img: capProyectos,
+      alt: "Tablero de proyecto en UTN Hub: tareas por hacer, en curso, en revisión y hechas, con responsable y fecha.",
     },
   ],
-  ficha: ["React", "Django", "PostgreSQL", "Redis", "Celery", "Bot de Telegram", "Más de 300 pruebas automáticas", "Credenciales cifradas"],
+  calidad: [
+    { t: "Más de 300 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
+    { t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
+  ],
+  stack: ["React", "Django", "PostgreSQL", "Redis", "Celery", "Telegram"],
 };
 
 const proyectos = [
   {
     nombre: "Flety",
-    estado: "Producto propio · en desarrollo",
+    estado: "Producto propio, en desarrollo",
     texto:
       "Plataforma para que los camiones no vuelvan vacíos: el transportista publica su ruta y encuentra cargas en su camino, en toda la Argentina.",
     detalle: ["App móvil", "Mapas", "Matching de rutas"],
-    href: "#flety",
+    href: "/flety",
   },
 ];
 ---
@@ -45,38 +60,62 @@ const proyectos = [
   <div class="wrap">
     <div class="sec-head">
       <h2 id="proyectos-title">Lo que ya construimos.</h2>
-      <p>Somos un estudio nuevo y preferimos mostrarte trabajo real antes que promesas. Esto es lo que hicimos y lo que estamos construyendo.</p>
+      <p>
+        Preferimos mostrarte trabajo real antes que promesas. UTN Hub ya está en uso; además, buscamos problemas
+        que se repiten en una industria y armamos productos propios, como Flety.
+      </p>
     </div>
 
     <article class="case" aria-labelledby="caso-title">
       <header class="case-head">
-        <h3 id="caso-title"><a href={caso.href} target="_blank" rel="noopener">{caso.nombre}</a></h3>
-        <span class="label">{caso.estado}</span>
-        <a class="site" href={caso.href} target="_blank" rel="noopener">
-          {caso.sitio}
-          <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"></path></svg>
-        </a>
-      </header>
-      <div class="case-body">
+        <div class="case-id">
+          <h3 id="caso-title">{caso.nombre}</h3>
+          <span class="pill live">{caso.estado}</span>
+          <a class="site" href={caso.href} target="_blank" rel="noopener">
+              {caso.sitio}
+              <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"></path></svg>
+          </a>
+        </div>
         <p class="case-lead">{caso.texto}</p>
-        <ol class="does">
-          {
-            caso.hace.map((h) => (
-              <li>
+      </header>
+
+      <div class="does" role="table" aria-label="Qué hace UTN Hub y qué significa para una empresa">
+        <div class="does-head" role="row">
+          <span role="columnheader" class="label">Para tu empresa</span>
+          <span role="columnheader" class="label">Así se ve en UTN Hub</span>
+        </div>
+        {
+          caso.hace.map((h) => (
+            <div class="does-row" role="row">
+              <div role="cell" class="gain">
                 <h4>{h.t}</h4>
-                <p>{h.d}</p>
-                <p class="empresa">
-                  <span class="label">En tu empresa</span>
-                  {h.empresa}
+                <p>{h.empresa}</p>
+                <p class="proof">
+                  <span class="label">En UTN Hub</span>
+                  {h.prueba}
                 </p>
-              </li>
+              </div>
+              <figure role="cell" class="shot">
+                <Image src={h.img} alt={h.alt} widths={[560, 900, 1400]} sizes="(max-width: 760px) 92vw, 640px" loading="lazy" />
+              </figure>
+            </div>
+          ))
+        }
+      </div>
+
+      <footer class="case-foot">
+        <dl class="quality">
+          {
+            caso.calidad.map((c) => (
+              <div>
+                <dt>{c.t}</dt>
+                <dd>{c.d}</dd>
+              </div>
             ))
           }
-        </ol>
-        <ul class="tags ficha" aria-label="Cómo está hecho">
-          {caso.ficha.map((f) => <li>{f}</li>)}
-        </ul>
-      </div>
+        </dl>
+        <p class="stack">Hecho con {caso.stack.slice(0, -1).join(", ")} y {caso.stack.at(-1)}.</p>
+      </footer>
     </article>
 
     <ul class="log">
@@ -87,12 +126,10 @@ const proyectos = [
               <h3>
                 <a href={p.href}>{p.nombre}</a>
               </h3>
-              <span class="label">{p.estado}</span>
+              <span class="pill">{p.estado}</span>
             </div>
             <p>{p.texto}</p>
-            <ul class="tags">
-              {p.detalle.map((d) => <li>{d}</li>)}
-            </ul>
+            <a class="site" href={p.href}>Conocer {p.nombre}</a>
           </li>
         ))
       }
@@ -101,100 +138,151 @@ const proyectos = [
 </section>
 
 <style>
-  /* Caso: una hoja blanca sobre el papel, como el acta y las vistas previas de Proceso. */
+  /* Caso: una tarjeta blanca con borde suave. */
   .case {
     display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    gap: 24px 48px;
-    padding: clamp(24px, 4vw, 48px);
+    gap: clamp(28px, 3vw, 40px);
+    padding: clamp(24px, 4vw, 56px);
     background: var(--white);
-    border: 2px solid var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
   }
   .case-head {
     display: grid;
-    gap: 8px;
-    align-content: start;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: 16px 48px;
+    align-items: end;
   }
-  .case-head h3 {
-    font-size: var(--fs-2xl);
-  }
-  .case-body {
+  .case-id {
     display: grid;
-    gap: 28px;
+    gap: 8px;
+    justify-items: start;
   }
   .case-lead {
-    max-width: 56ch;
+    max-width: 52ch;
     font-size: var(--fs-lg);
     color: var(--ink-soft);
   }
   .does {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    border-top: 2px solid var(--ink);
+    border-top: 1px solid var(--line);
   }
-  .does li {
+  .does-head,
+  .does-row {
     display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 5fr) minmax(0, 4fr);
-    gap: 8px 28px;
-    padding: 20px 0;
-    border-bottom: 1px solid var(--rule-strong);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 16px 48px;
   }
-  .does h4 {
-    margin: 0;
-    font: 700 var(--fs-md) / 1.35 var(--body);
+  .does-head {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
   }
-  .does p {
-    color: var(--ink-soft);
+  .does-row {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
   }
-  .does .empresa {
+  .gain {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+  }
+  .gain h4 {
+    font-size: var(--fs-lg);
+  }
+  .gain p {
+    font-size: var(--fs-md);
+    color: var(--ink);
+  }
+  .proof {
     display: grid;
     gap: 4px;
-    color: var(--ink);
-    font-weight: 600;
+    margin-top: 6px;
+    padding-left: 14px;
+    border-left: 2px solid var(--line);
+    font-size: var(--fs-sm);
+    color: var(--ink-soft);
   }
-  .tags.ficha {
-    justify-content: start;
+  .proof .label {
+    color: var(--muted);
+  }
+  /* Captura real con borde suave. */
+  .shot {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--paper);
+    line-height: 0;
+  }
+  .shot img {
+    width: 100%;
+    height: auto;
+    transition: transform 500ms var(--ease-out);
+  }
+  .does-row:hover .shot img {
+    transform: scale(1.02);
+  }
+  .case-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 20px 48px;
+    align-items: end;
+  }
+  .quality {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 28px;
+    margin: 0;
+  }
+  .quality dt {
+    font-weight: 700;
+  }
+  .quality dd {
+    margin: 4px 0 0;
+    font-size: var(--fs-sm);
+    color: var(--ink-soft);
+  }
+  .stack {
+    font-size: var(--fs-sm);
+    color: var(--muted);
   }
 
   .log {
-    margin: 0;
+    margin: 32px 0 0;
     padding: 0;
     list-style: none;
   }
   .log > li {
     display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 5fr) minmax(0, 3fr);
+    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) auto;
     gap: 16px 48px;
-    align-items: start;
-    padding: 36px 0;
-    border-bottom: 1px solid var(--rule-strong);
-    transition: background-color 220ms var(--ease-out);
-  }
-  .log > li:hover {
-    background: linear-gradient(90deg, var(--white), transparent 85%);
+    align-items: center;
+    padding: clamp(24px, 3vw, 36px) clamp(24px, 4vw, 56px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
   }
   .head {
     display: grid;
     gap: 8px;
+    justify-items: start;
   }
   h3 {
     font-size: var(--fs-xl);
-    transition: color 220ms var(--ease-out), transform 300ms var(--ease-out);
+  }
+  .case-id h3 {
+    font-size: var(--fs-2xl);
   }
   h3 a {
     text-decoration: none;
-  }
-  .log > li:hover h3 {
-    color: var(--signal-text);
-    transform: translateX(8px);
   }
   .site {
     justify-self: start;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding-block: 4px;
+    padding-block: 12px;
     font-weight: 600;
     font-size: var(--fs-sm);
     text-decoration-color: var(--signal);
@@ -207,35 +295,34 @@ const proyectos = [
     stroke-width: 1.6;
   }
   .log > li > p {
-    font-size: var(--fs-lg);
-    color: var(--ink-soft);
-  }
-  /* Tipos y tecnologías como una línea de rótulos, no como chips. */
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: end;
-    gap: 6px 20px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font: 600 0.8rem/1.4 var(--body);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
     color: var(--ink-soft);
   }
   @media (max-width: 960px) {
-    .case,
-    .does li {
+    .case-head,
+    .case-foot {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  /* Celular: cada fila es una unidad; la prueba va debajo, con su rótulo. */
+  @media (max-width: 760px) {
+    .case-lead {
+      font-size: var(--fs-lg);
+    }
+    .does-head {
+      display: none;
+    }
+    .does-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+      padding: 22px 0;
+    }
+    .quality {
       grid-template-columns: minmax(0, 1fr);
     }
   }
   @media (max-width: 860px) {
     .log > li {
       grid-template-columns: minmax(0, 1fr);
-    }
-    .tags {
-      justify-content: start;
     }
   }
 </style>
