@@ -1,4 +1,6 @@
 ---
+// Lo que ya está en el acta de condiciones no se repite acá.
+// Cuando haya un rango de precio confirmado, sumarlo a "¿Cuánto cuesta?".
 const preguntas = [
   {
     q: "¿Cuánto cuesta?",
@@ -10,10 +12,6 @@ const preguntas = [
     a: "Podés, y a veces conviene. Con nosotros tenés requerimientos por escrito, precio cerrado por etapa, entregas cada dos semanas, el código a tu nombre y alguien que lo mantiene después. Si un freelancer te da eso, también es una buena opción.",
   },
   {
-    q: "¿El código es mío?",
-    a: "Sí. Cuando terminás de pagar, te entregamos todo el código del sistema (el repositorio) y la documentación para que cualquiera pueda seguirlo.",
-  },
-  {
     q: "¿Qué tengo que aportar yo?",
     a: "Nada técnico. Necesitamos a alguien que conozca cómo trabaja tu empresa, una o dos charlas al principio y tiempo para probar cada entrega y decirnos qué ajustar.",
   },
@@ -23,7 +21,7 @@ const preguntas = [
   },
   {
     q: "¿Qué pasa después de la entrega?",
-    a: "Tenés 60 días de garantía. Después, si querés, seguimos con un abono mensual de mantenimiento con soporte y mejoras.",
+    a: "La garantía va por escrito en la propuesta: qué cubre y cuánto dura. Después, si querés, seguimos con un abono mensual de mantenimiento con soporte y mejoras.",
   },
   { q: "¿Trabajan fuera de Córdoba?", a: "Sí, con clientes de todo el país de forma remota. En Córdoba podemos ir a verte." },
 ];
@@ -71,19 +69,18 @@ const faqLd = {
     top: 120px;
   }
   .list {
-    border-top: 2px solid var(--ink);
+    border-top: 1px solid var(--line);
   }
   details {
-    border-bottom: 1px solid var(--rule-strong);
+    border-bottom: 1px solid var(--line);
   }
   summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-    padding: 24px 0;
-    font: 700 1.3rem/1.3 var(--display);
-    letter-spacing: -0.01em;
+    padding: 22px 0;
+    font: 600 var(--fs-lg) / 1.35 var(--body);
     cursor: pointer;
     list-style: none;
     transition: color 160ms var(--ease-out);
@@ -92,7 +89,7 @@ const faqLd = {
     display: none;
   }
   summary:hover {
-    color: var(--signal-text);
+    color: var(--ink-soft);
   }
   /* Marca + dibujada con dos trazos; al abrir, el vertical se oculta y queda un −. */
   .mark {
@@ -133,8 +130,7 @@ const faqLd = {
   }
   details p {
     max-width: 60ch;
-    padding-bottom: 26px;
-    font-size: var(--fs-lg);
+    padding-bottom: 24px;
     color: var(--ink-soft);
   }
   @media (max-width: 860px) {

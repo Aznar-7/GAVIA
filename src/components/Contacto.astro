@@ -1,10 +1,9 @@
 ---
 import { CONTACT_EMAIL, TEAM, whatsappUrl } from "../config";
-import Arrow from "./Arrow.astro";
 const wa = whatsappUrl();
 ---
 
-<section class="section" id="contacto" aria-labelledby="contacto-title">
+<section class="section tint" id="contacto" aria-labelledby="contacto-title">
   <div class="wrap">
     <div class="box" data-contact>
       <div class="side">
@@ -52,7 +51,6 @@ const wa = whatsappUrl();
           </div>
           <button class="btn send" type="submit">
             <span class="send-label">Enviar mensaje</span>
-            <Arrow />
             <span class="send-track" aria-hidden="true"></span>
           </button>
           <p class="status" id="c-status" role="status" aria-live="polite"></p>
@@ -178,16 +176,19 @@ const wa = whatsappUrl();
   .box {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    border: 2px solid var(--ink);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
     background: var(--white);
+    box-shadow: var(--shadow);
   }
   .side {
     display: grid;
     gap: 20px;
     align-content: start;
     padding: clamp(28px, 4vw, 56px);
-    background: var(--shoal);
-    border-right: 2px solid var(--ink);
+    background: #f8fafc;
+    border-right: 1px solid var(--line);
   }
   .side h2 {
     font-size: var(--fs-2xl);
@@ -216,7 +217,7 @@ const wa = whatsappUrl();
     left: -26px;
     top: 26px;
     bottom: -12px;
-    border-left: 2px dashed var(--ink);
+    border-left: 1px solid var(--line-strong);
   }
   .next li::before {
     content: counter(n);
@@ -227,10 +228,10 @@ const wa = whatsappUrl();
     height: 22px;
     display: grid;
     place-items: center;
-    background: var(--shoal);
-    border: 2px solid var(--ink);
+    background: var(--white);
+    border: 1px solid var(--line-strong);
     border-radius: 50%;
-    font: 600 0.72rem var(--mono);
+    font: 700 0.75rem var(--body);
     color: var(--ink);
   }
   .next b {
@@ -266,6 +267,10 @@ const wa = whatsappUrl();
   }
 
   /* Enviando: los campos se apagan y una línea punteada corre por el botón. */
+  .send {
+    position: relative;
+    overflow: hidden;
+  }
   .send-track {
     position: absolute;
     left: 0;
@@ -280,8 +285,6 @@ const wa = whatsappUrl();
     animation: run 700ms linear infinite;
   }
   .is-sending .send {
-    background: var(--ink);
-    color: var(--paper);
     cursor: progress;
   }
   .is-sending .send :global(.arrow) {
@@ -395,7 +398,7 @@ const wa = whatsappUrl();
     }
     .side {
       border-right: 0;
-      border-bottom: 2px solid var(--ink);
+      border-bottom: 1px solid var(--line);
     }
   }
   @media (max-width: 560px) {
