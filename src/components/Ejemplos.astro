@@ -1,38 +1,31 @@
 ---
 // Antes y después: problemas típicos de una pyme y el sistema que los resuelve.
 // Son ejemplos de lo que se puede construir, no clientes.
-import Arrow from "./Arrow.astro";
-
 const casos = [
   { hoy: "El stock vive en una planilla que nadie actualiza a tiempo.", con: "Un sistema de stock que avisa cuándo reponer." },
   { hoy: "Los turnos se dan por WhatsApp y se pisan entre sí.", con: "Una agenda online con recordatorios automáticos." },
   { hoy: "Los pedidos llegan por mensaje y alguien los pasa a mano.", con: "Un portal donde el cliente pide y sigue el estado." },
-  { hoy: "Cada mes alguien arma los reportes copiando y pegando.", con: "Un tablero con los números del negocio al día." },
+  { hoy: "Cada mes alguien arma los reportes copiando y pegando.", con: "Un reporte con los números del negocio, siempre al día." },
   { hoy: "Los repartos se coordinan con papelitos y llamadas.", con: "Una app para el chofer con la hoja de ruta del día." },
 ];
 ---
 
-<section class="section" id="ejemplos" aria-labelledby="ejemplos-title">
+<section class="section tint" id="ejemplos" aria-labelledby="ejemplos-title">
   <div class="wrap">
     <div class="sec-head">
       <h2 id="ejemplos-title">¿Te suena alguna?</h2>
       <p>Problemas que vemos todo el tiempo en empresas chicas y medianas, y lo que se puede construir para resolverlos.</p>
     </div>
 
-    <div class="ledger" role="table" aria-label="Problemas frecuentes y cómo se resuelven">
-      <div class="head" role="row">
-        <span role="columnheader" class="label">Hoy</span>
-        <span aria-hidden="true"></span>
-        <span role="columnheader" class="label">Con un sistema a medida</span>
+    <div class="table" role="table" aria-label="Problemas frecuentes y cómo se resuelven">
+      <div class="row head" role="row">
+        <span role="columnheader">Hoy</span>
+        <span role="columnheader">Con un sistema a medida</span>
       </div>
       {
         casos.map((c) => (
           <div class="row" role="row">
             <p role="cell" class="hoy">{c.hoy}</p>
-            <span class="via" aria-hidden="true">
-              <span class="line" />
-              <Arrow />
-            </span>
             <p role="cell" class="con">{c.con}</p>
           </div>
         ))
@@ -47,139 +40,89 @@ const casos = [
 </section>
 
 <style>
-  .ledger {
-    border-top: 2px solid var(--ink);
+  .table {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
   }
-  .head,
   .row {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 120px minmax(0, 1fr);
-    gap: 24px;
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px;
+    padding: 20px 28px;
+    border-top: 1px solid var(--line);
+    transition: background-color 200ms var(--ease-out);
   }
   .head {
-    padding: 14px 0;
-    border-bottom: 1px solid var(--rule-strong);
+    border-top: 0;
+    padding-block: 14px;
+    background: var(--paper);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    color: var(--muted);
   }
-  .row {
-    padding: 26px 0;
-    border-bottom: 1px solid var(--rule-strong);
-    transition: background-color 220ms var(--ease-out);
-  }
+  /* Al pasar el cursor, el problema de hoy se tacha en naranja y la solución se adelanta. */
   .hoy {
-    font-size: var(--fs-lg);
     color: var(--ink-soft);
     text-decoration: line-through;
-    text-decoration-color: transparent;
     text-decoration-thickness: 2px;
+    text-decoration-color: transparent;
     transition: text-decoration-color 260ms var(--ease-out), color 260ms var(--ease-out);
   }
   .con {
-    font: 700 clamp(1.2rem, 1.8vw, 1.5rem) / 1.3 var(--display);
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    transition: transform 260ms var(--ease-out);
   }
-  .via {
-    display: flex;
-    align-items: center;
-    color: var(--ink-soft);
-    transition: color 220ms var(--ease-out);
+  @media (hover: hover) {
+    .row:not(.head):hover {
+      background: #f8fafc;
+    }
+    .row:hover .hoy {
+      color: var(--muted);
+      text-decoration-color: var(--signal);
+    }
+    .row:hover .con {
+      transform: translateX(4px);
+    }
   }
-  .row:hover .via {
-    color: var(--signal);
-  }
-  .line {
-    flex: 1;
-    border-top: 2.5px dashed currentColor;
-    transition: border-top-style 0ms 120ms;
-  }
-  .via :global(.arrow) {
-    margin-left: -2px;
-  }
-  .row:hover {
-    background: var(--white);
-  }
-  .row:hover .hoy {
-    color: var(--muted);
-    text-decoration-color: var(--signal);
-  }
-  .row:hover .line {
-    border-top-style: solid;
+  /* En pantallas táctiles no hay cursor: el tachado se ve siempre, suave. */
+  @media (hover: none) {
+    .hoy {
+      color: var(--muted);
+      text-decoration-color: var(--line-strong);
+    }
   }
   .cta-line {
-    margin-top: 32px;
-    font-size: var(--fs-lg);
+    margin-top: 28px;
     color: var(--ink-soft);
   }
   .cta-line a {
     font-weight: 700;
     color: var(--ink);
   }
-  /* Celular: los casos pasan a una tira de hojas que se desliza con el pulgar (como las
-     vidrieras de Mercado Libre). La hoja siguiente asoma para avisar que hay más. */
-  @media (max-width: 760px) {
-    .ledger {
-      display: flex;
-      gap: 12px;
-      margin-inline: calc(var(--gutter) * -1);
-      padding: 20px var(--gutter) 4px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      scroll-padding-inline: var(--gutter);
-      overscroll-behavior-x: contain;
-      scrollbar-width: none;
-      border-top: 0;
-    }
-    .ledger::-webkit-scrollbar {
-      display: none;
-    }
+  /* Celular: cada caso es un bloque con su "hoy" arriba y la solución abajo. */
+  @media (max-width: 680px) {
     .head {
       display: none;
     }
     .row {
-      flex: 0 0 min(80%, 320px);
-      scroll-snap-align: start;
       grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto auto 1fr;
-      align-items: start;
-      gap: 14px;
-      padding: 22px 20px 24px;
-      background: var(--white);
-      border: 1px solid var(--ink);
-      border-top-width: 2px;
+      gap: 6px;
+      padding: 18px 20px;
     }
-    .hoy {
-      font-size: var(--fs-md);
-      color: var(--ink-soft);
-      text-decoration: none;
-    }
-    .hoy::before,
-    .con::before {
-      display: block;
-      margin-bottom: 6px;
-      font: 600 0.75rem/1.3 var(--body);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--muted);
+    .row:nth-child(2) {
+      border-top: 0;
     }
     .hoy::before {
-      content: "Hoy";
+      content: "Hoy: ";
+      font-weight: 600;
+      color: var(--muted);
     }
     .con::before {
-      content: "Con un sistema";
-    }
-    /* El rumbo de "hoy" a "con un sistema": punteado, termina en flecha. */
-    .via {
-      color: var(--signal-text);
-    }
-    .line {
-      border-top-width: 2px;
-    }
-    .con {
-      align-self: end;
-      font-size: var(--fs-xl);
-    }
-    .cta-line {
-      margin-top: 24px;
+      content: "Con un sistema: ";
+      font-weight: 400;
+      color: var(--muted);
     }
   }
 </style>

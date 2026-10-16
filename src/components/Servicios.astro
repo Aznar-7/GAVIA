@@ -1,98 +1,85 @@
 ---
-// Qué hacemos: dos líneas de trabajo, como la leyenda de una carta.
+// Qué vendemos, en una mirada: cuatro servicios con nombre y una línea cada uno.
+// Lista con divisores, no tarjetas: se lee como el índice de una empresa, no como un catálogo.
+const servicios = [
+  {
+    t: "Sistemas de gestión",
+    d: "Stock, pedidos, turnos, clientes o facturación en un solo lugar, con lo que necesita ver cada persona de tu equipo.",
+  },
+  {
+    t: "Apps web y móviles",
+    d: "Para tu equipo o para tus clientes, en la computadora o en el celular, conectadas al mismo sistema.",
+  },
+  {
+    t: "Integraciones y automatización",
+    d: "Conectamos los programas que ya usás y hacemos solos los trámites que hoy alguien repite a mano.",
+  },
+  {
+    t: "Mantenimiento",
+    d: "Después de la entrega seguimos: soporte, mejoras y copias de seguridad con un abono mensual.",
+  },
+];
 ---
 
 <section class="section" id="servicios" aria-labelledby="servicios-title">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="servicios-title">Desarrollo de software a medida, desde Córdoba.</h2>
-      <p>Para pymes y emprendedores de Córdoba y de todo el país. Hacemos dos cosas y las hacemos completas, desde la primera charla hasta el mantenimiento.</p>
+      <h2 id="servicios-title">Qué hacemos.</h2>
+      <p>
+        Desarrollamos software a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu equipo
+        hoy y construimos lo que hace falta, ni más ni menos.
+      </p>
     </div>
-
-    <div class="legend">
-      <article>
-        <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="6" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.5"></rect><path d="M14 30h8M14 22h20M14 14h14" stroke="currentColor" stroke-width="2.5"></path></svg>
-        <h3>Software a medida</h3>
-        <p>
-          Sistemas de gestión, aplicaciones web y móviles, integraciones y automatizaciones. Partimos de cómo
-          trabaja tu equipo hoy y construimos lo que hace falta, ni más ni menos.
-        </p>
-        <ul class="kinds">
-          <li>Sistemas de gestión</li><li>Apps web y móviles</li><li>Integraciones</li><li>Automatizaciones</li><li>Tableros</li>
-        </ul>
-        <a href="#como-trabajamos">Ver cómo trabajamos</a>
-      </article>
-      <article>
-        <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M40 9H9v30h30V26H26" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="square"></path><rect x="20" y="21" width="11" height="11" fill="var(--signal)"></rect></svg>
-        <h3>Productos propios</h3>
-        <p>
-          Buscamos problemas que se repiten en una industria y armamos el producto que los resuelve. El primero
-          es Flety, para que los camiones no vuelvan vacíos.
-        </p>
-        <a href="#flety">Conocer Flety</a>
-      </article>
-    </div>
-
+    <ul class="list">
+      {
+        servicios.map((s) => (
+          <li>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </section>
 
 <style>
-  .legend {
+  .list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 2px solid var(--ink);
-  }
-  article {
-    display: grid;
-    gap: 14px;
-    align-content: start;
-    padding: 36px 48px 40px 0;
-  }
-  article + article {
-    padding: 36px 0 40px 48px;
-    border-left: 1px solid var(--rule-strong);
-  }
-  svg {
-    width: 40px;
-    height: 40px;
-    color: var(--ink);
-  }
-  h3 {
-    font-size: var(--fs-xl);
-  }
-  article p {
-    max-width: 46ch;
-    color: var(--ink-soft);
-  }
-  .kinds {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px 20px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
     margin: 0;
     padding: 0;
     list-style: none;
-    font: 600 0.8rem/1.4 var(--body);
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+  }
+  li {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
+    transition: border-color 220ms var(--ease-out);
+  }
+  /* El filete se vuelve naranja en el servicio que estás mirando. */
+  li:hover {
+    border-top-color: var(--signal);
+  }
+  h3 {
+    font-size: var(--fs-lg);
+  }
+  p {
     color: var(--ink-soft);
   }
-  /* Tipos y tecnologías como una línea de rótulos, no como chips. */
-  article a {
-    justify-self: start;
-    padding-block: 6px;
-    font-weight: 600;
+  @media (max-width: 1000px) {
+    .list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px 40px;
+    }
   }
-  @media (max-width: 760px) {
-    .legend {
+  @media (max-width: 560px) {
+    .list {
       grid-template-columns: minmax(0, 1fr);
-    }
-    article,
-    article + article {
-      padding: 28px 0;
-      border-left: 0;
-    }
-    article + article {
-      border-top: 1px solid var(--rule-strong);
+      gap: 24px;
     }
   }
 </style>
