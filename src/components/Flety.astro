@@ -1,5 +1,8 @@
 ---
 import Arrow from "./Arrow.astro";
+// Vive en su propia página (/flety): ahí el título es el h1.
+const { heading = "h2" } = Astro.props as { heading?: "h1" | "h2" };
+const Title = heading;
 // Flety: producto propio. A la derecha, un mapa real de la ruta Córdoba → puerto de
 // San Lorenzo (RN9 / autopista) con la ida cargada y la vuelta que Flety llena, y un
 // prototipo de la app del transportista. El mapa (MapLibre + OpenFreeMap) se carga solo
@@ -14,7 +17,7 @@ const cargas = [
 <section class="flety" id="flety" aria-labelledby="flety-title">
   <div class="wrap inner">
     <div class="copy">
-      <h2 id="flety-title">Flety: que ningún camión vuelva vacío.</h2>
+      <Title id="flety-title">Flety: que ningún camión vuelva vacío.</Title>
       <p class="lead">
         Todos los días, en toda la Argentina, hay camiones que llevan carga y vuelven vacíos. Esa vuelta se paga
         igual: combustible, peajes y horas de manejo. Flety conecta a ese transportista con alguien que necesita
@@ -315,7 +318,6 @@ const cargas = [
     overflow: hidden;
   }
   .flety {
-    margin-top: var(--space-section);
     padding-block: clamp(72px, 10vw, 140px);
     background: var(--ink);
     color: var(--paper);
@@ -336,7 +338,7 @@ const cargas = [
     gap: 24px;
     min-width: 0;
   }
-  h2 {
+  #flety-title {
     font-size: var(--fs-3xl);
   }
   .lead {

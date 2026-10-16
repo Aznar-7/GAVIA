@@ -1,0 +1,45 @@
+---
+// Flety, nuestro primer producto propio, con su lista de espera. Vive aparte de la home
+// para que la página principal le hable solo a quien busca software a medida.
+import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
+import Flety from "../components/Flety.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Base
+  title="Flety | Que ningún camión vuelva vacío"
+  description="Flety conecta transportistas que vuelven vacíos con quien necesita mandar carga en su camino, en toda la Argentina. Un producto de Gavia, en desarrollo."
+>
+  <header class="top">
+    <div class="wrap row">
+      <a href="/" aria-label="Gavia, ir al inicio"><Logo size={24} /></a>
+      <a class="back" href="/">Conocé Gavia</a>
+    </div>
+  </header>
+  <main id="contenido">
+    <Flety heading="h1" />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 68px;
+  }
+  .top a {
+    text-decoration: none;
+  }
+  .top .back {
+    padding-block: 12px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+    text-underline-offset: 4px;
+  }
+</style>
