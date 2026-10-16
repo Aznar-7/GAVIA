@@ -1,43 +1,55 @@
-/* Carta de rumbo: papel de carta náutica, tinta azul, una sola línea de rumbo en naranja. */
+/* Gavia: empresa tranquila. Azul marino para leer, blanco y gris azulado para ordenar,
+   naranja solo para la acción principal. Una sola familia (Figtree). */
 :root {
   --ink: #12243a;
   --ink-soft: #2b3d54;
-  --muted: #4a5d73;
-  --paper: #f1f4f7;
+  --muted: #536579; /* texto secundario: 5.6:1 sobre blanco, 5.1:1 sobre --paper */
+  --paper: #f1f4f7; /* fondo de las secciones alternas */
+  --white: #ffffff;
+  --line: #dce3ea; /* divisores y bordes de tarjeta */
+  --line-strong: #b9c5d1; /* bordes de campos y botón secundario */
+  --signal: #f06a2a;
+  --signal-hover: #f4824c;
+  --signal-text: #b4461a; /* naranja legible como texto sobre blanco (4.9:1) */
+  --danger: #b3261e;
+  --success: #1e7a4f;
+  --paper-soft: #c7d3df; /* texto secundario sobre azul (Flety, pie) */
+  --placeholder: #6b7c8f;
+
+  /* Compatibilidad con páginas internas (404, og, Flety). */
+  --rule: var(--line);
+  --rule-strong: var(--line-strong);
   --shoal: #dce6ee;
   --shoal-deep: #c9d7e3;
-  --white: #ffffff;
-  --signal: #f06a2a;
-  --signal-hover: #d9561c;
-  --signal-text: #b4461a; /* naranja legible como texto sobre papel (4.9:1) */
-  --rule: rgb(18 36 58 / 0.16);
-  --rule-strong: rgb(18 36 58 / 0.55);
-  --danger: #b3261e;
-  --paper-soft: #c7d3df; /* texto secundario sobre azul (Flety) */
-  --placeholder: #66788c;
 
-  --display: "Bricolage Grotesque Variable", "Arial Narrow", system-ui, sans-serif;
-  --body: "Public Sans Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  --display: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   /* Escala tipográfica: todo tamaño de texto sale de acá. */
+  --fs-xs: 0.8125rem;
   --fs-sm: 0.9375rem;
   --fs-md: 1.0625rem;
   --fs-lg: 1.1875rem;
-  --fs-lead: clamp(1.1875rem, 1.5vw, 1.3125rem);
-  --fs-xl: clamp(1.5rem, 2.4vw, 2rem);
-  --fs-2xl: clamp(2.25rem, 4vw, 3.25rem);
-  --fs-3xl: clamp(2.25rem, 5vw, 4rem);
+  --fs-lead: clamp(1.125rem, 1.4vw, 1.3125rem);
+  --fs-xl: clamp(1.3rem, 1.9vw, 1.6rem);
+  --fs-2xl: clamp(1.75rem, 3vw, 2.4rem);
+  --fs-3xl: clamp(2rem, 3.6vw, 3rem);
+  --fs-hero: clamp(2.5rem, 5vw, 4.25rem);
 
-  --max: 1560px;
-  --gutter: clamp(20px, 4.5vw, 80px);
-  --space-section: clamp(72px, 12vw, 168px);
+  --radius-sm: 8px;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgb(18 36 58 / 0.06), 0 12px 32px rgb(18 36 58 / 0.1);
+
+  --max: 1280px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --space-section: clamp(64px, 9vw, 120px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   color-scheme: light;
   interpolate-size: allow-keywords;
   accent-color: var(--signal);
-  scrollbar-color: var(--ink-soft) var(--paper);
+  scrollbar-color: var(--line-strong) var(--white);
 }
 
 *,
@@ -48,15 +60,15 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 88px;
+  scroll-padding-top: 84px;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--white);
   color: var(--ink);
-  font: 400 1.0625rem/1.6 var(--body);
+  font: 400 var(--fs-md) / 1.6 var(--body);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   caret-color: var(--signal);
@@ -64,28 +76,29 @@ body {
 
 ::selection {
   background: var(--ink);
-  color: var(--paper);
+  color: var(--white);
 }
 
 h1,
 h2,
-h3 {
+h3,
+h4 {
   margin: 0;
   font-family: var(--display);
   font-weight: 700;
-  line-height: 1.05;
-  letter-spacing: -0.025em;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
 h2 {
   font-size: var(--fs-3xl);
-  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 h3 {
   font-size: var(--fs-xl);
-  letter-spacing: -0.015em;
 }
 
 p {
@@ -97,6 +110,10 @@ a {
   color: inherit;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
+}
+
+a {
+  transition: text-decoration-color 160ms var(--ease-out), color 160ms var(--ease-out);
 }
 
 a:hover {
@@ -135,79 +152,85 @@ svg {
   white-space: nowrap;
 }
 
-/* Rótulo corto en texto (no monoespaciado): para "Te llevás", roles, datos de contacto. */
+/* Rótulo corto en minúscula normal: "Te llevás", "Tu parte", datos de contacto. */
 .label {
-  font: 600 0.8rem/1.3 var(--body);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font: 600 var(--fs-sm) / 1.4 var(--body);
   color: var(--muted);
 }
 
-/* Medidas y coordenadas: el único uso del monoespaciado. */
+/* Números y medidas: cifras alineadas, sin cambiar de familia. */
 .coord {
-  font: 500 0.75rem/1.4 var(--mono);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   font-variant-numeric: tabular-nums;
 }
 
-/* Secciones: título y bajada apilados a la izquierda (nunca centrado). */
+/* Estado corto: "En uso", "En desarrollo". */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font: 600 var(--fs-xs) / 1.5 var(--body);
+}
+.pill.live::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--success);
+}
+
+/* Secciones: blancas por defecto; las alternas van en gris azulado para dar ritmo sin líneas. */
 .section {
-  padding-block: var(--space-section) 0;
+  padding-block: var(--space-section);
+}
+.section.tint {
+  background: var(--paper);
 }
 .sec-head {
   display: grid;
-  gap: 20px;
-  max-width: 980px;
-  margin-bottom: clamp(40px, 6vw, 72px);
+  gap: 16px;
+  max-width: 760px;
+  margin-bottom: clamp(36px, 5vw, 56px);
 }
 .sec-head p {
-  max-width: 58ch;
+  max-width: 60ch;
   color: var(--ink-soft);
   font-size: var(--fs-lg);
 }
 
-/* Botones: rectos, sin redondeo; el naranja es solo para la acción principal. */
+/* Botones: el naranja es solo para la acción principal. */
 .btn {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 0.6em;
-  padding: 0.95em 1.4em;
-  border: 2px solid var(--ink);
+  justify-content: center;
+  gap: 0.5em;
+  min-height: 48px;
+  padding: 0.8em 1.4em;
+  border: 0;
+  border-radius: var(--radius-sm);
   background: var(--signal);
   color: var(--ink);
-  font: 700 1rem/1 var(--body);
+  font: 700 1rem/1.2 var(--body);
   text-decoration: none;
   cursor: pointer;
-  transition: color 280ms var(--ease-out), transform 120ms var(--ease-out);
+  transition: background-color 160ms var(--ease-out), box-shadow 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
 }
 
-/* Hover: la tinta barre el botón de izquierda a derecha y la flecha avanza. */
-.btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: var(--ink);
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform 420ms var(--ease-out);
-}
-
+/* El botón se levanta un poco y proyecta una sombra naranja suave; al presionarlo baja. */
 .btn:hover {
-  color: var(--paper);
-}
-
-.btn:hover::before {
-  transform: scaleX(1);
-  transform-origin: left center;
+  background: var(--signal-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgb(240 106 42 / 0.28);
 }
 
 .btn:active {
   transform: translateY(1px);
+  box-shadow: none;
 }
 
 .btn[disabled] {
@@ -215,12 +238,15 @@ svg {
   opacity: 0.7;
 }
 
-.btn .arrow {
-  transition: transform 320ms var(--ease-out);
+.btn.secondary {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  color: var(--ink);
 }
 
-.btn:hover .arrow {
-  transform: translateX(5px);
+.btn.secondary:hover {
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px var(--ink), 0 6px 18px rgb(18 36 58 / 0.08);
 }
 
 /* Campos de formulario compartidos. */
@@ -241,9 +267,10 @@ svg {
 
 .input {
   width: 100%;
-  padding: 0.85em 1em;
-  border: 2px solid var(--ink);
-  border-radius: 0;
+  min-height: 48px;
+  padding: 0.75em 1em;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
   background: var(--white);
   color: var(--ink);
   font: 400 1rem/1.4 var(--body);
@@ -255,12 +282,13 @@ svg {
 }
 
 .input:hover {
-  border-color: var(--ink-soft);
+  border-color: var(--muted);
 }
 
 .input:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgb(240 106 42 / 0.45);
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgb(240 106 42 / 0.35);
 }
 
 .input[aria-invalid="true"] {

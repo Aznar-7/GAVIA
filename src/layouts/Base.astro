@@ -1,12 +1,9 @@
 ---
-import "@fontsource-variable/bricolage-grotesque/opsz.css";
-import "@fontsource-variable/public-sans/wght.css";
-import "@fontsource/jetbrains-mono/500.css";
+import "@fontsource-variable/figtree/wght.css";
 import "../styles/global.css";
 import { ANALYTICS, CONTACT_EMAIL, SOCIAL, TEAM } from "../config";
 import Analytics from "@vercel/analytics/astro";
-import displayFont from "@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url";
-import bodyFont from "@fontsource-variable/public-sans/files/public-sans-latin-wght-normal.woff2?url";
+import bodyFont from "@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -74,28 +71,21 @@ const org = {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <link rel="preload" href={displayFont} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline>
-      // Entrada orquestada: solo con JS y sin "reducir movimiento"; después la página queda en su estado final.
-      // Pantalla de entrada (solo con JS, sin "reducir movimiento" y no en páginas internas):
-      // la marca se traza, el panel sube y recién ahí arranca la entrada del hero.
+      // Pantalla de entrada con la marca: una vez por sesión, solo con JS, sin "reducir
+      // movimiento" y solo si se entra por arriba de la home (no al llegar a un #ancla).
       (() => {
         const html = document.documentElement;
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        // La pantalla de la marca se muestra una vez por sesión y solo si se entra por arriba
-        // (no al llegar a una sección con #ancla): las visitas siguientes van directo al contenido.
         let seen = false;
         try {
           seen = sessionStorage.getItem("gavia-intro") === "1";
           sessionStorage.setItem("gavia-intro", "1");
         } catch {}
-        const screen = location.pathname === "/" && !location.hash && !seen;
-        const reveal = screen ? 1250 : 0;
-        if (screen) html.classList.add("intro-screen");
-        setTimeout(() => html.classList.add("intro"), reveal);
-        setTimeout(() => html.classList.remove("intro-screen"), reveal + 700);
-        setTimeout(() => html.classList.remove("intro"), reveal + 2800);
+        if (location.pathname !== "/" || location.hash || seen) return;
+        html.classList.add("intro-screen");
+        setTimeout(() => html.classList.remove("intro-screen"), 1900);
       })();
     </script>
     <meta name="description" content={description} />
@@ -149,7 +139,7 @@ const org = {
     display: grid;
     place-items: center;
     background: var(--ink);
-    color: var(--paper);
+    color: var(--white);
     animation: loader-out 650ms cubic-bezier(0.7, 0, 0.2, 1) 1150ms both;
   }
   .loader-mark {
@@ -178,7 +168,7 @@ const org = {
   }
   .l-word {
     font: 800 clamp(3.2rem, 7vw, 5.6rem) / 1 var(--display);
-    letter-spacing: -0.045em;
+    letter-spacing: -0.03em;
     clip-path: inset(0 100% 0 0);
     animation: l-word 520ms cubic-bezier(0.16, 1, 0.3, 1) 620ms both;
   }
@@ -221,7 +211,7 @@ const org = {
       transform: scaleX(1);
     }
   }
-  /* El panel sube y destapa la carta. */
+  /* El panel sube y destapa la página. */
   @keyframes loader-out {
     to {
       clip-path: inset(0 0 100% 0);
@@ -237,7 +227,8 @@ const org = {
     z-index: 100;
     padding: 10px 16px;
     background: var(--ink);
-    color: var(--paper);
+    color: var(--white);
+    border-radius: var(--radius-sm);
     font-weight: 600;
   }
   .skip:focus {
