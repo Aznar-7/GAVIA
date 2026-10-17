@@ -88,6 +88,7 @@ const etapas = [
       </div>
 
       <div class="docs" aria-hidden="true">
+        <p class="count" data-count>Etapa 1 de {etapas.length}</p>
         {
           etapas.map((_, i) => (
             <div class="doc-slot" data-doc={i}>
@@ -108,6 +109,7 @@ const etapas = [
     const track = root.querySelector<HTMLElement>(".track")!;
     const stages = [...root.querySelectorAll<HTMLElement>("[data-stage]")];
     const docs = [...root.querySelectorAll<HTMLElement>("[data-doc]")];
+    const count = root.querySelector<HTMLElement>("[data-count]")!;
     const n = stages.length;
     let raf = 0;
 
@@ -123,10 +125,13 @@ const etapas = [
         s.classList.toggle("current", i === current);
         s.classList.toggle("done", i < current);
       });
+      // Los documentos de las etapas hechas quedan apilados detrás del actual.
       docs.forEach((d, i) => {
         d.classList.toggle("current", i === current);
         d.classList.toggle("before", i < current);
+        d.style.setProperty("--k", String(Math.min(3, current - i)));
       });
+      count.textContent = `Etapa ${current + 1} de ${n}`;
     };
     const queue = () => (raf ||= requestAnimationFrame(update));
 
@@ -347,20 +352,32 @@ const etapas = [
     position: relative;
     display: block;
     align-self: center;
-    height: min(440px, 60vh);
+    height: min(520px, 66vh);
   }
+  .count {
+    font-weight: 700;
+    color: var(--signal);
+    font-variant-numeric: tabular-nums;
+  }
+  /* Pila de entregables: el actual adelante, los de etapas hechas corridos atrás,
+     los que faltan esperan abajo, invisibles. */
   .doc-slot {
     position: absolute;
-    inset: 0 0 auto;
+    inset: 96px 0 auto 48px;
     opacity: 0;
-    transform: translateY(40px) scale(0.96);
-    transition: opacity 500ms var(--ease-out), transform 700ms var(--ease-out);
+    transform: translateY(80px) rotate(2deg);
+    transition: opacity 500ms var(--ease-out), transform 800ms var(--ease-out), filter 500ms var(--ease-out);
     pointer-events: none;
   }
   .doc-slot.before {
-    transform: translateY(-40px) scale(0.96);
+    --k: 1;
+    z-index: calc(10 - var(--k));
+    opacity: 1;
+    filter: brightness(calc(1 - var(--k) * 0.14));
+    transform: translate(calc(var(--k) * -16px), calc(var(--k) * -22px)) scale(calc(1 - var(--k) * 0.05));
   }
   .doc-slot.current {
+    z-index: 20;
     opacity: 1;
     transform: none;
   }

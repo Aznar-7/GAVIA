@@ -106,8 +106,8 @@ const malos = ["Reponer", "Pendiente"];
                 <span class="pill">Ejemplo</span>
               </div>
               <ul>
-                {c.filas.map(([a, b, chip]) => (
-                  <li>
+                {c.filas.map(([a, b, chip], k) => (
+                  <li style={`--r:${k}`}>
                     <span class="a">{a}</span>
                     <span class="b">{b}</span>
                     {chip && <span class={malos.includes(chip) ? "chip warn" : "chip"}>{chip}</span>}
@@ -223,19 +223,19 @@ const malos = ["Reponer", "Pendiente"];
     border: 2px solid var(--line-strong);
     transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out);
   }
-  /* El problema de hoy se tacha en naranja: al pasar el cursor y cuando está elegido. */
+  /* El problema de hoy se tacha con una línea naranja que se dibuja de izquierda a derecha. */
   .hoy {
-    text-decoration: line-through;
-    text-decoration-thickness: 2px;
-    text-decoration-color: transparent;
-    transition: text-decoration-color 260ms var(--ease-out), color 260ms var(--ease-out);
+    background: linear-gradient(var(--signal), var(--signal)) left 55% / 0 2px no-repeat;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    transition: background-size 500ms var(--ease-out), color 260ms var(--ease-out);
   }
   @media (hover: hover) {
     .problem:hover {
-      background: rgb(255 255 255 / 0.6);
+      background-color: rgb(255 255 255 / 0.6);
     }
     .problem:hover .hoy {
-      text-decoration-color: rgb(240 106 42 / 0.5);
+      background-size: 18% 2px;
     }
   }
   .problem[aria-pressed="true"] {
@@ -249,7 +249,7 @@ const malos = ["Reponer", "Pendiente"];
     border-color: var(--signal);
   }
   .problem[aria-pressed="true"] .hoy {
-    text-decoration-color: var(--signal);
+    background-size: 100% 2px;
   }
 
   .solution {
@@ -262,13 +262,43 @@ const malos = ["Reponer", "Pendiente"];
     background: var(--white);
     box-shadow: var(--shadow);
   }
-  :global(html.js:not(.reduce)) .solution.enter {
-    animation: swap 520ms var(--ease-out);
+  /* La solución entra por partes: título, texto, la pantalla fila por fila y el botón. */
+  :global(html.js:not(.reduce)) .solution.enter > * {
+    animation: part 600ms var(--ease-out) both;
   }
-  @keyframes swap {
+  :global(html.js:not(.reduce)) .solution.enter > :nth-child(2) {
+    animation-delay: 70ms;
+  }
+  :global(html.js:not(.reduce)) .solution.enter > :nth-child(3) {
+    animation-delay: 140ms;
+  }
+  :global(html.js:not(.reduce)) .solution.enter > :nth-child(4) {
+    animation-delay: 420ms;
+  }
+  :global(html.js:not(.reduce)) .solution.enter .screen li {
+    animation: row 500ms var(--ease-out) both;
+    animation-delay: calc(220ms + var(--r) * 90ms);
+  }
+  :global(html.js:not(.reduce)) .solution.enter .chip {
+    animation: pop 420ms var(--ease-out) both;
+    animation-delay: calc(380ms + var(--r) * 90ms);
+  }
+  @keyframes part {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(12px);
+    }
+  }
+  @keyframes row {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.7);
     }
   }
   h3 {

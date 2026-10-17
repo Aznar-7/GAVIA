@@ -73,7 +73,7 @@ const org = {
     <title>{title}</title>
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline>
-      // Pantalla de entrada con la marca: una vez por sesión, solo con JS, sin "reducir
+      // Pantalla de entrada con la marca: cada vez que se entra a la home, solo con JS, sin "reducir
       // movimiento" y solo si se entra por arriba de la home (no al llegar a un #ancla).
       (() => {
         const html = document.documentElement;
@@ -82,12 +82,7 @@ const org = {
           html.classList.add("reduce");
           return;
         }
-        let seen = false;
-        try {
-          seen = sessionStorage.getItem("gavia-intro") === "1";
-          sessionStorage.setItem("gavia-intro", "1");
-        } catch {}
-        if (location.pathname !== "/" || location.hash || seen) return;
+        if (location.pathname !== "/" || location.hash) return;
         html.classList.add("intro-screen", "had-intro");
         setTimeout(() => html.classList.remove("intro-screen"), 1900);
       })();
@@ -162,19 +157,6 @@ const org = {
           },
           { passive: true },
         );
-
-        // 3. Botones principales magnéticos: se corren apenas hacia el cursor.
-        if (!reduce) {
-          document.querySelectorAll<HTMLElement>(".btn:not(.secondary)").forEach((b) => {
-            b.addEventListener("pointermove", (e) => {
-              const r = b.getBoundingClientRect();
-              const x = ((e.clientX - r.left) / r.width - 0.5) * 8;
-              const y = ((e.clientY - r.top) / r.height - 0.5) * 6;
-              b.style.translate = `${x}px ${y}px`;
-            });
-            b.addEventListener("pointerleave", () => (b.style.translate = ""));
-          });
-        }
       }
     </script>
   </body>

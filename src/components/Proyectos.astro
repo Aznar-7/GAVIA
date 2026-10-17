@@ -1,58 +1,43 @@
 ---
-// Lo que ya construimos. UTN Hub va como caso: se lee desde el lado del cliente (qué gana una
-// empresa) y UTN Hub aparece como la prueba de que ya lo hicimos, no al revés.
+// Lo que ya construimos: un recorrido por UTN Hub, software nuestro en uso. Cada pestaña es
+// algo que una empresa necesita, con la captura real que lo prueba. Las pestañas avanzan
+// solas mientras la sección está en pantalla (no con "reducir movimiento"); el cursor o el
+// foco las frenan. Abajo, Flety como producto propio.
 // Todo lo que dice sale del código de UTN Hub; no sumar números de uso sin un dato real.
-// Las capturas son del sistema real, con datos de prueba (src/assets/utnhub).
 import { Image } from "astro:assets";
 import capInscribot from "../assets/utnhub/inscribot.png";
 import capManager from "../assets/utnhub/utn-manager.png";
 import capProyectos from "../assets/utnhub/proyectos.png";
-const caso = {
-  nombre: "UTN Hub",
-  estado: "En uso",
-  href: "https://utnhub.com.ar",
-  sitio: "utnhub.com.ar",
-  texto:
-    "Lo hicimos para los estudiantes de la UTN Córdoba: un sistema que se conecta con los de la facultad y hace trámites solo. Es lo mismo que armamos para una empresa.",
-  hace: [
-    {
-      t: "Trámites que se hacen solos",
-      empresa: "Ese trámite que alguien de tu equipo repite a mano todos los días lo hace un robot, y te avisa cuando terminó.",
-      prueba: "InscriBot vigila el sistema de la facultad y anota al estudiante apenas se libera un cupo. Avisa por Telegram con una captura.",
-      img: capInscribot,
-      alt: "InscriBot en UTN Hub: el registro de actividad muestra cómo encuentra un cupo y confirma la inscripción solo.",
-    },
-    {
-      t: "Tus sistemas, conectados",
-      empresa: "Los programas que ya usás se pasan los datos entre sí. Nadie carga dos veces lo mismo.",
-      prueba: "UTN Manager lee el aula virtual y la autogestión, detecta qué cambió y agenda las entregas en el calendario.",
-      img: capManager,
-      alt: "UTN Manager en UTN Hub: próximas entregas y novedades traídas del aula virtual, con botón para agendarlas.",
-    },
-    {
-      t: "El día a día, en un solo lugar",
-      empresa: "Pedidos, stock, turnos o lo que maneje tu equipo, en un sistema en vez de planillas y chats.",
-      prueba: "Materias, materiales, foros, tableros de proyecto y cambios de comisión con emparejamiento automático.",
-      img: capProyectos,
-      alt: "Tablero de proyecto en UTN Hub: tareas por hacer, en curso, en revisión y hechas, con responsable y fecha.",
-    },
-  ],
-  calidad: [
-    { t: "Más de 300 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
-    { t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
-  ],
-  stack: ["React", "Django", "PostgreSQL", "Redis", "Celery", "Telegram"],
-};
+// Captura del mapa real de /flety (MapLibre + OpenFreeMap): misma imagen, sin cargar el mapa en la home.
+import mapaFlety from "../assets/flety-mapa.png";
 
-const proyectos = [
+const tabs = [
   {
-    nombre: "Flety",
-    estado: "Producto propio, en desarrollo",
-    texto:
-      "Plataforma para que los camiones no vuelvan vacíos: el transportista publica su ruta y encuentra cargas en su camino, en toda la Argentina.",
-    detalle: ["App móvil", "Mapas", "Matching de rutas"],
-    href: "/flety",
+    t: "Trámites que se hacen solos",
+    empresa: "Ese trámite que alguien de tu equipo repite a mano todos los días lo hace un robot, y te avisa cuando terminó.",
+    prueba: "InscriBot vigila el sistema de la facultad y anota al estudiante apenas se libera un cupo. Avisa por Telegram con una captura.",
+    img: capInscribot,
+    alt: "InscriBot en UTN Hub: el registro de actividad muestra cómo encuentra un cupo y confirma la inscripción solo.",
   },
+  {
+    t: "Tus sistemas, conectados",
+    empresa: "Los programas que ya usás se pasan los datos entre sí. Nadie carga dos veces lo mismo.",
+    prueba: "UTN Manager lee el aula virtual y la autogestión, detecta qué cambió y agenda las entregas en el calendario.",
+    img: capManager,
+    alt: "UTN Manager en UTN Hub: próximas entregas y novedades traídas del aula virtual, con botón para agendarlas.",
+  },
+  {
+    t: "El día a día, en un lugar",
+    empresa: "Pedidos, stock, turnos o lo que maneje tu equipo, en un sistema en vez de planillas y chats.",
+    prueba: "Materias, materiales, foros, tableros de proyecto y cambios de comisión con emparejamiento automático.",
+    img: capProyectos,
+    alt: "Tablero de proyecto en UTN Hub: tareas por hacer, en curso, en revisión y hechas, con responsable y fecha.",
+  },
+];
+const calidad = [
+  { t: "Más de 300 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
+  { t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
+  { t: "Tecnología probada", d: "React, Django y PostgreSQL: cualquier programador puede seguirlo mañana." },
 ];
 ---
 
@@ -61,268 +46,342 @@ const proyectos = [
     <div class="sec-head">
       <h2 id="proyectos-title" data-reveal>Lo que ya construimos.</h2>
       <p data-reveal style="--d:1">
-        Preferimos mostrarte trabajo real antes que promesas. UTN Hub ya está en uso; además, buscamos problemas
-        que se repiten en una industria y armamos productos propios, como Flety.
+        Software nuestro, en uso hoy. Mirá por dentro lo mismo que armaríamos para tu empresa.
       </p>
     </div>
 
-    <article class="case" aria-labelledby="caso-title" data-reveal>
-      <header class="case-head">
-        <div class="case-id">
-          <h3 id="caso-title">{caso.nombre}</h3>
-          <span class="pill live">{caso.estado}</span>
-          <a class="site" href={caso.href} target="_blank" rel="noopener">
-              {caso.sitio}
-              <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 9l6-6M4 3h5v5"></path></svg>
-          </a>
+    <article class="tour" aria-labelledby="caso-title" data-tour data-reveal>
+      <header class="tour-head">
+        <div>
+          <h3 id="caso-title">UTN Hub <span class="pill live">En uso</span></h3>
+          <p>La plataforma de los estudiantes de la UTN Córdoba.</p>
         </div>
-        <p class="case-lead">{caso.texto}</p>
+        <a class="btn secondary" href="https://utnhub.com.ar" target="_blank" rel="noopener">Visitar utnhub.com.ar</a>
       </header>
 
-      <div class="does" role="table" aria-label="Qué hace UTN Hub y qué significa para una empresa">
-        <div class="does-head" role="row">
-          <span role="columnheader" class="label">Para tu empresa</span>
-          <span role="columnheader" class="label">Así se ve en UTN Hub</span>
-        </div>
+      <div class="tabs" role="tablist" aria-label="Qué hace UTN Hub">
         {
-          caso.hace.map((h) => (
-            <div class="does-row" role="row">
-              <div role="cell" class="gain">
-                <h4>{h.t}</h4>
-                <p>{h.empresa}</p>
-                <p class="proof">
-                  <span class="label">En UTN Hub</span>
-                  {h.prueba}
-                </p>
-              </div>
-              <figure role="cell" class="shot">
-                <Image src={h.img} alt={h.alt} widths={[560, 900, 1400]} sizes="(max-width: 760px) 92vw, 640px" loading="lazy" />
-              </figure>
-            </div>
+          tabs.map((t, i) => (
+            <button
+              type="button"
+              role="tab"
+              class="tab tap"
+              id={`tab-${i}`}
+              aria-controls={`panel-${i}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              tabindex={i === 0 ? 0 : -1}
+            >
+              {t.t}
+              <span class="bar" aria-hidden="true"></span>
+            </button>
           ))
         }
       </div>
 
-      <footer class="case-foot">
-        <dl class="quality">
-          {
-            caso.calidad.map((c) => (
-              <div>
-                <dt>{c.t}</dt>
-                <dd>{c.d}</dd>
-              </div>
-            ))
-          }
-        </dl>
-        <p class="stack">Hecho con {caso.stack.slice(0, -1).join(", ")} y {caso.stack.at(-1)}.</p>
-      </footer>
-    </article>
-
-    <ul class="log">
       {
-        proyectos.map((p) => (
-          <li>
-            <div class="head">
-              <h3>
-                <a href={p.href}>{p.nombre}</a>
-              </h3>
-              <span class="pill">{p.estado}</span>
+        tabs.map((t, i) => (
+          <div class="panel" role="tabpanel" id={`panel-${i}`} aria-labelledby={`tab-${i}`} hidden={i !== 0}>
+            <div class="text">
+              <p class="gain">{t.empresa}</p>
+              <p class="proof">
+                <strong>En UTN Hub:</strong> {t.prueba}
+              </p>
             </div>
-            <p>{p.texto}</p>
-            <a class="site" href={p.href}>Conocer {p.nombre}</a>
-          </li>
+            <figure class="shot">
+              <Image src={t.img} alt={t.alt} widths={[700, 1100, 1500]} sizes="(max-width: 860px) 92vw, 760px" loading="lazy" />
+            </figure>
+          </div>
         ))
       }
-    </ul>
+
+      <ul class="quality">
+        {
+          calidad.map((c) => (
+            <li>
+              <strong>{c.t}</strong>
+              <span>{c.d}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </article>
+
+    <a class="flety spot tap" href="/flety">
+      <div class="flety-text">
+        <span class="pill">Producto propio, en desarrollo</span>
+        <h3>Flety: que ningún camión vuelva vacío.</h3>
+        <p>El transportista publica su ruta y encuentra cargas en su camino, en toda la Argentina.</p>
+        <span class="go">Conocer Flety</span>
+      </div>
+      <div class="map">
+        <Image src={mapaFlety} alt="Mapa de la Argentina con rutas de ejemplo: cada camión va cargado y vuelve con carga." widths={[400, 720]} sizes="(max-width: 860px) 92vw, 420px" loading="lazy" />
+      </div>
+    </a>
   </div>
 </section>
 
+<script>
+  const tour = document.querySelector<HTMLElement>("[data-tour]");
+  if (tour) {
+    const tabs = [...tour.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const panels = [...tour.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const auto = !document.documentElement.classList.contains("reduce");
+    const STEP = 6000;
+    let current = 0;
+    let timer = 0;
+
+    const show = (i: number, focus = false) => {
+      current = i;
+      tabs.forEach((t, k) => {
+        t.setAttribute("aria-selected", String(k === i));
+        t.tabIndex = k === i ? 0 : -1;
+      });
+      panels.forEach((p, k) => (p.hidden = k !== i));
+      if (focus) tabs[i].focus();
+      restart();
+    };
+    // Avance automático: la barra de la pestaña activa se llena en STEP ms (CSS) y pasa a la siguiente.
+    const restart = () => {
+      clearTimeout(timer);
+      tour.classList.remove("playing");
+      if (!auto || tour.classList.contains("paused") || !tour.classList.contains("visible")) return;
+      void tour.offsetWidth; // reinicia la animación de la barra
+      tour.classList.add("playing");
+      timer = window.setTimeout(() => show((current + 1) % tabs.length), STEP);
+    };
+
+    tabs.forEach((t, i) => t.addEventListener("click", () => show(i)));
+    tour.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      if (!(e.target as Element).matches('[role="tab"]')) return;
+      show((current + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length, true);
+    });
+    // El cursor encima o el foco adentro frenan el avance.
+    const pause = (on: boolean) => {
+      tour.classList.toggle("paused", on);
+      restart();
+    };
+    tour.addEventListener("pointerenter", () => pause(true));
+    tour.addEventListener("pointerleave", () => pause(false));
+    tour.addEventListener("focusin", () => pause(true));
+    tour.addEventListener("focusout", () => pause(false));
+    new IntersectionObserver(([e]) => {
+      tour.classList.toggle("visible", e.isIntersecting);
+      restart();
+    }, { threshold: 0.4 }).observe(tour);
+  }
+</script>
+
 <style>
-  /* Caso: una tarjeta blanca con borde suave. */
-  .case {
+  .tour {
     display: grid;
-    gap: clamp(28px, 3vw, 40px);
-    padding: clamp(24px, 4vw, 56px);
-    background: var(--white);
+    gap: 28px;
+    padding: clamp(24px, 4vw, 48px);
     border: 1px solid var(--line);
     border-radius: var(--radius);
+    background: var(--white);
     box-shadow: var(--shadow);
   }
-  .case-head {
-    display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    gap: 16px 48px;
-    align-items: end;
+  .tour-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 32px;
   }
-  .case-id {
-    display: grid;
-    gap: 8px;
-    justify-items: start;
+  .tour-head h3 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: var(--fs-2xl);
   }
-  .case-lead {
-    max-width: 52ch;
-    font-size: var(--fs-lg);
+  .tour-head p {
+    margin-top: 4px;
     color: var(--ink-soft);
   }
-  .does {
-    border-top: 1px solid var(--line);
-  }
-  .does-head,
-  .does-row {
+
+  /* Pestañas: la activa lleva una barra naranja que se llena mientras avanza sola. */
+  .tabs {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: 16px 48px;
-  }
-  .does-head {
-    padding: 12px 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     border-bottom: 1px solid var(--line);
+  }
+  .tab {
+    position: relative;
+    padding: 14px 4px 18px;
+    border: 0;
+    background: none;
     color: var(--muted);
+    font: 700 var(--fs-md) / 1.3 var(--body);
+    text-align: left;
+    cursor: pointer;
+    transition: color 200ms var(--ease-out);
   }
-  .does-row {
-    padding: 28px 0;
-    border-bottom: 1px solid var(--line);
-    align-items: start;
-  }
-  .gain {
-    display: grid;
-    gap: 10px;
-    align-content: start;
-  }
-  .gain h4 {
-    font-size: var(--fs-lg);
-  }
-  .gain p {
-    font-size: var(--fs-md);
+  .tab:hover,
+  .tab[aria-selected="true"] {
     color: var(--ink);
   }
-  .proof {
+  .bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 3px;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .tab[aria-selected="true"] .bar {
+    transform: scaleX(1);
+  }
+  .playing .tab[aria-selected="true"] .bar {
+    animation: fill 6000ms linear both;
+  }
+  @keyframes fill {
+    from {
+      transform: scaleX(0);
+    }
+  }
+
+  .panel {
     display: grid;
-    gap: 4px;
-    margin-top: 6px;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+  :global(html.js:not(.reduce)) .panel:not([hidden]) {
+    animation: swap 600ms var(--ease-out);
+  }
+  @keyframes swap {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+  .text {
+    display: grid;
+    gap: 16px;
+  }
+  .gain {
+    font-size: var(--fs-xl);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+  .proof {
     padding-left: 14px;
     border-left: 2px solid var(--line);
     font-size: var(--fs-sm);
     color: var(--ink-soft);
   }
-  .proof .label {
-    color: var(--muted);
-  }
-  /* Captura real con borde suave. */
   .shot {
     margin: 0;
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    background: var(--paper);
     line-height: 0;
   }
-  .shot img {
+  .shot :global(img) {
     width: 100%;
     height: auto;
-    transition: transform 500ms var(--ease-out);
-  }
-  .does-row:hover .shot img {
-    transform: scale(1.02);
-  }
-  .case-foot {
-    display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 20px 48px;
-    align-items: end;
-  }
-  .quality {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px 28px;
-    margin: 0;
-  }
-  .quality dt {
-    font-weight: 700;
-  }
-  .quality dd {
-    margin: 4px 0 0;
-    font-size: var(--fs-sm);
-    color: var(--ink-soft);
-  }
-  .stack {
-    font-size: var(--fs-sm);
-    color: var(--muted);
   }
 
-  .log {
-    margin: 32px 0 0;
-    padding: 0;
+  .quality {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    margin: 0;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--line);
     list-style: none;
   }
-  .log > li {
+  .quality li {
     display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 6fr) auto;
-    gap: 16px 48px;
-    align-items: center;
-    padding: clamp(24px, 3vw, 36px) clamp(24px, 4vw, 56px);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    gap: 4px;
+    align-content: start;
   }
-  .head {
-    display: grid;
-    gap: 8px;
-    justify-items: start;
-  }
-  h3 {
-    font-size: var(--fs-xl);
-  }
-  .case-id h3 {
-    font-size: var(--fs-2xl);
-  }
-  h3 a {
-    text-decoration: none;
-  }
-  .site {
-    justify-self: start;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding-block: 12px;
-    font-weight: 600;
+  .quality span {
     font-size: var(--fs-sm);
-    text-decoration-color: var(--signal);
-  }
-  .site svg {
-    width: 11px;
-    height: 11px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-  }
-  .log > li > p {
     color: var(--ink-soft);
   }
-  @media (max-width: 960px) {
-    .case-head,
-    .case-foot {
-      grid-template-columns: minmax(0, 1fr);
-    }
+
+  /* Flety: banda azul marino con la ida y la vuelta dibujadas. Toda la banda es el link. */
+  .flety {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
+    gap: 32px;
+    align-items: center;
+    margin-top: 24px;
+    padding: clamp(24px, 4vw, 48px);
+    border-radius: var(--radius);
+    background: var(--ink);
+    color: var(--white);
+    text-decoration: none;
+    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
   }
-  /* Celular: cada fila es una unidad; la prueba va debajo, con su rótulo. */
-  @media (max-width: 760px) {
-    .case-lead {
-      font-size: var(--fs-lg);
-    }
-    .does-head {
-      display: none;
-    }
-    .does-row {
+  .flety:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-deep);
+  }
+  .flety-text {
+    display: grid;
+    gap: 12px;
+    justify-items: start;
+  }
+  .flety .pill {
+    background: rgb(255 255 255 / 0.12);
+    color: var(--white);
+  }
+  .flety h3 {
+    font-size: var(--fs-2xl);
+  }
+  .flety p {
+    max-width: 48ch;
+    color: var(--paper-soft);
+  }
+  .go {
+    margin-top: 4px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-decoration-color: var(--signal);
+    text-underline-offset: 0.25em;
+  }
+  .map {
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    border-radius: var(--radius-sm);
+    line-height: 0;
+  }
+  .map :global(img) {
+    width: 100%;
+    height: auto;
+    transition: transform 900ms var(--ease-out);
+  }
+  .flety:hover .map :global(img) {
+    transform: scale(1.04);
+  }
+
+  @media (max-width: 860px) {
+    .panel,
+    .flety {
       grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
-      padding: 22px 0;
+    }
+    .panel .shot {
+      order: -1;
     }
     .quality {
       grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
     }
+
   }
-  @media (max-width: 860px) {
-    .log > li {
+  @media (max-width: 560px) {
+    .tabs {
       grid-template-columns: minmax(0, 1fr);
+      border-bottom: 0;
+    }
+    .tab {
+      padding: 12px 0 14px;
+      border-bottom: 1px solid var(--line);
     }
   }
 </style>

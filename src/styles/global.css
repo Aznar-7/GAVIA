@@ -42,8 +42,8 @@
   --shadow: 0 1px 2px rgb(18 36 58 / 0.06), 0 12px 32px rgb(18 36 58 / 0.1);
   --shadow-deep: 0 2px 4px rgb(0 0 0 / 0.12), 0 30px 60px rgb(0 0 0 / 0.3); /* tarjetas sobre azul marino */
 
-  --max: 1360px;
-  --gutter: clamp(20px, 4vw, 48px);
+  --max: 1600px;
+  --gutter: clamp(20px, 4vw, 64px);
   --space-section: clamp(64px, 9vw, 120px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
@@ -192,10 +192,7 @@ svg {
 .section.tint {
   background: var(--paper);
 }
-.section.dark {
-  background: var(--ink);
-  color: var(--white);
-}
+
 .sec-head {
   display: grid;
   gap: 16px;
