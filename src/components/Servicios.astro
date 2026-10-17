@@ -24,16 +24,16 @@ const servicios = [
 <section class="section" id="servicios" aria-labelledby="servicios-title">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="servicios-title">Qué hacemos.</h2>
-      <p>
+      <h2 id="servicios-title" data-reveal>Qué hacemos.</h2>
+      <p data-reveal style="--d:1">
         Desarrollamos software a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu equipo
         hoy y construimos lo que hace falta, ni más ni menos.
       </p>
     </div>
     <ul class="list">
       {
-        servicios.map((s) => (
-          <li>
+        servicios.map((s, i) => (
+          <li data-reveal style={`--d:${i + 1}`}>
             <h3>{s.t}</h3>
             <p>{s.d}</p>
           </li>

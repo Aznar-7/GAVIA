@@ -1,33 +1,123 @@
 ---
-// Antes y después: problemas típicos de una pyme y el sistema que los resuelve.
+// "Elegí tu problema": el visitante toca lo que le pasa hoy, el problema se tacha y al lado
+// aparece el sistema que lo resuelve, con una pantalla de ejemplo (datos inventados, marcada
+// como tal). "Lo mío es así" lleva al contacto con el mensaje ya escrito.
 // Son ejemplos de lo que se puede construir, no clientes.
-const casos = [
-  { hoy: "El stock vive en una planilla que nadie actualiza a tiempo.", con: "Un sistema de stock que avisa cuándo reponer." },
-  { hoy: "Los turnos se dan por WhatsApp y se pisan entre sí.", con: "Una agenda online con recordatorios automáticos." },
-  { hoy: "Los pedidos llegan por mensaje y alguien los pasa a mano.", con: "Un portal donde el cliente pide y sigue el estado." },
-  { hoy: "Cada mes alguien arma los reportes copiando y pegando.", con: "Un reporte con los números del negocio, siempre al día." },
-  { hoy: "Los repartos se coordinan con papelitos y llamadas.", con: "Una app para el chofer con la hoja de ruta del día." },
+type Fila = [string, string, string?];
+const casos: { hoy: string; con: string; detalle: string; pantalla: string; filas: Fila[]; aviso: string }[] = [
+  {
+    hoy: "El stock vive en una planilla que nadie actualiza a tiempo.",
+    con: "Un sistema de stock que avisa cuándo reponer.",
+    detalle: "Cada venta descuenta del stock y, cuando un producto baja del mínimo, el sistema avisa a quien compra.",
+    pantalla: "Stock",
+    filas: [
+      ["Harina 000 x 1 kg", "12 u", "Reponer"],
+      ["Aceite girasol 900 ml", "48 u", "Bien"],
+      ["Azúcar x 1 kg", "6 u", "Reponer"],
+    ],
+    aviso: "Aviso enviado: 2 productos por reponer",
+  },
+  {
+    hoy: "Los turnos se dan por WhatsApp y se pisan entre sí.",
+    con: "Una agenda online con recordatorios automáticos.",
+    detalle: "Tus clientes eligen un horario libre, el sistema no deja reservar dos veces el mismo y les recuerda el turno el día anterior.",
+    pantalla: "Agenda de hoy",
+    filas: [
+      ["09:00", "Martina G.", "Confirmado"],
+      ["10:30", "Lucas P.", "Recordado"],
+      ["12:00", "Libre", "Disponible"],
+    ],
+    aviso: "Recordatorios del día enviados a las 8:00",
+  },
+  {
+    hoy: "Los pedidos llegan por mensaje y alguien los pasa a mano.",
+    con: "Un portal donde el cliente pide y sigue el estado.",
+    detalle: "El cliente arma el pedido solo, tu equipo lo ve ordenado y el cliente sabe en qué estado está sin preguntar.",
+    pantalla: "Pedidos",
+    filas: [
+      ["#1042 Almacén Sur", "3 bultos", "Preparando"],
+      ["#1041 Kiosco Centro", "1 bulto", "Entregado"],
+      ["#1040 Dietética Norte", "5 bultos", "En camino"],
+    ],
+    aviso: "Pedido #1043 recibido hace 2 minutos",
+  },
+  {
+    hoy: "Cada mes alguien arma los reportes copiando y pegando.",
+    con: "Un reporte con los números del negocio, siempre al día.",
+    detalle: "Los números salen solos de lo que ya se carga en el sistema: entrás y están, sin armar nada.",
+    pantalla: "Resumen del mes",
+    filas: [
+      ["Ventas", "$ 4.820.000", "+12%"],
+      ["Pedidos", "312", "+8%"],
+      ["Clientes nuevos", "27", "+5"],
+    ],
+    aviso: "Actualizado hace 5 minutos",
+  },
+  {
+    hoy: "Los repartos se coordinan con papelitos y llamadas.",
+    con: "Una app para el chofer con la hoja de ruta del día.",
+    detalle: "El chofer ve sus entregas en orden en el celular, marca cada una y en la oficina se ve el avance en vivo.",
+    pantalla: "Hoja de ruta",
+    filas: [
+      ["1. Av. Colón 1200", "09:40", "Entregado"],
+      ["2. Bv. San Juan 455", "10:15", "En camino"],
+      ["3. Duarte Quirós 890", "11:00", "Pendiente"],
+    ],
+    aviso: "4 de 9 entregas hechas",
+  },
 ];
+const malos = ["Reponer", "Pendiente"];
 ---
 
 <section class="section tint" id="ejemplos" aria-labelledby="ejemplos-title">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="ejemplos-title">¿Te suena alguna?</h2>
-      <p>Problemas que vemos todo el tiempo en empresas chicas y medianas, y lo que se puede construir para resolverlos.</p>
+      <h2 id="ejemplos-title" data-reveal>¿Te suena alguna?</h2>
+      <p data-reveal style="--d:1">Elegí lo que te pasa hoy y mirá qué se puede construir para resolverlo.</p>
     </div>
 
-    <div class="table" role="table" aria-label="Problemas frecuentes y cómo se resuelven">
-      <div class="row head" role="row">
-        <span role="columnheader">Hoy</span>
-        <span role="columnheader">Con un sistema a medida</span>
-      </div>
+    <div class="picker" data-picker>
+      <ul class="problems" role="list">
+        {
+          casos.map((c, i) => (
+            <li>
+              <button
+                type="button"
+                class="problem tap"
+                data-i={i}
+                aria-pressed={i === 0 ? "true" : "false"}
+                aria-controls={`caso-${i}`}
+              >
+                <span class="hoy">{c.hoy}</span>
+              </button>
+            </li>
+          ))
+        }
+      </ul>
+
       {
-        casos.map((c) => (
-          <div class="row" role="row">
-            <p role="cell" class="hoy">{c.hoy}</p>
-            <p role="cell" class="con">{c.con}</p>
-          </div>
+        casos.map((c, i) => (
+          <article class="solution spot" id={`caso-${i}`} data-panel={i} hidden={i !== 0} aria-live="polite">
+            <h3>{c.con}</h3>
+            <p class="detail">{c.detalle}</p>
+            <div class="screen" aria-label={`Pantalla de ejemplo: ${c.pantalla}`} role="img">
+              <div class="screen-bar">
+                <span>{c.pantalla}</span>
+                <span class="pill">Ejemplo</span>
+              </div>
+              <ul>
+                {c.filas.map(([a, b, chip]) => (
+                  <li>
+                    <span class="a">{a}</span>
+                    <span class="b">{b}</span>
+                    {chip && <span class={malos.includes(chip) ? "chip warn" : "chip"}>{chip}</span>}
+                  </li>
+                ))}
+              </ul>
+              <p class="notice">{c.aviso}</p>
+            </div>
+            <button type="button" class="btn" data-mine={i}>Lo mío es así</button>
+          </article>
         ))
       }
     </div>
@@ -39,90 +129,248 @@ const casos = [
   </div>
 </section>
 
+<script>
+  const picker = document.querySelector<HTMLElement>("[data-picker]");
+  if (picker) {
+    const buttons = [...picker.querySelectorAll<HTMLButtonElement>(".problem")];
+    const panels = [...picker.querySelectorAll<HTMLElement>("[data-panel]")];
+    const narrow = matchMedia("(max-width: 860px)");
+    let current = 0;
+
+    // En el celular la solución aparece justo debajo del problema elegido.
+    const place = () => {
+      const panel = panels[current];
+      if (narrow.matches) buttons[current].closest("li")!.append(panel);
+      else picker.append(panel);
+    };
+
+    const select = (i: number) => {
+      current = i;
+      buttons.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
+      panels.forEach((p, k) => {
+        p.hidden = k !== i;
+        p.classList.toggle("enter", k === i);
+      });
+      place();
+    };
+
+    buttons.forEach((b, i) => b.addEventListener("click", () => select(i)));
+    // Flechas arriba/abajo para recorrer los problemas con el teclado.
+    picker.addEventListener("keydown", (e) => {
+      const i = buttons.indexOf(document.activeElement as HTMLButtonElement);
+      if (i < 0 || (e.key !== "ArrowDown" && e.key !== "ArrowUp")) return;
+      e.preventDefault();
+      const next = (i + (e.key === "ArrowDown" ? 1 : buttons.length - 1)) % buttons.length;
+      buttons[next].focus();
+      select(next);
+    });
+    narrow.addEventListener("change", place);
+    place();
+
+    // "Lo mío es así": lleva al contacto con el mensaje ya escrito.
+    picker.addEventListener("click", (e) => {
+      const btn = (e.target as Element).closest<HTMLElement>("[data-mine]");
+      if (!btn) return;
+      const i = Number(btn.dataset.mine);
+      const hoy = buttons[i].textContent!.trim();
+      const con = panels[i].querySelector("h3")!.textContent!.trim();
+      const msg = document.getElementById("c-mensaje") as HTMLTextAreaElement | null;
+      if (msg) msg.value = `Hoy: ${hoy}\nMe interesa: ${con}`;
+      document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+      setTimeout(() => (document.getElementById("c-nombre") as HTMLInputElement | null)?.focus({ preventScroll: true }), 700);
+    });
+  }
+</script>
+
 <style>
-  .table {
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-  }
-  .row {
+  .picker {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 32px;
-    padding: 20px 28px;
-    border-top: 1px solid var(--line);
-    transition: background-color 200ms var(--ease-out);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: start;
   }
-  .head {
-    border-top: 0;
-    padding-block: 14px;
-    background: var(--paper);
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    color: var(--muted);
+  .problems {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
-  /* Al pasar el cursor, el problema de hoy se tacha en naranja y la solución se adelanta. */
-  .hoy {
+  .problem {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+    min-height: 64px;
+    padding: 16px 20px;
+    border: 1px solid transparent;
+    border-radius: var(--radius);
+    background: transparent;
     color: var(--ink-soft);
+    font: 500 var(--fs-md) / 1.4 var(--body);
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out),
+      box-shadow 220ms var(--ease-out), transform 160ms var(--ease-out);
+  }
+  /* Punto que se llena cuando el problema está elegido. */
+  .problem::before {
+    content: "";
+    flex: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--line-strong);
+    transition: background-color 220ms var(--ease-out), border-color 220ms var(--ease-out);
+  }
+  /* El problema de hoy se tacha en naranja: al pasar el cursor y cuando está elegido. */
+  .hoy {
     text-decoration: line-through;
     text-decoration-thickness: 2px;
     text-decoration-color: transparent;
     transition: text-decoration-color 260ms var(--ease-out), color 260ms var(--ease-out);
   }
-  .con {
-    font-weight: 600;
-    transition: transform 260ms var(--ease-out);
-  }
   @media (hover: hover) {
-    .row:not(.head):hover {
-      background: #f8fafc;
+    .problem:hover {
+      background: rgb(255 255 255 / 0.6);
     }
-    .row:hover .hoy {
-      color: var(--muted);
-      text-decoration-color: var(--signal);
-    }
-    .row:hover .con {
-      transform: translateX(4px);
+    .problem:hover .hoy {
+      text-decoration-color: rgb(240 106 42 / 0.5);
     }
   }
-  /* En pantallas táctiles no hay cursor: el tachado se ve siempre, suave. */
-  @media (hover: none) {
-    .hoy {
-      color: var(--muted);
-      text-decoration-color: var(--line-strong);
+  .problem[aria-pressed="true"] {
+    background: var(--white);
+    border-color: var(--line);
+    box-shadow: var(--shadow);
+    color: var(--muted);
+  }
+  .problem[aria-pressed="true"]::before {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+  .problem[aria-pressed="true"] .hoy {
+    text-decoration-color: var(--signal);
+  }
+
+  .solution {
+    display: grid;
+    gap: 14px;
+    justify-items: start;
+    padding: clamp(24px, 3vw, 40px);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+  }
+  :global(html.js:not(.reduce)) .solution.enter {
+    animation: swap 520ms var(--ease-out);
+  }
+  @keyframes swap {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
     }
   }
+  h3 {
+    font-size: var(--fs-2xl);
+    line-height: 1.15;
+  }
+  .detail {
+    max-width: 52ch;
+    color: var(--ink-soft);
+  }
+
+  /* Pantalla de ejemplo: una ventana chica del sistema, con datos inventados. */
+  .screen {
+    width: 100%;
+    margin: 8px 0 6px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    font-size: var(--fs-sm);
+  }
+  .screen-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: var(--ink);
+    color: var(--white);
+    font-weight: 700;
+  }
+  .screen-bar .pill {
+    background: rgb(255 255 255 / 0.14);
+    color: var(--white);
+  }
+  .screen ul {
+    margin: 0;
+    padding: 0 14px;
+    list-style: none;
+  }
+  .screen li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    gap: 16px;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .screen .a {
+    font-weight: 600;
+  }
+  .screen .b {
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .chip {
+    min-width: 84px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #e6f2ec;
+    color: var(--success);
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    text-align: center;
+  }
+  .chip.warn {
+    background: #fdece3;
+    color: var(--signal-text);
+  }
+  .notice {
+    padding: 10px 14px;
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+
   .cta-line {
-    margin-top: 28px;
+    margin-top: 32px;
     color: var(--ink-soft);
   }
   .cta-line a {
     font-weight: 700;
     color: var(--ink);
   }
-  /* Celular: cada caso es un bloque con su "hoy" arriba y la solución abajo. */
-  @media (max-width: 680px) {
-    .head {
+
+  @media (max-width: 860px) {
+    .picker {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .problems .solution {
+      margin: 8px 0 12px;
+    }
+  }
+  @media (max-width: 480px) {
+    .screen li {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+    .screen .b {
       display: none;
     }
-    .row {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 6px;
-      padding: 18px 20px;
-    }
-    .row:nth-child(2) {
-      border-top: 0;
-    }
-    .hoy::before {
-      content: "Hoy: ";
-      font-weight: 600;
-      color: var(--muted);
-    }
-    .con::before {
-      content: "Con un sistema: ";
-      font-weight: 400;
-      color: var(--muted);
+    .solution .btn {
+      width: 100%;
     }
   }
 </style>

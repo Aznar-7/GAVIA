@@ -1,27 +1,33 @@
 ---
-// Primera pantalla: qué hacemos, para quién y cómo se arranca, con una captura real de un
-// sistema nuestro en uso al lado. Sin ilustraciones: lo que se ve es software de verdad.
+// Primera pantalla: qué hacemos, para quién y cómo se arranca. A la derecha, tres capturas
+// reales de UTN Hub apiladas en profundidad que se salen del borde: se separan apenas con el
+// cursor y con el scroll. Sin ilustraciones: lo que se ve es software nuestro de verdad.
 import { Image } from "astro:assets";
 import { TEAM, whatsappUrl } from "../config";
-import captura from "../assets/utnhub/utn-manager.png";
+import capManager from "../assets/utnhub/utn-manager.png";
+import capProyectos from "../assets/utnhub/proyectos.png";
+import capInscribot from "../assets/utnhub/inscribot.png";
 const wa = whatsappUrl();
 const nombres = `${TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o ${TEAM.at(-1)!.nombre.split(" ")[0]}`;
 const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código es tuyo"];
+const lineas = ["Software a medida", "para tu empresa."];
 ---
 
-<section class="hero" id="top" aria-labelledby="hero-title">
+<section class="hero" id="top" aria-labelledby="hero-title" data-hero>
   <div class="wrap inner">
     <div class="copy">
-      <h1 id="hero-title">Software a medida para tu empresa.</h1>
-      <p class="lead">
+      <h1 id="hero-title">
+        {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span>{l}</span></span>)}
+      </h1>
+      <p class="lead rise" style="--i:2">
         Pasamos tu negocio de Excel y WhatsApp a un sistema propio. Antes de empezar te damos por escrito qué vas a
         recibir y cuánto cuesta cada etapa. Somos un estudio de software de Córdoba.
       </p>
-      <div class="actions">
+      <div class="actions rise" style="--i:3">
         <a class="btn" href="#contacto">Contanos tu proyecto</a>
         <a class="btn secondary" href="#como-trabajamos">Ver cómo trabajamos</a>
       </div>
-      <ul class="facts" aria-label="Condiciones">
+      <ul class="facts rise" style="--i:4" aria-label="Condiciones">
         {
           facts.map((f) => (
             <li>
@@ -31,49 +37,107 @@ const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código 
           ))
         }
       </ul>
-      <p class="note">
+      <p class="note rise" style="--i:5">
         Te responde {nombres} en menos de un día hábil.
         {wa && <a href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a>}
       </p>
     </div>
 
-    <figure class="shot">
-      <div class="frame">
+    <figure class="stage" data-stage>
+      <div class="layer back" style="--z:0.5">
+        <Image src={capProyectos} alt="" widths={[500, 800]} sizes="40vw" loading="eager" />
+      </div>
+      <div class="layer main" style="--z:1">
         <Image
-          src={captura}
-          alt="UTN Manager, parte de UTN Hub: próximas entregas y novedades traídas del aula virtual, con botón para agendarlas."
+          src={capManager}
+          alt="UTN Manager, parte de UTN Hub: próximas entregas y novedades traídas del aula virtual."
           widths={[600, 900, 1300]}
-          sizes="(max-width: 960px) 92vw, 640px"
+          sizes="(max-width: 960px) 92vw, 760px"
           loading="eager"
           fetchpriority="high"
         />
+      </div>
+      <div class="layer front" style="--z:1.8">
+        <Image src={capInscribot} alt="" widths={[400, 700]} sizes="30vw" loading="eager" />
       </div>
       <figcaption>UTN Hub, un sistema hecho por nosotros que hoy está en uso. <a href="#proyectos">Ver el caso</a></figcaption>
     </figure>
   </div>
 </section>
 
+<script>
+  // Profundidad: cada capa se corre según su --z, con el cursor (escritorio) y con el scroll.
+  const hero = document.querySelector<HTMLElement>("[data-hero]");
+  const stage = hero?.querySelector<HTMLElement>("[data-stage]");
+  const reduce = document.documentElement.classList.contains("reduce");
+  if (hero && stage && !reduce) {
+    let px = 0;
+    let py = 0;
+    let sy = 0;
+    let raf = 0;
+    const apply = () => {
+      raf = 0;
+      stage.style.setProperty("--px", px.toFixed(3));
+      stage.style.setProperty("--py", py.toFixed(3));
+      stage.style.setProperty("--sy", sy.toFixed(1));
+    };
+    const queue = () => (raf ||= requestAnimationFrame(apply));
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      hero.addEventListener("pointermove", (e) => {
+        px = e.clientX / innerWidth - 0.5;
+        py = e.clientY / innerHeight - 0.5;
+        queue();
+      });
+      hero.addEventListener("pointerleave", () => {
+        px = py = 0;
+        queue();
+      });
+    }
+    addEventListener(
+      "scroll",
+      () => {
+        if (scrollY > innerHeight * 1.2) return;
+        sy = scrollY;
+        queue();
+      },
+      { passive: true },
+    );
+  }
+</script>
+
 <style>
   .hero {
+    overflow: hidden;
     background: var(--paper);
-    padding-block: clamp(48px, 7vw, 96px) clamp(56px, 8vw, 112px);
+    padding-block: clamp(48px, 7vw, 96px) clamp(64px, 9vw, 120px);
   }
   .inner {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
-    gap: clamp(32px, 5vw, 72px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px);
     align-items: center;
   }
   .copy {
+    position: relative;
+    z-index: 2;
     display: grid;
     gap: 24px;
     justify-items: start;
   }
   h1 {
     font-size: var(--fs-hero);
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    max-width: 14ch;
+    font-weight: 800;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+  }
+  h1 .l {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  h1 .l > span {
+    display: block;
   }
   .lead {
     max-width: 44ch;
@@ -118,25 +182,95 @@ const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código 
     color: var(--ink);
   }
 
-  /* Captura real en un marco simple. */
-  .shot {
-    margin: 0;
-    display: grid;
-    gap: 12px;
+  /* Entrada: el título sube línea por línea y el resto aparece escalonado. Si hubo pantalla
+     de la marca, espera a que se vaya. */
+  :global(html.js:not(.reduce)) h1 .l > span {
+    animation: line-up 1000ms var(--ease-out) both;
+    animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
+  }
+  :global(html.js:not(.reduce)) .rise {
+    animation: rise 900ms var(--ease-out) both;
+    animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
+  }
+  :global(html.js:not(.reduce)) .stage {
+    animation: stage-in 1400ms var(--ease-out) both;
+    animation-delay: calc(var(--intro, 120ms) + 200ms);
+  }
+  :global(html.had-intro) .hero {
+    --intro: 1300ms;
+  }
+  @keyframes line-up {
+    from {
+      transform: translateY(105%);
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+  @keyframes stage-in {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+  }
+
+  /* Escenario: tres capturas en capas. Se sale del contenedor por la derecha. */
+  .stage {
+    --px: 0;
+    --py: 0;
+    --sy: 0;
+    position: relative;
+    margin: 0 calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2)) 0 0;
+    aspect-ratio: 16 / 11;
     min-width: 0;
   }
-  .frame {
+  .layer {
+    position: absolute;
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--white);
     box-shadow: var(--shadow);
+    transform: translate3d(
+      calc(var(--px) * var(--z) * -22px),
+      calc(var(--py) * var(--z) * -16px + var(--sy) * var(--z) * -0.08px),
+      0
+    );
+    transition: transform 500ms var(--ease-out);
+    will-change: transform;
   }
-  .frame img {
+  .layer :global(img) {
     width: 100%;
     height: auto;
   }
+  .main {
+    top: 12%;
+    left: 6%;
+    width: 86%;
+    z-index: 2;
+  }
+  .back {
+    top: 0;
+    left: 30%;
+    width: 72%;
+    z-index: 1;
+    opacity: 0.9;
+  }
+  .front {
+    bottom: 4%;
+    left: -2%;
+    width: 44%;
+    z-index: 3;
+    border-color: var(--ink);
+    box-shadow: 0 2px 4px rgb(18 36 58 / 0.1), 0 24px 48px rgb(18 36 58 / 0.22);
+  }
   figcaption {
+    position: absolute;
+    left: 6%;
+    bottom: -44px;
     font-size: var(--fs-sm);
     color: var(--muted);
   }
@@ -149,8 +283,8 @@ const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código 
     .inner {
       grid-template-columns: minmax(0, 1fr);
     }
-    h1 {
-      max-width: 16ch;
+    .stage {
+      margin: 8px calc(var(--gutter) * -1) 40px 0;
     }
   }
   @media (max-width: 640px) {
@@ -163,6 +297,13 @@ const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código 
     }
     .facts {
       flex-direction: column;
+    }
+    .stage {
+      aspect-ratio: 16 / 13;
+    }
+    figcaption {
+      bottom: -36px;
+      right: var(--gutter);
     }
   }
 </style>

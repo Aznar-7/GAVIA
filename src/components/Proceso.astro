@@ -1,7 +1,10 @@
 ---
-// Cómo trabajamos: cinco etapas en una fila unida por la línea de rumbo naranja, el único
-// gesto de marca del sitio. Debajo de cada etapa, qué hacemos, qué te llevás y qué te toca.
-// Al final, dos entregables de ejemplo (marcados como tales) para que se vea que son reales.
+// Cómo trabajamos: el momento pico de la página, en azul marino de borde a borde.
+// En pantallas grandes la sección queda fija mientras bajás: la línea de rumbo naranja
+// avanza etapa por etapa y a la derecha cambia el documento que te llevás.
+// En el celular, con "reducir movimiento" o sin JS, las etapas se apilan y cada una
+// trae su documento en un desplegable.
+import ProcesoDoc from "./ProcesoDoc.astro";
 const etapas = [
   {
     nombre: "Relevamiento",
@@ -34,365 +37,346 @@ const etapas = [
     tuParte: "Nada, salvo pedir lo que necesites.",
   },
 ];
-const check = "M2 7l4 4 8-9";
 ---
 
-<section class="section" id="como-trabajamos" aria-labelledby="proceso-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2 id="proceso-title">Cómo trabajamos.</h2>
-      <p>
-        Cada etapa termina en algo que podés leer, probar o firmar. Pagás etapa por etapa y podés frenar después de
-        cualquiera.
-      </p>
-    </div>
-
-    <ol class="steps" data-steps>
-      {
-        etapas.map((e, i) => (
-          <li class="step" id={`etapa-${i + 1}`}>
-            <span class="num" aria-hidden="true">{i + 1}</span>
-            <h3>{e.nombre}</h3>
-            <p class="does">{e.hacemos}</p>
-            <dl>
-              <div>
-                <dt>Te llevás</dt>
-                <dd>{e.recibis}</dd>
-              </div>
-              <div>
-                <dt>Tu parte</dt>
-                <dd>{e.tuParte}</dd>
-              </div>
-            </dl>
-          </li>
-        ))
-      }
-    </ol>
-
-    <details class="samples" open data-samples>
-      <summary class="samples-title">Así se ven dos de los documentos que te entregamos.</summary>
-      <div class="sample-grid">
-        <figure class="sheet" aria-label="Ejemplo de documento de requerimientos">
-          <span class="pill">Ejemplo</span>
-          <p class="doc-title">Requerimientos <span>versión 1.0</span></p>
-          <ul class="reqs">
-            <li><b>Hace</b> Cargar pedidos de clientes desde el celular</li>
-            <li><b>Hace</b> Mostrar en qué estado está cada pedido</li>
-            <li><b>Hace</b> Avisar cuando falta stock de un producto</li>
-            <li><b>Tiene que</b> Funcionar con mala señal</li>
-          </ul>
-          <p class="approved">
-            <svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><path d={check} /></svg>
-            Aprobado por el cliente
+<section class="process" id="como-trabajamos" aria-labelledby="proceso-title" data-process style={`--n:${etapas.length}`}>
+  <div class="track">
+    <div class="sticky wrap">
+      <div class="left">
+        <div class="head">
+          <h2 id="proceso-title" data-reveal>Cómo trabajamos.</h2>
+          <p data-reveal style="--d:1">
+            Cada etapa termina en algo que podés leer, probar o firmar. Pagás etapa por etapa y podés frenar después de
+            cualquiera.
           </p>
-        </figure>
-        <figure class="sheet" aria-label="Ejemplo de propuesta con precio por etapa">
-          <span class="pill">Ejemplo</span>
-          <p class="doc-title">Propuesta</p>
-          <table class="plan">
-            <thead>
-              <tr><th>Etapa</th><th>Incluye</th><th>Plazo</th><th>Precio</th></tr>
-            </thead>
-            <tbody>
-              <tr><td class="coord">1</td><td>Pedidos y clientes</td><td class="coord">3 semanas</td><td>Cerrado</td></tr>
-              <tr><td class="coord">2</td><td>Stock y alertas</td><td class="coord">2 semanas</td><td>Cerrado</td></tr>
-              <tr><td class="coord">3</td><td>Reportes</td><td class="coord">2 semanas</td><td>Cerrado</td></tr>
-            </tbody>
-          </table>
-          <p class="approved">Pagás etapa por etapa y podés frenar después de cualquiera.</p>
-        </figure>
+        </div>
+
+        <div class="stages-wrap">
+        <span class="rail" aria-hidden="true"><span class="fill"></span></span>
+        <ol class="stages">
+          {
+            etapas.map((e, i) => (
+              <li class="stage" id={`etapa-${i + 1}`} data-stage={i}>
+                <button type="button" class="stage-head tap" data-go={i} tabindex="-1">
+                  <span class="num" aria-hidden="true">{i + 1}</span>
+                  <h3>{e.nombre}</h3>
+                </button>
+                <div class="body">
+                  <div class="body-in">
+                  <p class="does">{e.hacemos}</p>
+                  <dl>
+                    <div>
+                      <dt>Te llevás</dt>
+                      <dd>{e.recibis}</dd>
+                    </div>
+                    <div>
+                      <dt>Tu parte</dt>
+                      <dd>{e.tuParte}</dd>
+                    </div>
+                  </dl>
+                  <details class="mdoc">
+                    <summary class="tap">Ver el documento de ejemplo</summary>
+                    <ProcesoDoc i={i} />
+                  </details>
+                  </div>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        </div>
       </div>
-    </details>
+
+      <div class="docs" aria-hidden="true">
+        {
+          etapas.map((_, i) => (
+            <div class="doc-slot" data-doc={i}>
+              <ProcesoDoc i={i} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
   </div>
 </section>
 
 <script>
-  // La línea de rumbo se traza una vez cuando la fila entra en pantalla. Sin JS o con
-  // movimiento reducido, se ve completa desde el principio.
-  // En celular los documentos de ejemplo van plegados; en pantallas grandes, abiertos.
-  const samples = document.querySelector<HTMLDetailsElement>("[data-samples]");
-  const narrow = matchMedia("(max-width: 760px)");
-  const fold = () => samples && (samples.open = !narrow.matches);
-  narrow.addEventListener("change", fold);
-  fold();
+  const root = document.querySelector<HTMLElement>("[data-process]");
+  const reduce = document.documentElement.classList.contains("reduce");
+  const wide = matchMedia("(min-width: 1000px) and (min-height: 640px)");
+  if (root && !reduce) {
+    const track = root.querySelector<HTMLElement>(".track")!;
+    const stages = [...root.querySelectorAll<HTMLElement>("[data-stage]")];
+    const docs = [...root.querySelectorAll<HTMLElement>("[data-doc]")];
+    const n = stages.length;
+    let raf = 0;
 
-  const steps = document.querySelector<HTMLElement>("[data-steps]");
-  if (steps && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    steps.classList.add("will-draw");
-    const io = new IntersectionObserver(
-      ([e]) => {
-        if (!e.isIntersecting) return;
-        steps.classList.add("drawn");
-        io.disconnect();
-      },
-      { threshold: 0.4 },
-    );
-    io.observe(steps);
+    const update = () => {
+      raf = 0;
+      if (!root.classList.contains("pinned")) return;
+      const r = track.getBoundingClientRect();
+      const span = r.height - innerHeight;
+      const p = Math.min(1, Math.max(0, -r.top / span));
+      const current = Math.min(n - 1, Math.floor(p * n));
+      root.style.setProperty("--p", p.toFixed(4));
+      stages.forEach((s, i) => {
+        s.classList.toggle("current", i === current);
+        s.classList.toggle("done", i < current);
+      });
+      docs.forEach((d, i) => {
+        d.classList.toggle("current", i === current);
+        d.classList.toggle("before", i < current);
+      });
+    };
+    const queue = () => (raf ||= requestAnimationFrame(update));
+
+    const mode = () => {
+      root.classList.toggle("pinned", wide.matches);
+      // Fija, el encabezado de cada etapa es un botón que lleva a esa etapa.
+      root.querySelectorAll<HTMLButtonElement>("[data-go]").forEach((b) => (b.tabIndex = wide.matches ? 0 : -1));
+      queue();
+    };
+    wide.addEventListener("change", mode);
+    addEventListener("scroll", queue, { passive: true });
+    addEventListener("resize", queue);
+    mode();
+
+    root.addEventListener("click", (e) => {
+      const b = (e.target as Element).closest<HTMLElement>("[data-go]");
+      if (!b || !root.classList.contains("pinned")) return;
+      const i = Number(b.dataset.go);
+      const span = track.offsetHeight - innerHeight;
+      scrollTo({ top: track.getBoundingClientRect().top + scrollY + ((i + 0.5) / n) * span, behavior: "smooth" });
+    });
   }
 </script>
 
 <style>
-  /* Fila de etapas: la línea de rumbo pasa por los números. */
-  .steps {
-    position: relative;
+  .process {
+    --p: 0;
+    background: var(--ink);
+    color: var(--white);
+  }
+  .process ::selection {
+    background: var(--signal);
+    color: var(--ink);
+  }
+  .sticky {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 28px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 96px);
+    padding-block: var(--space-section);
+  }
+  .head {
+    display: grid;
+    gap: 16px;
+    max-width: 640px;
+    margin-bottom: clamp(32px, 4vw, 48px);
+  }
+  .head p {
+    color: var(--paper-soft);
+    font-size: var(--fs-lg);
+  }
+
+  /* Etapas con la línea de rumbo a la izquierda. */
+  .stages-wrap {
+    position: relative;
+  }
+  .stages {
+    display: grid;
+    gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  .steps::before {
-    content: "";
+  .rail {
     position: absolute;
-    top: 19px;
-    left: 20px;
-    /* Termina en el centro del último número. */
-    right: calc((100% - 4 * 28px) / 5 - 20px);
-    border-top: 3px solid var(--signal);
-    transform-origin: left;
+    top: 22px;
+    bottom: 22px;
+    left: 21px;
+    width: 3px;
+    background: rgb(255 255 255 / 0.14);
+    border-radius: 3px;
   }
-  .will-draw::before {
-    transform: scaleX(0);
-    transition: transform 1400ms var(--ease-out);
+  .fill {
+    position: absolute;
+    inset: 0;
+    background: var(--signal);
+    border-radius: inherit;
+    transform-origin: top;
   }
-  .will-draw.drawn::before {
-    transform: scaleX(1);
-  }
-  /* Las cinco columnas comparten filas: los "Te llevás" quedan alineados. */
-  .steps {
-    grid-template-rows: repeat(4, auto);
-    row-gap: 10px;
-  }
-  .step {
-    position: relative;
-    display: grid;
-    grid-row: span 4;
-    grid-template-rows: subgrid;
-    align-content: start;
-    scroll-margin-top: 100px;
+  .stage-head {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    text-align: left;
+    cursor: default;
   }
   .num {
+    position: relative;
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 40px;
-    margin-bottom: 8px;
+    flex: none;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: 3px solid var(--signal);
-    background: var(--white);
+    background: var(--ink);
     font-weight: 700;
-    font-variant-numeric: tabular-nums;
-    transition: background-color 220ms var(--ease-out), transform 220ms var(--ease-out);
-  }
-  /* La etapa que mirás se marca en el rumbo. */
-  .step:hover .num {
-    background: var(--signal);
-    transform: scale(1.08);
+    transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out), transform 300ms var(--ease-out);
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
+    transition: color 300ms var(--ease-out);
+  }
+  .body {
+    display: grid;
+    padding: 8px 0 20px 62px;
+  }
+  .body-in {
+    display: grid;
+    gap: 12px;
+    min-height: 0;
   }
   .does {
-    color: var(--ink-soft);
-    font-size: var(--fs-sm);
+    max-width: 52ch;
+    color: var(--paper-soft);
   }
   dl {
     display: grid;
-    gap: 10px;
-    margin: 6px 0 0;
-    padding-top: 12px;
-    border-top: 1px solid var(--line);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin: 0;
+    max-width: 560px;
   }
   dt {
     font-size: var(--fs-xs);
     font-weight: 600;
-    color: var(--muted);
+    color: var(--paper-soft);
   }
   dd {
     margin: 2px 0 0;
-    font-size: var(--fs-sm);
     font-weight: 600;
   }
-
-  /* Entregables de ejemplo: hojas blancas con borde suave. */
-  .samples {
-    margin-top: clamp(48px, 6vw, 72px);
-  }
-  .samples-title {
-    font-weight: 700;
-    font-size: var(--fs-lg);
+  .mdoc summary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 1px solid rgb(255 255 255 / 0.3);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    cursor: pointer;
     list-style: none;
-    pointer-events: none;
   }
-  .samples-title::-webkit-details-marker {
+  .mdoc summary::-webkit-details-marker {
     display: none;
   }
-  .samples[open] .sample-grid {
-    margin-top: 20px;
+  .mdoc[open] summary {
+    margin-bottom: 14px;
   }
-  .sample-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px;
-  }
-  .sheet {
-    position: relative;
-    margin: 0;
-    padding: 28px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-    box-shadow: var(--shadow);
-  }
-  .sheet .pill {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-  }
-  .doc-title {
-    display: flex;
-    gap: 12px;
-    align-items: baseline;
-    padding-bottom: 12px;
-    margin-bottom: 4px;
-    border-bottom: 1px solid var(--line);
-    font-weight: 700;
-    font-size: var(--fs-lg);
-  }
-  .doc-title span {
-    font-size: var(--fs-xs);
-    font-weight: 500;
-    color: var(--muted);
-  }
-  .reqs {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .reqs li {
-    display: grid;
-    grid-template-columns: 6.5em minmax(0, 1fr);
-    gap: 12px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--line);
-    font-size: var(--fs-sm);
-    color: var(--ink-soft);
-  }
-  .reqs b {
-    color: var(--ink);
-  }
-  .approved {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 16px;
-    font-weight: 600;
-    font-size: var(--fs-sm);
-  }
-  .approved svg path {
-    fill: none;
-    stroke: var(--success);
-    stroke-width: 2.4;
-  }
-  .plan {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: var(--fs-sm);
-  }
-  .plan th {
-    text-align: left;
-    font-weight: 600;
-    color: var(--muted);
-    padding: 8px 12px 8px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .plan td {
-    padding: 10px 12px 10px 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .plan td.coord {
-    white-space: nowrap;
+  .docs {
+    display: none;
   }
 
-  @media (max-width: 1000px) {
-    .sample-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
+  /* ---------- Modo fijo (pantallas grandes, con JS y movimiento) ---------- */
+  .pinned .track {
+    height: calc(var(--n) * 70vh + 100vh);
   }
-  /* Tablet y celular: las etapas se apilan y la línea de rumbo baja por la izquierda. */
-  @media (max-width: 900px) {
-    .steps {
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: none;
-      gap: 28px;
-      padding-left: 60px;
-    }
-    .step {
-      grid-row: auto;
-      grid-template-rows: none;
-      gap: 10px;
-    }
-    .steps::before {
-      top: 20px;
-      bottom: 20px;
-      left: 19px;
-      right: auto;
-      border-top: 0;
-      border-left: 3px solid var(--signal);
-      transform-origin: top;
-    }
-    .will-draw::before {
-      transform: scaleY(0);
-    }
-    .will-draw.drawn::before {
-      transform: scaleY(1);
-    }
-    .num {
-      position: absolute;
-      left: -60px;
-      top: -6px;
-    }
-    dl {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
-    }
+  .pinned .sticky {
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    align-items: center;
+    padding-block: 72px 32px;
   }
-  /* Celular: el título de los ejemplos pasa a ser un botón para abrirlos. */
-  @media (max-width: 760px) {
-    .samples-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      min-height: 48px;
-      padding: 12px 16px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius-sm);
-      font-size: var(--fs-md);
-      pointer-events: auto;
-      cursor: pointer;
-    }
-    .samples-title::after {
-      content: "+";
-      font-size: var(--fs-xl);
-      line-height: 1;
-    }
-    .samples[open] .samples-title::after {
-      content: "−";
-    }
+  .pinned .fill {
+    transform: scaleY(var(--p));
   }
-  @media (max-width: 560px) {
-    .sheet {
-      padding: 22px 18px;
+  .pinned .stage-head {
+    cursor: pointer;
+  }
+  .pinned .stage-head:hover h3 {
+    color: var(--white);
+  }
+  .pinned .stage h3 {
+    color: rgb(255 255 255 / 0.45);
+  }
+  .pinned .stage.done h3 {
+    color: rgb(255 255 255 / 0.75);
+  }
+  .pinned .stage.done .num,
+  .pinned .stage.current .num {
+    background: var(--signal);
+    color: var(--ink);
+  }
+  .pinned .stage.current .num {
+    transform: scale(1.12);
+  }
+  .pinned .stage.current h3 {
+    color: var(--white);
+  }
+  /* Solo la etapa actual muestra su detalle; el resto queda en una línea. */
+  .pinned .body {
+    display: grid;
+    grid-template-rows: 0fr;
+    padding-block: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: grid-template-rows 500ms var(--ease-out), opacity 400ms var(--ease-out), padding 500ms var(--ease-out);
+  }
+  .pinned .body-in {
+    overflow: hidden;
+  }
+  .pinned .stage.current .body {
+    grid-template-rows: 1fr;
+    padding-block: 8px 12px;
+    opacity: 1;
+  }
+  .pinned .mdoc {
+    display: none;
+  }
+  .pinned .docs {
+    position: relative;
+    display: block;
+    align-self: center;
+    height: min(440px, 60vh);
+  }
+  .doc-slot {
+    position: absolute;
+    inset: 0 0 auto;
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+    transition: opacity 500ms var(--ease-out), transform 700ms var(--ease-out);
+    pointer-events: none;
+  }
+  .doc-slot.before {
+    transform: translateY(-40px) scale(0.96);
+  }
+  .doc-slot.current {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (max-width: 640px) {
+    .body {
+      padding-left: 0;
     }
-    .sheet .pill {
-      position: static;
-      margin-bottom: 10px;
+    .stages {
+      gap: 20px;
     }
-    .reqs li {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 2px;
+    .rail {
+      display: none;
+    }
+    .stages {
+      gap: 20px;
     }
     dl {
       grid-template-columns: minmax(0, 1fr);

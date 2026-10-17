@@ -1,0 +1,201 @@
+---
+// El documento de ejemplo que te llevás en cada etapa de "Cómo trabajamos". Contenido
+// inventado y marcado como "Ejemplo".
+interface Props {
+  i: number;
+}
+const { i } = Astro.props;
+const check = "M2 7l4 4 8-9";
+const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", "Reporte mensual"];
+---
+
+<div class="doc">
+  <div class="doc-head">
+    <p class="doc-title">{titulos[i]}</p>
+    <span class="pill">Ejemplo</span>
+  </div>
+  {
+    i === 0 && (
+      <>
+        <ul class="rows">
+          <li><b>Hace</b> Cargar pedidos de clientes desde el celular</li>
+          <li><b>Hace</b> Mostrar en qué estado está cada pedido</li>
+          <li><b>Hace</b> Avisar cuando falta stock de un producto</li>
+          <li><b>Tiene que</b> Funcionar con mala señal</li>
+        </ul>
+        <p class="ok">
+          <svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><path d={check} /></svg>
+          Aprobado por el cliente
+        </p>
+      </>
+    )
+  }
+  {
+    i === 1 && (
+      <>
+        <table>
+          <thead>
+            <tr><th>Etapa</th><th>Incluye</th><th>Plazo</th><th>Precio</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Pedidos y clientes</td><td>3 semanas</td><td>Cerrado</td></tr>
+            <tr><td>2</td><td>Stock y alertas</td><td>2 semanas</td><td>Cerrado</td></tr>
+            <tr><td>3</td><td>Reportes</td><td>2 semanas</td><td>Cerrado</td></tr>
+          </tbody>
+        </table>
+        <p class="ok">Pagás etapa por etapa y podés frenar después de cualquiera.</p>
+      </>
+    )
+  }
+  {
+    i === 2 && (
+      <>
+        <div class="weeks">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((w) => (
+            <span class={w % 2 === 0 ? "wk demo" : "wk"}>Sem. {w}</span>
+          ))}
+        </div>
+        <p class="ok"><span class="tick" aria-hidden="true"></span> Una versión para probar cada dos semanas</p>
+      </>
+    )
+  }
+  {
+    i === 3 && (
+      <ul class="rows checks">
+        {["Datos pasados desde tus planillas", "Usuarios creados para tu equipo", "Capacitación hecha", "Manual de uso entregado"].map((t) => (
+          <li>
+            <svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><path d={check} /></svg>
+            {t}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    i === 4 && (
+      <ul class="rows">
+        <li><b>Seguridad</b> Actualizaciones aplicadas</li>
+        <li><b>Mejoras</b> Dos pedidos del equipo, entregados</li>
+        <li><b>Respaldo</b> Copias de seguridad verificadas</li>
+        <li><b>Próximo mes</b> Exportar pedidos a Excel</li>
+      </ul>
+    )
+  }
+</div>
+
+<style>
+  .doc {
+    padding: clamp(20px, 2.4vw, 32px);
+    border-radius: var(--radius);
+    background: var(--white);
+    color: var(--ink);
+    font-size: var(--fs-sm);
+    box-shadow: var(--shadow-deep);
+  }
+  .doc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 12px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .doc-title {
+    font-weight: 700;
+    font-size: var(--fs-lg);
+  }
+  .rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .rows li {
+    display: grid;
+    grid-template-columns: 6.5em minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .rows b {
+    color: var(--ink);
+  }
+  .checks li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  svg path {
+    fill: none;
+    stroke: var(--success);
+    stroke-width: 2.4;
+  }
+  .ok {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--muted);
+    padding: 8px 10px 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  td {
+    padding: 10px 10px 10px 0;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .weeks {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .wk {
+    position: relative;
+    display: grid;
+    align-content: end;
+    height: 64px;
+    padding: 8px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+  .wk.demo {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+  .wk.demo::after,
+  .tick {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    background: var(--signal);
+  }
+  .wk.demo::after {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+  }
+  @media (max-width: 480px) {
+    .rows li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+    }
+  }
+</style>

@@ -14,8 +14,8 @@ const iniciales = (n: string) =>
 <section class="section tint" id="equipo" aria-labelledby="equipo-title">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="equipo-title">Un equipo chico, a propósito.</h2>
-      <p>
+      <h2 id="equipo-title" data-reveal>Un equipo chico, a propósito.</h2>
+      <p data-reveal style="--d:1">
         Elegimos ser pocos para que la persona que te escucha sea la misma que diseña y escribe tu sistema. Cada
         uno conoce tu proyecto de punta a punta, y el que te responde es siempre uno de nosotros.
       </p>
@@ -23,8 +23,8 @@ const iniciales = (n: string) =>
 
     <ul class="crew">
       {
-        equipo.map((m) => (
-          <li>
+        equipo.map((m, i) => (
+          <li class="spot" data-reveal style={`--d:${i}`}>
             <span class="avatar" aria-hidden="true">{iniciales(m.nombre)}</span>
             <div class="who">
               <h3>{m.nombre}</h3>
@@ -65,13 +65,13 @@ const iniciales = (n: string) =>
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--white);
-    transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), transform 220ms var(--ease-out);
+    transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), translate 220ms var(--ease-out), opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
   }
   @media (hover: hover) {
     li:hover {
       border-color: var(--line-strong);
       box-shadow: var(--shadow);
-      transform: translateY(-2px);
+      translate: 0 -2px;
     }
   }
   .avatar {

@@ -35,13 +35,14 @@
   --fs-xl: clamp(1.3rem, 1.9vw, 1.6rem);
   --fs-2xl: clamp(1.75rem, 3vw, 2.4rem);
   --fs-3xl: clamp(2rem, 3.6vw, 3rem);
-  --fs-hero: clamp(2.5rem, 5vw, 4.25rem);
+  --fs-hero: clamp(2.5rem, 4.4vw, 4.1rem);
 
   --radius-sm: 8px;
   --radius: 12px;
   --shadow: 0 1px 2px rgb(18 36 58 / 0.06), 0 12px 32px rgb(18 36 58 / 0.1);
+  --shadow-deep: 0 2px 4px rgb(0 0 0 / 0.12), 0 30px 60px rgb(0 0 0 / 0.3); /* tarjetas sobre azul marino */
 
-  --max: 1280px;
+  --max: 1360px;
   --gutter: clamp(20px, 4vw, 48px);
   --space-section: clamp(64px, 9vw, 120px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -72,6 +73,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   caret-color: var(--signal);
+  -webkit-tap-highlight-color: transparent;
 }
 
 ::selection {
@@ -189,6 +191,10 @@ svg {
 }
 .section.tint {
   background: var(--paper);
+}
+.section.dark {
+  background: var(--ink);
+  color: var(--white);
 }
 .sec-head {
   display: grid;
@@ -316,4 +322,58 @@ textarea.input {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* ---------- Movimiento ----------
+   Todo es visible por defecto. Con JS (html.js) y sin "reducir movimiento", lo marcado con
+   data-reveal arranca corrido y aparece al entrar en pantalla (lo maneja Base.astro). */
+html.js:not(.reduce) [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
+  transition-delay: calc(var(--d, 0) * 90ms);
+}
+html.js:not(.reduce) [data-reveal].in {
+  opacity: 1;
+  transform: none;
+}
+/* Títulos: suben desde atrás de una máscara, como si se escribieran. */
+html.js:not(.reduce) h2[data-reveal] {
+  opacity: 1;
+  transform: none;
+  clip-path: inset(0 0 100% 0);
+  translate: 0 0.4em;
+  transition: clip-path 900ms var(--ease-out), translate 900ms var(--ease-out);
+}
+html.js:not(.reduce) h2[data-reveal].in {
+  clip-path: inset(0 0 -0.2em 0);
+  translate: 0 0;
+}
+
+/* Brillo que sigue al cursor en tarjetas marcadas con .spot (posición en --mx/--my). */
+.spot {
+  position: relative;
+  isolation: isolate;
+}
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgb(240 106 42 / 0.09), transparent 60%);
+  opacity: 0;
+  transition: opacity 300ms var(--ease-out);
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .spot:hover::after {
+    opacity: 1;
+  }
+}
+
+/* Respuesta al toque: lo que se puede tocar se hunde apenas. */
+.btn:active,
+.tap:active {
+  transform: scale(0.97);
 }

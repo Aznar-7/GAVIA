@@ -3,9 +3,9 @@ import { CONTACT_EMAIL, TEAM, whatsappUrl } from "../config";
 const wa = whatsappUrl();
 ---
 
-<section class="section tint" id="contacto" aria-labelledby="contacto-title">
+<section class="section dark" id="contacto" aria-labelledby="contacto-title">
   <div class="wrap">
-    <div class="box" data-contact>
+    <div class="box" data-contact data-reveal>
       <div class="side">
         <h2 id="contacto-title">Contanos qué necesitás.</h2>
         <p>Con dos o tres líneas alcanza. Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]}, en menos de un día hábil. Sin bots ni vendedores.</p>
@@ -180,7 +180,8 @@ const wa = whatsappUrl();
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--white);
-    box-shadow: var(--shadow);
+    color: var(--ink);
+    box-shadow: var(--shadow-deep);
   }
   .side {
     display: grid;

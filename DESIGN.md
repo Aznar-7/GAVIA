@@ -49,7 +49,7 @@ rounded:
 spacing:
   gutter: "clamp(20px, 4vw, 48px)"
   section: "clamp(64px, 9vw, 120px)"
-  max: "1280px"
+  max: "1360px"
 components:
   button-primary:
     backgroundColor: "{colors.signal}"
@@ -83,7 +83,14 @@ Gavia le vende software a dueños de pymes que hoy trabajan con Excel y WhatsApp
 
 La seriedad sale de la calma: blanco y gris azulado alternados por sección, una sola familia tipográfica, bordes suaves, una sombra discreta y software real en las imágenes. La cercanía sale del texto (voseo, nombres propios, "te responde Vicente, Agustín o Benjamín") y no de la decoración.
 
-**Un solo gesto de marca:** la línea de rumbo naranja que une las cinco etapas de "Cómo trabajamos" (horizontal en pantallas grandes, vertical en el celular). Se traza una vez al entrar en pantalla y respeta el movimiento reducido. La metáfora náutica vive en el nombre, el logo y la frase "Software con rumbo"; no en el sistema visual.
+**Dos gestos propios y un pico:**
+- **"Elegí tu problema"** (sección ¿Te suena alguna?): el visitante toca lo que le pasa hoy, el problema se tacha en naranja y al lado aparece el sistema que lo resuelve con una pantalla de ejemplo. "Lo mío es así" precarga el contacto.
+- **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza etapa por etapa y a la derecha cambia el documento que te llevás.
+- **Hero en capas:** tres capturas reales de UTN Hub que se salen del borde derecho y se separan apenas con el cursor y el scroll.
+
+La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" y la línea de rumbo; no en la decoración.
+
+**Movimiento:** pantalla de la marca una vez por sesión; títulos que suben línea por línea; apariciones suaves al entrar en pantalla (`data-reveal`); botón principal magnético; brillo que sigue al cursor en tarjetas (`.spot`); todo lo tocable se hunde apenas al tocarlo. Todo visible sin JS y quieto con "reducir movimiento".
 
 **Key Characteristics:**
 - Secciones blancas y gris azulado (#f1f4f7) alternadas: el ritmo lo dan los fondos, no los filetes.
@@ -132,7 +139,9 @@ La seriedad sale de la calma: blanco y gris azulado alternados por sección, una
 
 Contenedor de hasta 1280px con margen lateral fluido. Cada sección abre con título y bajada a la izquierda (máximo 760px de ancho) y después el contenido. Las secciones alternan fondo blanco y gris azulado:
 
-Hero (gris) → Qué hacemos (blanco) → ¿Te suena alguna? (gris) → Cómo trabajamos (blanco) → Lo que firmamos (gris) → Lo que ya construimos (blanco) → Equipo (gris) → Preguntas (blanco) → Contacto (gris) → pie azul marino.
+Hero (gris) → Qué hacemos (blanco) → ¿Te suena alguna? (gris) → Cómo trabajamos (azul marino, fijo) → Lo que firmamos (gris) → Lo que ya construimos (blanco) → Equipo (gris) → Preguntas (blanco) → Contacto (azul marino) → pie azul marino.
+
+El texto vive en el contenedor (hasta 1360px); las imágenes del hero y las secciones azul marino van de borde a borde.
 
 - **Hero:** texto a la izquierda (5fr) y captura real de UTN Manager en un marco de navegador a la derecha (6fr). Bajo 960px se apila.
 - **Qué hacemos:** cuatro servicios en fila con un filete de 2px arriba de cada uno; 2 columnas en tablet, 1 en celular. No son tarjetas.
@@ -183,5 +192,5 @@ Barra fija blanca con filete inferior al bajar. Logo a la izquierda; Servicios, 
 - **Don't** volver a la carta náutica como decoración: marcos dobles, escalas de grados, cuadrículas, brújulas, sellos, coordenadas.
 - **Don't** usar mayúsculas espaciadas, monoespaciado ni textos unidos con " · ".
 - **Don't** poner flechas en los botones ni efectos que sigan al cursor.
-- **Don't** agregar pantallas de carga, barras de progreso de lectura ni animaciones de entrada por sección.
+- **Don't** sumar animaciones que no respondan a algo: cada movimiento acompaña el scroll, el cursor o un toque.
 - **Don't** inventar clientes, testimonios, logos ni números.

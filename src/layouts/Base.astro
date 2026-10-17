@@ -77,14 +77,18 @@ const org = {
       // movimiento" y solo si se entra por arriba de la home (no al llegar a un #ancla).
       (() => {
         const html = document.documentElement;
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        html.classList.add("js");
+        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          html.classList.add("reduce");
+          return;
+        }
         let seen = false;
         try {
           seen = sessionStorage.getItem("gavia-intro") === "1";
           sessionStorage.setItem("gavia-intro", "1");
         } catch {}
         if (location.pathname !== "/" || location.hash || seen) return;
-        html.classList.add("intro-screen");
+        html.classList.add("intro-screen", "had-intro");
         setTimeout(() => html.classList.remove("intro-screen"), 1900);
       })();
     </script>
@@ -121,6 +125,58 @@ const org = {
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <slot />
     {ANALYTICS && !noindex && <Analytics />}
+    <script>
+      // Movimiento compartido por toda la página. Sin JS o con "reducir movimiento", todo
+      // queda quieto y visible.
+      const reduce = document.documentElement.classList.contains("reduce");
+
+      // 1. Apariciones al entrar en pantalla.
+      const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      if (reduce || !("IntersectionObserver" in window)) {
+        items.forEach((el) => el.classList.add("in"));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              e.target.classList.add("in");
+              io.unobserve(e.target);
+            }
+          },
+          { rootMargin: "0px 0px -12% 0px" },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+
+      const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+      if (fine) {
+        // 2. Brillo que sigue al cursor en las tarjetas .spot.
+        addEventListener(
+          "pointermove",
+          (e) => {
+            const card = (e.target as Element).closest<HTMLElement>(".spot");
+            if (!card) return;
+            const r = card.getBoundingClientRect();
+            card.style.setProperty("--mx", `${e.clientX - r.left}px`);
+            card.style.setProperty("--my", `${e.clientY - r.top}px`);
+          },
+          { passive: true },
+        );
+
+        // 3. Botones principales magnéticos: se corren apenas hacia el cursor.
+        if (!reduce) {
+          document.querySelectorAll<HTMLElement>(".btn:not(.secondary)").forEach((b) => {
+            b.addEventListener("pointermove", (e) => {
+              const r = b.getBoundingClientRect();
+              const x = ((e.clientX - r.left) / r.width - 0.5) * 8;
+              const y = ((e.clientY - r.top) / r.height - 0.5) * 6;
+              b.style.translate = `${x}px ${y}px`;
+            });
+            b.addEventListener("pointerleave", () => (b.style.translate = ""));
+          });
+        }
+      }
+    </script>
   </body>
 </html>
 
