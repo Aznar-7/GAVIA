@@ -1,29 +1,41 @@
-/* Gavia: empresa tranquila. Azul marino para leer, blanco y gris azulado para ordenar,
-   naranja solo para la acción principal. Una sola familia (Figtree). */
+/* Gavia: tinta azul marino sobre papel cálido, naranja solo para la acción y el rumbo.
+   Geist para leer y construir; Instrument Serif en itálica solo para subrayar una idea. */
 :root {
-  --ink: #12243a;
-  --ink-soft: #2b3d54;
-  --muted: #536579; /* texto secundario: 5.6:1 sobre blanco, 5.1:1 sobre --paper */
-  --paper: #f1f4f7; /* fondo de las secciones alternas */
+  /* Tinta */
+  --ink: #0c1a2b;
+  --ink-soft: #34414f;
+  --muted: #5d6874; /* texto secundario: 5.3:1 sobre --bg */
+  --night: #07111d; /* fondo del hero, contacto y pie */
+  --night-2: #0f1f33; /* superficies sobre --night */
+  --night-line: rgb(255 255 255 / 0.09);
+
+  /* Papel */
+  --bg: #fbfaf7; /* fondo de página */
+  --paper: #f3f0e9; /* secciones alternas */
   --white: #ffffff;
-  --line: #dce3ea; /* divisores y bordes de tarjeta */
-  --line-strong: #b9c5d1; /* bordes de campos y botón secundario */
+  --line: #e6e1d6;
+  --line-strong: #cdc6b8;
+
+  /* Señal */
   --signal: #f06a2a;
-  --signal-hover: #f4824c;
-  --signal-text: #b4461a; /* naranja legible como texto sobre blanco (4.9:1) */
+  --signal-hover: #ff7d3f;
+  --signal-text: #b4461a; /* naranja legible como texto sobre papel (4.9:1) */
+  --signal-glow: rgb(240 106 42 / 0.22);
+
   --danger: #b3261e;
   --success: #1e7a4f;
-  --paper-soft: #c7d3df; /* texto secundario sobre azul (proceso, pie) */
-  --placeholder: #6b7c8f;
+  --paper-soft: #a9b4c1; /* texto secundario sobre azul */
+  --placeholder: #7a8490;
 
   /* Compatibilidad con páginas internas (404, og). */
   --rule: var(--line);
   --rule-strong: var(--line-strong);
-  --shoal: #dce6ee;
-  --shoal-deep: #c9d7e3;
+  --shoal: #e9e4d9;
+  --shoal-deep: #dcd5c6;
 
-  --display: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --body: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: "Geist Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: "Geist Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
   --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   /* Escala tipográfica: todo tamaño de texto sale de acá. */
@@ -31,26 +43,39 @@
   --fs-sm: 0.9375rem;
   --fs-md: 1.0625rem;
   --fs-lg: 1.1875rem;
-  --fs-lead: clamp(1.125rem, 1.4vw, 1.3125rem);
-  --fs-xl: clamp(1.3rem, 1.9vw, 1.6rem);
-  --fs-2xl: clamp(1.75rem, 3vw, 2.4rem);
-  --fs-3xl: clamp(2rem, 3.6vw, 3rem);
-  --fs-hero: clamp(2.5rem, 4.4vw, 4.1rem);
+  --fs-lead: clamp(1.125rem, 1.35vw, 1.3125rem);
+  --fs-xl: clamp(1.3rem, 1.8vw, 1.6rem);
+  --fs-2xl: clamp(1.75rem, 2.8vw, 2.5rem);
+  --fs-3xl: clamp(2.35rem, 4.6vw, 4rem);
+  --fs-hero: clamp(2.75rem, 4.7vw, 5rem);
 
-  --radius-sm: 8px;
-  --radius: 12px;
-  --shadow: 0 1px 2px rgb(18 36 58 / 0.06), 0 12px 32px rgb(18 36 58 / 0.1);
-  --shadow-deep: 0 2px 4px rgb(0 0 0 / 0.12), 0 30px 60px rgb(0 0 0 / 0.3); /* tarjetas sobre azul marino */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
 
-  --max: 1600px;
-  --gutter: clamp(20px, 4vw, 64px);
-  --space-section: clamp(64px, 9vw, 120px);
+  /* Sombras teñidas de azul marino, con una sola luz desde arriba. */
+  --shadow-sm: 0 1px 1px rgb(12 26 43 / 0.04), 0 2px 6px -2px rgb(12 26 43 / 0.08);
+  --shadow: 0 1px 1px rgb(12 26 43 / 0.03), 0 4px 8px -2px rgb(12 26 43 / 0.05),
+    0 16px 32px -8px rgb(12 26 43 / 0.1), 0 40px 80px -32px rgb(12 26 43 / 0.16);
+  --shadow-deep: 0 2px 4px rgb(0 0 0 / 0.2), 0 24px 48px -12px rgb(0 0 0 / 0.45),
+    0 64px 120px -40px rgb(0 0 0 / 0.55);
+
+  --max: 1360px;
+  --gutter: clamp(20px, 4.5vw, 72px);
+  --space-section: clamp(88px, 11vw, 168px);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* Capas */
+  --z-nav: 30;
+  --z-atajos: 40;
+  --z-grain: 60;
 
   color-scheme: light;
   interpolate-size: allow-keywords;
   accent-color: var(--signal);
-  scrollbar-color: var(--line-strong) var(--white);
+  scrollbar-color: var(--line-strong) var(--bg);
 }
 
 *,
@@ -61,19 +86,32 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 84px;
+  scroll-padding-top: 96px;
   -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
-  background: var(--white);
+  background: var(--bg);
   color: var(--ink);
-  font: 400 var(--fs-md) / 1.6 var(--body);
+  font: 400 var(--fs-md) / 1.62 var(--body);
+  font-feature-settings: "ss01", "cv11";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   caret-color: var(--signal);
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Grano: una capa fija de ruido apenas visible que le saca lo plano a los fondos. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 ::selection {
@@ -87,20 +125,31 @@ h3,
 h4 {
   margin: 0;
   font-family: var(--display);
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.022em;
   text-wrap: balance;
 }
 
 h2 {
   font-size: var(--fs-3xl);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
 }
 
 h3 {
   font-size: var(--fs-xl);
+  letter-spacing: -0.02em;
+}
+
+/* La idea que importa del título, en serif itálica. */
+.em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.08em;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
 }
 
 p {
@@ -112,9 +161,6 @@ a {
   color: inherit;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
-}
-
-a {
   transition: text-decoration-color 160ms var(--ease-out), color 160ms var(--ease-out);
 }
 
@@ -156,7 +202,7 @@ svg {
 
 /* Rótulo corto en minúscula normal: "Te llevás", "Tu parte", datos de contacto. */
 .label {
-  font: 600 var(--fs-sm) / 1.4 var(--body);
+  font: 500 var(--fs-sm) / 1.4 var(--body);
   color: var(--muted);
 }
 
@@ -165,17 +211,37 @@ svg {
   font-variant-numeric: tabular-nums;
 }
 
+/* Rótulo de sección: el punto de paso naranja y el nombre, en minúscula normal. */
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 500 var(--fs-sm) / 1.3 var(--body);
+  color: var(--ink-soft);
+}
+.kicker::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  background: var(--signal);
+}
+.kicker .n {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Estado corto: "En uso", "En desarrollo". */
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
   width: fit-content;
   padding: 3px 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-xs);
   background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line);
   color: var(--ink-soft);
-  font: 600 var(--fs-xs) / 1.5 var(--body);
+  font: 500 var(--fs-xs) / 1.5 var(--body);
 }
 .pill.live::before {
   content: "";
@@ -183,6 +249,7 @@ svg {
   height: 7px;
   border-radius: 50%;
   background: var(--success);
+  box-shadow: 0 0 0 3px rgb(30 122 79 / 0.15);
 }
 
 /* Barra de navegador sobre una captura real: tres puntos y la dirección del sistema. */
@@ -190,28 +257,31 @@ svg {
   display: flex;
   align-items: center;
   gap: 12px;
-  height: 32px;
-  padding: 0 12px;
+  height: 34px;
+  padding: 0 14px;
   border-bottom: 1px solid var(--line);
-  background: var(--paper);
+  background: linear-gradient(var(--white), #f7f5f0);
 }
 .browser-bar::before {
   content: "";
   flex: none;
-  width: 8px;
-  height: 8px;
-  margin-right: 26px;
+  width: 9px;
+  height: 9px;
+  margin-right: 28px;
   border-radius: 50%;
-  background: var(--line-strong);
-  box-shadow: 13px 0 var(--line-strong), 26px 0 var(--line-strong);
+  background: #e4dfd5;
+  box-shadow: 14px 0 #e4dfd5, 28px 0 #e4dfd5;
 }
 .browser-url {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   min-width: 0;
   margin-inline: auto;
-  padding: 1px 14px;
+  padding: 2px 14px;
   overflow: hidden;
-  border-radius: 999px;
-  background: var(--white);
+  border-radius: var(--radius-xs);
+  background: var(--paper);
   color: var(--muted);
   font: 500 var(--fs-xs) / 1.6 var(--body);
   white-space: nowrap;
@@ -221,58 +291,77 @@ svg {
 .browser-bar::after {
   content: "";
   flex: none;
-  width: 34px;
+  width: 37px;
 }
 
-/* Secciones: blancas por defecto; las alternas van en gris azulado para dar ritmo sin líneas. */
+/* Secciones: papel claro por defecto; las alternas un tono más cálido; las oscuras en noche. */
 .section {
-  padding-block: var(--space-section);
+  padding-block: var(--space-section) calc(var(--space-section) * 1.08);
 }
 .section.tint {
   background: var(--paper);
 }
+.section.dark {
+  background: var(--night);
+  color: var(--white);
+}
 
 .sec-head {
   display: grid;
-  gap: 16px;
-  max-width: 760px;
-  margin-bottom: clamp(36px, 5vw, 56px);
+  gap: 20px;
+  max-width: 820px;
+  margin-bottom: clamp(48px, 6vw, 88px);
 }
-.sec-head p {
-  max-width: 60ch;
+.sec-head p:not(.kicker) {
+  max-width: 56ch;
   color: var(--ink-soft);
-  font-size: var(--fs-lg);
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+/* Encabezado partido: título a la izquierda, bajada abajo a la derecha. */
+.sec-head.split {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  align-items: end;
+  max-width: none;
+  column-gap: clamp(32px, 6vw, 96px);
+}
+.sec-head.split .kicker {
+  grid-column: 1 / -1;
+}
+@media (max-width: 860px) {
+  .sec-head.split {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* Botones: el naranja es solo para la acción principal. */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5em;
-  min-height: 48px;
-  padding: 0.8em 1.4em;
+  gap: 0.6em;
+  min-height: 50px;
+  padding: 0.85em 1.5em;
   border: 0;
   border-radius: var(--radius-sm);
   background: var(--signal);
   color: var(--ink);
-  font: 700 1rem/1.2 var(--body);
+  font: 600 1rem/1.2 var(--body);
+  letter-spacing: -0.005em;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 160ms var(--ease-out), box-shadow 200ms var(--ease-out),
-    transform 200ms var(--ease-out);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), inset 0 -1px 0 rgb(0 0 0 / 0.08),
+    0 1px 2px rgb(12 26 43 / 0.18), 0 6px 16px -6px var(--signal-glow);
+  transition: background-color 180ms var(--ease-out), box-shadow 240ms var(--ease-out),
+    transform 240ms var(--ease-out), color 180ms var(--ease-out);
 }
 
-/* El botón se levanta un poco y proyecta una sombra naranja suave; al presionarlo baja. */
 .btn:hover {
   background: var(--signal-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgb(240 106 42 / 0.28);
-}
-
-.btn:active {
-  transform: translateY(1px);
-  box-shadow: none;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), inset 0 -1px 0 rgb(0 0 0 / 0.08),
+    0 2px 4px rgb(12 26 43 / 0.16), 0 14px 32px -8px rgb(240 106 42 / 0.5);
 }
 
 .btn[disabled] {
@@ -281,24 +370,45 @@ svg {
 }
 
 .btn.secondary {
-  background: transparent;
-  box-shadow: inset 0 0 0 1px var(--line-strong);
+  background: rgb(255 255 255 / 0.6);
+  box-shadow: inset 0 0 0 1px var(--line-strong), 0 1px 2px rgb(12 26 43 / 0.05);
   color: var(--ink);
 }
 
 .btn.secondary:hover {
   background: var(--white);
-  box-shadow: inset 0 0 0 1px var(--ink), 0 6px 18px rgb(18 36 58 / 0.08);
+  box-shadow: inset 0 0 0 1px var(--ink), 0 10px 24px -10px rgb(12 26 43 / 0.25);
+}
+
+/* Botón secundario sobre fondo oscuro. */
+.btn.ghost {
+  background: rgb(255 255 255 / 0.04);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.18);
+  color: var(--white);
+}
+.btn.ghost:hover {
+  background: rgb(255 255 255 / 0.1);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4);
+}
+
+/* Flecha chica que se corre al pasar el cursor. */
+.btn .go {
+  width: 14px;
+  height: 14px;
+  transition: transform 300ms var(--ease-spring);
+}
+.btn:hover .go {
+  transform: translateX(3px);
 }
 
 /* Campos de formulario compartidos. */
 .field {
   display: grid;
-  gap: 6px;
+  gap: 8px;
 }
 
 .field label {
-  font-weight: 600;
+  font-weight: 500;
   font-size: var(--fs-sm);
 }
 
@@ -309,14 +419,15 @@ svg {
 
 .input {
   width: 100%;
-  min-height: 48px;
-  padding: 0.75em 1em;
+  min-height: 50px;
+  padding: 0.8em 1em;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-sm);
   background: var(--white);
   color: var(--ink);
   font: 400 1rem/1.4 var(--body);
-  transition: box-shadow 160ms var(--ease-out), border-color 160ms var(--ease-out);
+  box-shadow: inset 0 1px 2px rgb(12 26 43 / 0.04);
+  transition: box-shadow 180ms var(--ease-out), border-color 180ms var(--ease-out);
 }
 
 .input::placeholder {
@@ -330,7 +441,7 @@ svg {
 .input:focus {
   outline: none;
   border-color: var(--ink);
-  box-shadow: 0 0 0 3px rgb(240 106 42 / 0.35);
+  box-shadow: 0 0 0 4px rgb(240 106 42 / 0.22);
 }
 
 .input[aria-invalid="true"] {
@@ -340,11 +451,11 @@ svg {
 .error {
   color: var(--danger);
   font-size: var(--fs-sm);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 textarea.input {
-  min-height: 140px;
+  min-height: 148px;
   resize: vertical;
 }
 
@@ -365,24 +476,27 @@ textarea.input {
    data-reveal arranca corrido y aparece al entrar en pantalla (lo maneja Base.astro). */
 html.js:not(.reduce) [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
+  transform: translateY(24px);
+  filter: blur(6px);
+  transition: opacity 900ms var(--ease-out), transform 1100ms var(--ease-out), filter 900ms var(--ease-out);
   transition-delay: calc(var(--d, 0) * 90ms);
 }
 html.js:not(.reduce) [data-reveal].in {
   opacity: 1;
   transform: none;
+  filter: none;
 }
 /* Títulos: suben desde atrás de una máscara, como si se escribieran. */
 html.js:not(.reduce) h2[data-reveal] {
   opacity: 1;
   transform: none;
+  filter: none;
   clip-path: inset(0 0 100% 0);
-  translate: 0 0.4em;
-  transition: clip-path 900ms var(--ease-out), translate 900ms var(--ease-out);
+  translate: 0 0.35em;
+  transition: clip-path 1000ms var(--ease-out), translate 1000ms var(--ease-out);
 }
 html.js:not(.reduce) h2[data-reveal].in {
-  clip-path: inset(0 0 -0.2em 0);
+  clip-path: inset(-0.1em -0.1em -0.25em -0.1em);
   translate: 0 0;
 }
 
@@ -397,9 +511,9 @@ html.js:not(.reduce) h2[data-reveal].in {
   inset: 0;
   z-index: -1;
   border-radius: inherit;
-  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgb(240 106 42 / 0.09), transparent 60%);
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgb(240 106 42 / 0.08), transparent 60%);
   opacity: 0;
-  transition: opacity 300ms var(--ease-out);
+  transition: opacity 400ms var(--ease-out);
   pointer-events: none;
 }
 @media (hover: hover) {

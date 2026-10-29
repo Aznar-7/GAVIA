@@ -41,7 +41,8 @@ const faqLd = {
 <section class="section" id="preguntas" aria-labelledby="preguntas-title">
   <div class="wrap layout">
     <div class="side">
-      <h2 id="preguntas-title" data-reveal>Preguntas frecuentes.</h2>
+      <p class="kicker" data-reveal>Preguntas</p>
+      <h2 id="preguntas-title" data-reveal>Preguntas <span class="em">frecuentes</span>.</h2>
       <div class="ask" data-reveal style="--d:1">
         <p>¿No está la tuya? Escribinos: te responde alguien del equipo, no un bot, en menos de un día hábil.</p>
         <a class="btn secondary" href="#contacto">Hacenos tu pregunta</a>
@@ -52,7 +53,7 @@ const faqLd = {
         preguntas.map((p) => (
           <details>
             <summary>
-              <span>{p.q}</span>
+              <span class="q">{p.q}</span>
               <span class="mark" aria-hidden="true" />
             </summary>
             <p>{p.a}</p>
@@ -74,12 +75,13 @@ const faqLd = {
     position: sticky;
     top: 120px;
     display: grid;
-    gap: 28px;
+    gap: 22px;
     justify-items: start;
   }
   .ask {
     display: grid;
     gap: 16px;
+    margin-top: 12px;
     justify-items: start;
     max-width: 36ch;
   }
@@ -97,8 +99,9 @@ const faqLd = {
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-    padding: 22px 0;
-    font: 600 var(--fs-lg) / 1.35 var(--body);
+    padding: 26px 0;
+    font: 500 var(--fs-xl) / 1.3 var(--body);
+    letter-spacing: -0.02em;
     cursor: pointer;
     list-style: none;
     transition: color 160ms var(--ease-out);
@@ -106,15 +109,28 @@ const faqLd = {
   summary::-webkit-details-marker {
     display: none;
   }
-  summary:hover {
-    color: var(--ink-soft);
+  .q {
+    transition: transform 400ms var(--ease-out);
+  }
+  @media (hover: hover) {
+    summary:hover .q {
+      transform: translateX(6px);
+    }
+  }
+  details[open] .mark {
+    background: var(--ink);
+    color: var(--white);
   }
   /* Marca + dibujada con dos trazos; al abrir, el vertical se oculta y queda un −. */
+  /* Marca + en una casilla; al abrir, el vertical se oculta y queda un −. */
   .mark {
     position: relative;
     flex: none;
-    width: 18px;
-    height: 18px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out);
   }
   .mark::before,
   .mark::after {
@@ -124,16 +140,16 @@ const faqLd = {
     transition: transform 220ms var(--ease-out);
   }
   .mark::before {
-    left: 0;
-    right: 0;
-    top: 8px;
-    height: 2px;
+    left: 12px;
+    right: 12px;
+    top: 17px;
+    height: 1.5px;
   }
   .mark::after {
-    top: 0;
-    bottom: 0;
-    left: 8px;
-    width: 2px;
+    top: 12px;
+    bottom: 12px;
+    left: 17px;
+    width: 1.5px;
   }
   details[open] .mark::after {
     transform: scaleY(0);
@@ -148,7 +164,8 @@ const faqLd = {
   }
   details p {
     max-width: 60ch;
-    padding-bottom: 24px;
+    padding: 0 60px 28px 0;
+    font-size: var(--fs-lg);
     color: var(--ink-soft);
   }
   @media (max-width: 860px) {

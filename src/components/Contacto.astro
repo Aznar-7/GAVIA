@@ -3,11 +3,12 @@ import { CONTACT_EMAIL, TEAM, whatsappUrl } from "../config";
 const wa = whatsappUrl();
 ---
 
-<section class="section tint" id="contacto" aria-labelledby="contacto-title">
+<section class="section dark contact" id="contacto" aria-labelledby="contacto-title" data-tone="dark">
   <div class="wrap">
     <div class="box" data-contact data-reveal>
       <div class="side">
-        <h2 id="contacto-title">Contanos qué necesitás.</h2>
+        <p class="kicker">Contacto</p>
+        <h2 id="contacto-title">Contanos qué <span class="em">necesitás</span>.</h2>
         <p>Con dos o tres líneas alcanza. Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]}, en menos de un día hábil. Sin bots ni vendedores.</p>
         <ol class="next" aria-label="Qué pasa después de escribirnos">
           <li><b>Nos escribís</b> con dos o tres líneas.</li>
@@ -173,30 +174,44 @@ const wa = whatsappUrl();
     height: 1px;
     overflow: hidden;
   }
+  /* Cierre en noche: el texto a la izquierda y el formulario en una hoja blanca. */
+  .contact {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    background:
+      radial-gradient(50% 60% at 90% 30%, rgb(240 106 42 / 0.14), transparent 70%),
+      radial-gradient(50% 60% at 0% 100%, rgb(56 104 168 / 0.2), transparent 70%),
+      var(--night);
+  }
+  .contact ::selection {
+    background: var(--signal);
+    color: var(--ink);
+  }
   .box {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-    color: var(--ink);
-    box-shadow: var(--shadow);
+    gap: clamp(40px, 6vw, 104px);
+    align-items: start;
   }
   .side {
     display: grid;
-    gap: 20px;
+    gap: 24px;
     align-content: start;
-    padding: clamp(28px, 4vw, 56px);
-    background: #f8fafc;
-    border-right: 1px solid var(--line);
+    justify-items: start;
+    padding-top: 12px;
+    color: var(--white);
   }
-  .side h2 {
-    font-size: var(--fs-2xl);
+  .side .kicker {
+    color: var(--paper-soft);
   }
-  .side > p {
-    color: var(--ink-soft);
-    font-size: var(--fs-lg);
+  .side h2 :global(.em) {
+    color: #ffd9c4;
+  }
+  .side > p:not(.kicker) {
+    max-width: 40ch;
+    color: var(--paper-soft);
+    font-size: var(--fs-lead);
   }
   .next {
     margin: 0;
@@ -209,7 +224,7 @@ const wa = whatsappUrl();
   .next li {
     counter-increment: n;
     position: relative;
-    color: var(--ink-soft);
+    color: var(--paper-soft);
   }
   /* Tramo punteado entre un número y el siguiente; el último no tiene. */
   .next li:not(:last-child)::after {
@@ -218,7 +233,7 @@ const wa = whatsappUrl();
     left: -26px;
     top: 26px;
     bottom: -12px;
-    border-left: 1px solid var(--line-strong);
+    border-left: 1px dashed rgb(255 255 255 / 0.2);
   }
   .next li::before {
     content: counter(n);
@@ -229,23 +244,30 @@ const wa = whatsappUrl();
     height: 22px;
     display: grid;
     place-items: center;
-    background: var(--white);
-    border: 1px solid var(--line-strong);
-    border-radius: 50%;
-    font: 700 0.75rem var(--body);
-    color: var(--ink);
+    background: var(--night-2);
+    border: 1px solid rgb(255 255 255 / 0.2);
+    border-radius: 6px;
+    font: 600 0.75rem var(--body);
+    color: var(--white);
   }
   .next b {
-    color: var(--ink);
+    color: var(--white);
+    font-weight: 500;
   }
   dl {
     display: grid;
     gap: 16px;
+    width: 100%;
     margin: 12px 0 0;
+    padding-top: 24px;
+    border-top: 1px solid var(--night-line);
+  }
+  dl .label {
+    color: var(--paper-soft);
   }
   dd {
     margin: 4px 0 0;
-    font-weight: 600;
+    font-weight: 500;
   }
   dd a {
     display: inline-block;
@@ -254,6 +276,10 @@ const wa = whatsappUrl();
   .main {
     position: relative;
     padding: clamp(28px, 4vw, 56px);
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    color: var(--ink);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), var(--shadow-deep);
   }
   form {
     display: grid;
@@ -398,12 +424,10 @@ const wa = whatsappUrl();
       grid-template-columns: minmax(0, 1fr);
     }
     .side {
-      border-right: 0;
-      border-bottom: 1px solid var(--line);
+      padding-top: 0;
     }
   }
   @media (max-width: 560px) {
-    .side,
     .main {
       padding: 24px 20px;
     }

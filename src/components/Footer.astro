@@ -16,7 +16,7 @@ const secciones = [
 ];
 ---
 
-<footer>
+<footer data-tone="dark">
   <div class="wrap grid">
     <div class="title-block">
       <a href="/" class="brand" aria-label="Gavia, volver al inicio"><Logo size={34} tone="paper" /></a>
@@ -55,6 +55,8 @@ const secciones = [
     </div>
   </div>
 
+  <p class="wordmark" aria-hidden="true">gavia</p>
+
   <div class="wrap bottom">
     <p>© {year} Gavia. Hecho en Córdoba.</p>
     <a href="#top" class="up">
@@ -66,9 +68,25 @@ const secciones = [
 
 <style>
   footer {
-    border-top: 1px solid rgb(255 255 255 / 0.12);
-    background: var(--ink);
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--night-line);
+    background: var(--night);
     color: var(--paper);
+  }
+  /* La palabra de la marca, enorme y apenas visible, como marca de agua al pie. */
+  .wordmark {
+    margin: clamp(-8px, -1vw, 0px) 0 0;
+    padding-inline: var(--gutter);
+    font: 700 clamp(6rem, 27vw, 26rem) / 0.8 var(--display);
+    letter-spacing: -0.07em;
+    text-align: center;
+    color: transparent;
+    background: linear-gradient(180deg, rgb(255 255 255 / 0.1), rgb(255 255 255 / 0.01) 85%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    user-select: none;
+    white-space: nowrap;
   }
   footer ::selection {
     background: var(--signal);
@@ -91,8 +109,8 @@ const secciones = [
   }
   .tagline {
     margin-top: 4px;
-    font: 700 var(--fs-2xl) / 1.1 var(--display);
-    letter-spacing: -0.02em;
+    font: 500 var(--fs-2xl) / 1.1 var(--display);
+    letter-spacing: -0.035em;
     color: var(--white);
   }
   /* El punto final es el punto de paso de la marca. */
@@ -146,7 +164,7 @@ const secciones = [
     align-items: center;
     gap: 16px;
     padding-block: 24px 32px;
-    border-top: 1px solid rgb(241 244 247 / 0.2);
+    border-top: 1px solid var(--night-line);
     color: var(--paper-soft);
     font-size: var(--fs-sm);
   }

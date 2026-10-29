@@ -1,7 +1,7 @@
 ---
-// Primera pantalla: qué hacemos, para quién y cómo se arranca. A la derecha, tres capturas
-// reales de UTN Hub apiladas en profundidad que se salen del borde: se separan apenas con el
-// cursor y con el scroll. Sin ilustraciones: lo que se ve es software nuestro de verdad.
+// Primera pantalla, en noche: qué hacemos, para quién y cómo se arranca. A la derecha, tres
+// capturas reales de UTN Hub apiladas en profundidad que se salen del borde y se separan apenas
+// con el cursor y con el scroll. Abajo, las personas que te responden.
 import { Image } from "astro:assets";
 import { TEAM, whatsappUrl } from "../config";
 import capManager from "../assets/utnhub/utn-manager.png";
@@ -9,39 +9,45 @@ import capProyectos from "../assets/utnhub/proyectos.png";
 import capInscribot from "../assets/utnhub/inscribot.png";
 const wa = whatsappUrl();
 const nombres = `${TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o ${TEAM.at(-1)!.nombre.split(" ")[0]}`;
+const iniciales = (n: string) =>
+  n
+    .split(" ")
+    .map((p) => p[0])
+    .slice(0, 2)
+    .join("");
 const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código es tuyo"];
-const lineas = ["Software a medida", "para tu empresa."];
+const lineas = ["Software a medida", 'para tu <span class="em">empresa</span>.'];
 ---
 
-<section class="hero" id="top" aria-labelledby="hero-title" data-hero>
+<section class="hero" id="top" aria-labelledby="hero-title" data-hero data-tone="dark">
+  <div class="ambient" aria-hidden="true"></div>
   <div class="wrap inner">
     <div class="copy">
       <p class="eyebrow rise" style="--i:0">Estudio de software de Córdoba</p>
       <h1 id="hero-title">
-        {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span>{l}</span></span>)}
+        {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span set:html={l} /></span>)}
       </h1>
       <p class="lead rise" style="--i:2">
         Pasamos tu negocio de Excel y WhatsApp a un sistema propio. Antes de empezar te damos por escrito qué vas a
         recibir y cuánto cuesta cada etapa.
       </p>
       <div class="actions rise" style="--i:3">
-        <a class="btn" href="#contacto">Contanos tu proyecto</a>
-        <a class="btn secondary" href="#como-trabajamos">Ver cómo trabajamos</a>
+        <a class="btn" href="#contacto">
+          Contanos tu proyecto
+          <svg class="go" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8"></path></svg>
+        </a>
+        <a class="btn ghost" href="#como-trabajamos">Ver cómo trabajamos</a>
       </div>
       <ul class="facts rise" style="--i:4" aria-label="Condiciones">
         {
           facts.map((f) => (
             <li>
-              <svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><path d="M2 7l4 4 8-9" /></svg>
+              <svg viewBox="0 0 16 14" width="14" height="12" aria-hidden="true"><path d="M2 7l4 4 8-9" /></svg>
               {f}
             </li>
           ))
         }
       </ul>
-      <p class="note rise" style="--i:5">
-        Te responde {nombres} en menos de un día hábil.
-        {wa && <a href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a>}
-      </p>
     </div>
 
     <figure class="stage" data-stage>
@@ -62,8 +68,23 @@ const lineas = ["Software a medida", "para tu empresa."];
       <div class="layer front" style="--z:1.8">
         <Image src={capInscribot} alt="" widths={[400, 700]} sizes="30vw" loading="eager" />
       </div>
-      <figcaption>UTN Hub, un sistema hecho por nosotros que hoy está en uso. <a href="#proyectos">Ver el caso</a></figcaption>
     </figure>
+  </div>
+
+  <div class="wrap base rise" style="--i:6">
+    <div class="people">
+      <span class="faces" aria-hidden="true">
+        {TEAM.map((m) => <span class="face">{iniciales(m.nombre)}</span>)}
+      </span>
+      <p>
+        Te responde <strong>{nombres}</strong> en menos de un día hábil.
+        {wa && <a href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a>}
+      </p>
+    </div>
+    <p class="caption">
+      <span class="pill live">En uso</span>
+      UTN Hub, hecho por nosotros. <a href="#proyectos">Ver el caso</a>
+    </p>
   </div>
 </section>
 
@@ -109,13 +130,41 @@ const lineas = ["Software a medida", "para tu empresa."];
 
 <style>
   .hero {
+    position: relative;
+    isolation: isolate;
     overflow: hidden;
-    background: var(--paper);
-    padding-block: clamp(48px, 7vw, 96px) clamp(64px, 9vw, 120px);
+    display: grid;
+    align-content: center;
+    min-height: min(100dvh, 1000px);
+    padding-block: clamp(120px, 14vw, 168px) 40px;
+    background: var(--night);
+    color: var(--white);
+  }
+  .hero ::selection {
+    background: var(--signal);
+    color: var(--ink);
+  }
+  /* Luz ambiental: un halo naranja detrás de las capturas y uno azul del otro lado. La línea
+     del horizonte separa el hero del resto. */
+  .ambient {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(60% 55% at 78% 42%, rgb(240 106 42 / 0.2), transparent 70%),
+      radial-gradient(45% 60% at 8% 10%, rgb(56 104 168 / 0.28), transparent 70%),
+      radial-gradient(80% 50% at 50% 120%, rgb(56 104 168 / 0.22), transparent 70%);
+  }
+  .ambient::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.14), transparent);
   }
   .inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 11fr) minmax(0, 12fr);
     gap: clamp(32px, 5vw, 80px);
     align-items: center;
   }
@@ -123,94 +172,154 @@ const lineas = ["Software a medida", "para tu empresa."];
     position: relative;
     z-index: 2;
     display: grid;
-    gap: 24px;
+    gap: 28px;
     justify-items: start;
   }
-  /* Rótulo sobre el título, con el punto de paso de la marca. */
   .eyebrow {
-    margin-bottom: -6px;
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    font: 600 var(--fs-sm) / 1.4 var(--body);
-    color: var(--ink-soft);
+    padding: 6px 14px 6px 10px;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.05);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+    font: 500 var(--fs-sm) / 1.3 var(--body);
+    color: var(--paper-soft);
   }
   .eyebrow::before {
     content: "";
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
     background: var(--signal);
+    box-shadow: 0 0 12px 2px rgb(240 106 42 / 0.6);
   }
   h1 {
     font-size: var(--fs-hero);
-    font-weight: 800;
-    line-height: 1.02;
-    letter-spacing: -0.03em;
+    font-weight: 600;
+    line-height: 0.98;
+    letter-spacing: -0.05em;
   }
   h1 .l {
     display: block;
     overflow: hidden;
-    padding-bottom: 0.08em;
-    margin-bottom: -0.08em;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
   }
   h1 .l > span {
     display: block;
   }
+  h1 :global(.em) {
+    padding-right: 0.04em;
+    color: #ffd9c4;
+  }
   .lead {
-    max-width: 44ch;
+    max-width: 42ch;
     font-size: var(--fs-lead);
-    line-height: 1.55;
-    color: var(--ink-soft);
+    line-height: 1.6;
+    color: var(--paper-soft);
   }
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    margin-top: 4px;
   }
   .facts {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px 24px;
-    margin: 0;
+    gap: 10px 28px;
+    margin: 4px 0 0;
     padding: 0;
     list-style: none;
-    font-weight: 600;
+    font-weight: 500;
     font-size: var(--fs-sm);
+    color: rgb(255 255 255 / 0.82);
   }
   .facts li {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: 9px;
   }
   .facts svg {
     fill: none;
-    stroke: var(--success);
+    stroke: var(--signal);
     stroke-width: 2.4;
   }
-  .note {
+
+  /* Pie del hero: las personas que te responden y el caso real. */
+  .base {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px 40px;
+    margin-top: clamp(56px, 7vw, 96px);
+    padding-top: 28px;
+    border-top: 1px solid var(--night-line);
     font-size: var(--fs-sm);
-    color: var(--muted);
+    color: var(--paper-soft);
   }
-  .note a {
+  .people {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .people strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+  .people a,
+  .caption a {
     display: inline-block;
     margin-left: 4px;
-    padding-block: 12px;
-    font-weight: 700;
-    color: var(--ink);
+    padding-block: 10px;
+    font-weight: 500;
+    color: var(--white);
+  }
+  .faces {
+    display: flex;
+    flex: none;
+  }
+  .face {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    margin-left: -6px;
+    border-radius: 12px;
+    background: linear-gradient(160deg, #22395a, var(--night-2));
+    box-shadow: 0 0 0 3px var(--night), inset 0 0 0 1px rgb(255 255 255 / 0.12);
+    color: var(--white);
+    font: 600 0.75rem / 1 var(--body);
+    letter-spacing: 0.02em;
+  }
+  .face:first-child {
+    margin-left: 0;
+  }
+  .caption {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+  }
+  .caption .pill {
+    background: rgb(255 255 255 / 0.06);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.1);
+    color: var(--white);
   }
 
   /* Entrada: el título sube línea por línea y el resto aparece escalonado. Si hubo pantalla
      de la marca, espera a que se vaya. */
   :global(html.js:not(.reduce)) h1 .l > span {
-    animation: line-up 1000ms var(--ease-out) both;
+    animation: line-up 1100ms var(--ease-out) both;
     animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
   }
   :global(html.js:not(.reduce)) .rise {
-    animation: rise 900ms var(--ease-out) both;
+    animation: rise 1000ms var(--ease-out) both;
     animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
   }
   :global(html.js:not(.reduce)) .stage {
-    animation: stage-in 1400ms var(--ease-out) both;
+    animation: stage-in 1600ms var(--ease-out) both;
     animation-delay: calc(var(--intro, 120ms) + 200ms);
   }
   :global(html.had-intro) .hero {
@@ -224,13 +333,14 @@ const lineas = ["Software a medida", "para tu empresa."];
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(16px);
+      filter: blur(6px);
     }
   }
   @keyframes stage-in {
     from {
       opacity: 0;
-      transform: translateX(60px);
+      transform: translateX(80px) scale(0.97);
     }
   }
 
@@ -241,22 +351,22 @@ const lineas = ["Software a medida", "para tu empresa."];
     --sy: 0;
     position: relative;
     margin: 0 calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2)) 0 0;
-    aspect-ratio: 16 / 11;
+    aspect-ratio: 16 / 11.5;
     min-width: 0;
+    perspective: 1600px;
   }
   .layer {
     position: absolute;
     overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    border-radius: var(--radius-sm);
     background: var(--white);
-    box-shadow: var(--shadow);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), var(--shadow-deep);
     transform: translate3d(
       calc(var(--px) * var(--z) * -22px),
       calc(var(--py) * var(--z) * -16px + var(--sy) * var(--z) * -0.08px),
       0
     );
-    transition: transform 500ms var(--ease-out);
+    transition: transform 600ms var(--ease-out);
     will-change: transform;
   }
   .layer :global(img) {
@@ -271,42 +381,37 @@ const lineas = ["Software a medida", "para tu empresa."];
   }
   .back {
     top: 0;
-    left: 30%;
+    left: 32%;
     width: 72%;
     z-index: 1;
-    opacity: 0.9;
+    opacity: 0.55;
+    filter: saturate(0.8);
   }
   .front {
-    bottom: 4%;
-    left: -2%;
+    bottom: 2%;
+    left: -3%;
     width: 44%;
     z-index: 3;
-    border-color: var(--ink);
-    box-shadow: 0 2px 4px rgb(18 36 58 / 0.1), 0 24px 48px rgb(18 36 58 / 0.22);
-  }
-  figcaption {
-    position: absolute;
-    left: 6%;
-    bottom: -44px;
-    font-size: var(--fs-sm);
-    color: var(--muted);
-  }
-  figcaption a {
-    font-weight: 600;
-    color: var(--ink);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.16), 0 0 60px -10px rgb(240 106 42 / 0.35), var(--shadow-deep);
   }
 
   @media (max-width: 960px) {
+    .hero {
+      min-height: 0;
+    }
     .inner {
       grid-template-columns: minmax(0, 1fr);
     }
     .stage {
-      margin: 8px calc(var(--gutter) * -1) 40px 0;
+      margin: 16px calc(var(--gutter) * -1) 0 0;
     }
   }
   @media (max-width: 640px) {
+    .hero {
+      padding-top: 104px;
+    }
     .copy {
-      gap: 20px;
+      gap: 22px;
     }
     .actions {
       display: grid;
@@ -318,9 +423,8 @@ const lineas = ["Software a medida", "para tu empresa."];
     .stage {
       aspect-ratio: 16 / 13;
     }
-    figcaption {
-      bottom: -36px;
-      right: var(--gutter);
+    .people {
+      align-items: flex-start;
     }
   }
 </style>

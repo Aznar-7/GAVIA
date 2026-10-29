@@ -1,6 +1,7 @@
 ---
 // Qué vendemos, en una mirada: cuatro servicios con nombre y una línea cada uno.
-// Lista con divisores, no tarjetas: se lee como el índice de una empresa, no como un catálogo.
+// Se lee como el índice de una empresa, no como un catálogo: título fijo a la izquierda y las
+// filas numeradas a la derecha.
 const servicios = [
   {
     t: "Sistemas de gestión",
@@ -22,88 +23,125 @@ const servicios = [
 ---
 
 <section class="section" id="servicios" aria-labelledby="servicios-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <h2 id="servicios-title" data-reveal>Qué hacemos.</h2>
-      <p data-reveal style="--d:1">
+  <div class="wrap layout">
+    <div class="head">
+      <p class="kicker" data-reveal>Servicios</p>
+      <h2 id="servicios-title" data-reveal>Qué <span class="em">hacemos</span>.</h2>
+      <p class="sub" data-reveal style="--d:1">
         Desarrollamos software a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu equipo
         hoy y construimos lo que hace falta, ni más ni menos.
       </p>
     </div>
-    <ul class="list">
+    <ol class="list">
       {
         servicios.map((s, i) => (
           <li data-reveal style={`--d:${i + 1}`}>
             <span class="n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
+            <div>
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </div>
           </li>
         ))
       }
-    </ul>
+    </ol>
   </div>
 </section>
 
 <style>
-  .list {
+  .layout {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 48px clamp(40px, 7vw, 120px);
+    align-items: start;
+  }
+  .head {
+    position: sticky;
+    top: 128px;
+    display: grid;
+    gap: 20px;
+    justify-items: start;
+  }
+  .sub {
+    max-width: 42ch;
+    font-size: var(--fs-lead);
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .list {
     margin: 0;
     padding: 0;
     list-style: none;
+    border-top: 1px solid var(--line);
   }
   li {
     position: relative;
     display: grid;
-    gap: 10px;
-    align-content: start;
-    padding-top: 20px;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    padding: clamp(28px, 3.2vw, 40px) 8px;
+    border-bottom: 1px solid var(--line);
   }
-  /* Filete de arriba: se dibuja de izquierda a derecha al aparecer y se vuelve naranja en el
-     servicio que estás mirando. */
+  /* Al pasar el cursor, la fila se ilumina desde la izquierda con la línea de rumbo. */
   li::before {
     content: "";
     position: absolute;
-    inset: 0 0 auto;
-    height: 2px;
-    background: var(--ink);
-    transform-origin: left;
-    transition: background-color 220ms var(--ease-out),
-      transform 1100ms var(--ease-out) calc(var(--d, 0) * 90ms + 120ms);
-  }
-  :global(html.js:not(.reduce)) li:not(.in)::before {
-    transform: scaleX(0);
-  }
-  li:hover::before {
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
     background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 700ms var(--ease-out);
   }
   .n {
-    font-weight: 700;
-    font-size: var(--fs-sm);
+    padding-top: 6px;
+    font: 500 var(--fs-sm) / 1 var(--body);
     color: var(--muted);
     font-variant-numeric: tabular-nums;
-    transition: color 220ms var(--ease-out);
-  }
-  li:hover .n {
-    color: var(--signal-text);
+    transition: color 300ms var(--ease-out);
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-2xl);
+    font-weight: 500;
+    letter-spacing: -0.035em;
+    transition: transform 500ms var(--ease-out);
   }
-  p {
+  li p {
+    max-width: 52ch;
+    margin-top: 12px;
     color: var(--ink-soft);
+    transition: transform 500ms var(--ease-out) 40ms;
   }
-  @media (max-width: 1000px) {
-    .list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 32px 40px;
+  @media (hover: hover) {
+    li:hover::before {
+      transform: scaleX(1);
+    }
+    li:hover .n {
+      color: var(--signal-text);
+    }
+    li:hover h3,
+    li:hover p {
+      transform: translateX(8px);
+    }
+  }
+  @media (max-width: 960px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .head {
+      position: static;
     }
   }
   @media (max-width: 560px) {
-    .list {
+    li {
       grid-template-columns: minmax(0, 1fr);
-      gap: 24px;
+      gap: 10px;
+      padding-inline: 0;
+    }
+    .n {
+      padding-top: 0;
     }
   }
 </style>

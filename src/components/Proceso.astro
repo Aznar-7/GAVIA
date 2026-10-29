@@ -39,12 +39,13 @@ const etapas = [
 ];
 ---
 
-<section class="process" id="como-trabajamos" aria-labelledby="proceso-title" data-process style={`--n:${etapas.length}`}>
+<section class="process" id="como-trabajamos" aria-labelledby="proceso-title" data-process data-tone="dark" style={`--n:${etapas.length}`}>
   <div class="track">
     <div class="sticky wrap">
       <div class="left">
         <div class="head">
-          <h2 id="proceso-title" data-reveal>Cómo trabajamos.</h2>
+          <p class="kicker" data-reveal>Proceso</p>
+          <h2 id="proceso-title" data-reveal>Cómo <span class="em">trabajamos</span>.</h2>
           <p data-reveal style="--d:1">
             Cada etapa termina en algo que podés leer, probar o firmar. Pagás etapa por etapa y podés frenar después de
             cualquiera.
@@ -159,8 +160,19 @@ const etapas = [
 <style>
   .process {
     --p: 0;
-    background: var(--ink);
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(50% 60% at 85% 50%, rgb(240 106 42 / 0.1), transparent 70%),
+      radial-gradient(40% 50% at 0% 0%, rgb(56 104 168 / 0.22), transparent 70%),
+      var(--night);
     color: var(--white);
+  }
+  .process .kicker {
+    color: var(--paper-soft);
+  }
+  .head h2 :global(.em) {
+    color: #ffd9c4;
   }
   .process ::selection {
     background: var(--signal);
@@ -174,11 +186,13 @@ const etapas = [
   }
   .head {
     display: grid;
-    gap: 16px;
+    gap: 20px;
+    justify-items: start;
     max-width: 640px;
     margin-bottom: clamp(32px, 4vw, 48px);
   }
-  .head p {
+  .head p:not(.kicker) {
+    max-width: 46ch;
     color: var(--paper-soft);
     font-size: var(--fs-lg);
   }
@@ -200,7 +214,7 @@ const etapas = [
     bottom: 22px;
     left: 21px;
     width: 3px;
-    background: rgb(255 255 255 / 0.14);
+    background: rgb(255 255 255 / 0.1);
     border-radius: 3px;
   }
   .fill {
@@ -229,14 +243,18 @@ const etapas = [
     flex: none;
     width: 44px;
     height: 44px;
-    border-radius: 50%;
-    border: 3px solid var(--signal);
-    background: var(--ink);
-    font-weight: 700;
+    border-radius: 12px;
+    border: 1.5px solid rgb(240 106 42 / 0.7);
+    background: var(--night);
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    font-variant-numeric: tabular-nums;
     transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out), transform 300ms var(--ease-out);
   }
   h3 {
     font-size: var(--fs-xl);
+    font-weight: 500;
+    letter-spacing: -0.025em;
     transition: color 300ms var(--ease-out);
   }
   .body {
@@ -265,17 +283,17 @@ const etapas = [
     color: var(--paper-soft);
   }
   dd {
-    margin: 2px 0 0;
-    font-weight: 600;
+    margin: 4px 0 0;
+    font-weight: 500;
   }
   .mdoc summary {
     display: inline-flex;
     align-items: center;
     min-height: 44px;
     padding: 0 14px;
-    border: 1px solid rgb(255 255 255 / 0.3);
+    border: 1px solid rgb(255 255 255 / 0.2);
     border-radius: var(--radius-sm);
-    font-weight: 600;
+    font-weight: 500;
     font-size: var(--fs-sm);
     cursor: pointer;
     list-style: none;
@@ -319,8 +337,12 @@ const etapas = [
   }
   .pinned .stage.done .num,
   .pinned .stage.current .num {
+    border-color: var(--signal);
     background: var(--signal);
     color: var(--ink);
+  }
+  .pinned .stage.current .num {
+    box-shadow: 0 0 0 6px rgb(240 106 42 / 0.15), 0 0 24px rgb(240 106 42 / 0.45);
   }
   .pinned .stage.current .num {
     transform: scale(1.12);
@@ -355,7 +377,7 @@ const etapas = [
     height: min(520px, 66vh);
   }
   .count {
-    font-weight: 700;
+    font-weight: 500;
     color: var(--signal);
     font-variant-numeric: tabular-nums;
   }

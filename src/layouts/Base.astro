@@ -1,9 +1,10 @@
 ---
-import "@fontsource-variable/figtree/wght.css";
+import "@fontsource-variable/geist/wght.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
 import "../styles/global.css";
 import { ANALYTICS, CONTACT_EMAIL, SOCIAL, TEAM } from "../config";
 import Analytics from "@vercel/analytics/astro";
-import bodyFont from "@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url";
+import bodyFont from "@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -90,7 +91,7 @@ const org = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta name="theme-color" content="#12243A" />
+    <meta name="theme-color" content="#07111D" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -176,7 +177,7 @@ const org = {
     z-index: 100;
     display: grid;
     place-items: center;
-    background: var(--ink);
+    background: var(--night);
     color: var(--white);
     animation: loader-out 650ms cubic-bezier(0.7, 0, 0.2, 1) 1150ms both;
   }
@@ -205,8 +206,8 @@ const org = {
     animation: l-pop 380ms cubic-bezier(0.2, 0.9, 0.3, 1) 760ms both;
   }
   .l-word {
-    font: 800 clamp(3.2rem, 7vw, 5.6rem) / 1 var(--display);
-    letter-spacing: -0.03em;
+    font: 700 clamp(3.2rem, 7vw, 5.6rem) / 1 var(--display);
+    letter-spacing: -0.05em;
     clip-path: inset(0 100% 0 0);
     animation: l-word 520ms cubic-bezier(0.16, 1, 0.3, 1) 620ms both;
   }

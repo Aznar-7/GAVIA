@@ -1,4 +1,6 @@
 ---
+// Barra flotante: una isla de vidrio arriba de todo. Sobre las secciones oscuras (las marcadas
+// con data-tone="dark") se vuelve oscura para no cortar el fondo.
 import Logo from "./Logo.astro";
 
 const links = [
@@ -10,9 +12,9 @@ const links = [
 ];
 ---
 
-<header class="nav" data-nav>
-  <div class="wrap row">
-    <a href="#top" class="home" aria-label="Gavia, ir al inicio"><Logo size={24} /></a>
+<header class="nav on-dark" data-nav>
+  <div class="island">
+    <a href="#top" class="home" aria-label="Gavia, ir al inicio"><Logo size={22} /></a>
     <nav aria-label="Secciones" id="nav-links">
       <ul>
         {links.map((l) => <li><a href={l.href} data-spy={l.href.slice(1)}>{l.label}</a></li>)}
@@ -30,10 +32,24 @@ const links = [
   const nav = document.querySelector<HTMLElement>("[data-nav]")!;
   const menu = nav.querySelector<HTMLButtonElement>(".menu")!;
   const links = [...nav.querySelectorAll<HTMLAnchorElement>("[data-spy]")];
+  const dark = [...document.querySelectorAll<HTMLElement>('[data-tone="dark"]')];
 
-  const onScroll = () => nav.classList.toggle("scrolled", scrollY > 8);
-  addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
+  // Tono: oscuro mientras la línea de la barra pasa por una sección oscura.
+  let raf = 0;
+  const tone = () => {
+    raf = 0;
+    const y = 40;
+    const over = dark.some((s) => {
+      const r = s.getBoundingClientRect();
+      return r.top <= y && r.bottom >= y;
+    });
+    nav.classList.toggle("on-dark", over);
+    nav.classList.toggle("scrolled", scrollY > 8);
+  };
+  const queue = () => (raf ||= requestAnimationFrame(tone));
+  addEventListener("scroll", queue, { passive: true });
+  addEventListener("resize", queue);
+  tone();
 
   // Sección activa: se marca el link de la sección que ocupa el centro de la pantalla.
   const io = new IntersectionObserver(
@@ -60,58 +76,99 @@ const links = [
 
 <style>
   .nav {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    background: rgb(255 255 255 / 0.86);
-    -webkit-backdrop-filter: saturate(1.6) blur(14px);
-    backdrop-filter: saturate(1.6) blur(14px);
-    border-bottom: 1px solid transparent;
-    transition: border-color 200ms var(--ease-out);
+    position: fixed;
+    inset: 12px 0 auto;
+    z-index: var(--z-nav);
+    padding-inline: max(12px, calc(var(--gutter) - 20px));
+    pointer-events: none;
   }
-  .nav.scrolled {
-    border-bottom-color: var(--line);
-  }
-  .row {
+  .island {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 32px;
-    min-height: 72px;
+    gap: 28px;
+    max-width: calc(var(--max) - var(--gutter) * 2 + 40px);
+    min-height: 60px;
+    margin-inline: auto;
+    padding: 8px 8px 8px 20px;
+    border-radius: 14px;
+    background: rgb(251 250 247 / 0.72);
+    -webkit-backdrop-filter: saturate(1.8) blur(18px);
+    backdrop-filter: saturate(1.8) blur(18px);
+    box-shadow: inset 0 0 0 1px rgb(12 26 43 / 0.07), inset 0 1px 0 rgb(255 255 255 / 0.6),
+      0 8px 24px -12px rgb(12 26 43 / 0.18);
+    pointer-events: auto;
+    transition: background-color 400ms var(--ease-out), box-shadow 400ms var(--ease-out);
+  }
+  .on-dark .island {
+    background: rgb(15 31 51 / 0.55);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.06),
+      0 12px 32px -12px rgb(0 0 0 / 0.5);
   }
   .home {
     text-decoration: none;
+  }
+  .home :global(.logo) {
+    transition: color 400ms var(--ease-out);
+  }
+  .on-dark .home :global(.logo) {
+    color: var(--white);
   }
   nav {
     margin-left: auto;
   }
   ul {
     display: flex;
-    gap: 28px;
+    gap: 4px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
-  /* Subrayado naranja que crece de izquierda a derecha al pasar el cursor y en la sección activa. */
   ul a {
-    padding-block: 6px;
+    position: relative;
+    display: block;
+    padding: 8px 14px;
+    border-radius: 8px;
     font-size: var(--fs-sm);
     font-weight: 500;
     color: var(--ink-soft);
     text-decoration: none;
-    background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 2px no-repeat;
-    transition: color 160ms var(--ease-out), background-size 260ms var(--ease-out);
+    transition: color 200ms var(--ease-out), background-color 200ms var(--ease-out);
   }
-  ul a:hover,
+  ul a:hover {
+    color: var(--ink);
+    background: rgb(12 26 43 / 0.05);
+  }
+  /* Sección activa: el punto de paso naranja debajo del link. */
+  ul a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 1px;
+    width: 4px;
+    height: 4px;
+    margin-left: -2px;
+    background: var(--signal);
+    transform: scale(0);
+    transition: transform 300ms var(--ease-spring);
+  }
   ul a[aria-current] {
     color: var(--ink);
-    background-size: 100% 2px;
   }
-  ul a[aria-current] {
-    font-weight: 700;
+  ul a[aria-current]::after {
+    transform: scale(1);
+  }
+  .on-dark ul a {
+    color: var(--paper-soft);
+  }
+  .on-dark ul a:hover,
+  .on-dark ul a[aria-current] {
+    color: var(--white);
+    background: rgb(255 255 255 / 0.06);
   }
   .cta {
     min-height: 44px;
-    padding-block: 0.6em;
+    padding: 0.6em 1.15em;
     font-size: var(--fs-sm);
     white-space: nowrap;
   }
@@ -119,7 +176,7 @@ const links = [
     display: none;
   }
 
-  @media (max-width: 960px) {
+  @media (max-width: 1040px) {
     .cta {
       margin-left: auto;
     }
@@ -128,19 +185,25 @@ const links = [
       place-items: center;
       width: 44px;
       height: 44px;
-      border: 1px solid var(--line-strong);
-      border-radius: var(--radius-sm);
-      background: transparent;
+      border: 0;
+      border-radius: 10px;
+      background: rgb(12 26 43 / 0.06);
+      color: var(--ink);
       cursor: pointer;
+      transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out);
+    }
+    .on-dark .menu {
+      background: rgb(255 255 255 / 0.08);
+      color: var(--white);
     }
     .bars,
     .bars::before,
     .bars::after {
       display: block;
       width: 18px;
-      height: 2px;
-      background: var(--ink);
-      transition: transform 260ms var(--ease-out), opacity 200ms;
+      height: 1.5px;
+      background: currentColor;
+      transition: transform 300ms var(--ease-out), opacity 200ms;
     }
     .bars {
       position: relative;
@@ -168,42 +231,59 @@ const links = [
     }
     nav {
       position: absolute;
-      top: 100%;
+      top: calc(100% + 8px);
       left: 0;
       right: 0;
       margin: 0;
+      border-radius: 14px;
       background: var(--white);
-      border-bottom: 1px solid var(--line);
-      clip-path: inset(0 0 100% 0);
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+      transform-origin: top;
       visibility: hidden;
-      transition: clip-path 300ms var(--ease-out), visibility 0s 300ms;
-    }
-    /* Cerrado, el menú no debe sumar alto: la barra es sticky y al final de la página
-       el panel oculto estiraba el scroll con un hueco vacío debajo del pie. */
-    .nav:not(.open) {
-      overflow: clip;
-      overflow-clip-margin: 2px;
+      transition: opacity 260ms var(--ease-out), transform 360ms var(--ease-out), visibility 0s 360ms;
     }
     .open nav {
-      clip-path: inset(0 0 0 0);
+      opacity: 1;
+      transform: none;
       visibility: visible;
-      transition: clip-path 300ms var(--ease-out);
+      transition: opacity 260ms var(--ease-out), transform 360ms var(--ease-out);
     }
     ul {
       flex-direction: column;
       gap: 0;
-      padding: 8px var(--gutter) 16px;
+      padding: 8px;
     }
-    ul a {
-      display: block;
-      padding: 14px 0;
+    ul a,
+    .on-dark ul a {
+      padding: 14px 14px;
       font-size: var(--fs-lg);
-      border-bottom: 1px solid var(--line);
-      background: none;
+      color: var(--ink);
+    }
+    .on-dark ul a:hover,
+    .on-dark ul a[aria-current] {
+      color: var(--ink);
+      background: var(--paper);
+    }
+    ul a::after {
+      left: auto;
+      right: 18px;
+      top: 50%;
+      bottom: auto;
+      margin: -2px 0 0;
     }
   }
   /* Celular: la acción vive en la barra de abajo (Atajos), bajo el pulgar. */
   @media (max-width: 640px) {
+    .nav {
+      inset: 8px 0 auto;
+      padding-inline: 8px;
+    }
+    .island {
+      min-height: 56px;
+      padding: 6px 6px 6px 16px;
+    }
     .cta {
       display: none;
     }

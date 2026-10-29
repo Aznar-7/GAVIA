@@ -86,11 +86,11 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
 <style>
   .doc {
     padding: clamp(20px, 2.4vw, 32px);
-    border-radius: var(--radius);
+    border-radius: var(--radius-lg);
     background: var(--white);
     color: var(--ink);
     font-size: var(--fs-sm);
-    box-shadow: var(--shadow-deep);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.12), var(--shadow-deep);
   }
   .doc-head {
     display: flex;
@@ -102,8 +102,10 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
     border-bottom: 1px solid var(--line);
   }
   .doc-title {
-    font-weight: 700;
-    font-size: var(--fs-lg);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: var(--fs-xl);
+    letter-spacing: -0.01em;
   }
   .rows {
     margin: 0;
@@ -125,7 +127,7 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
     display: flex;
     align-items: center;
     gap: 10px;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--ink);
   }
   svg path {
@@ -138,7 +140,7 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
     align-items: center;
     gap: 8px;
     margin-top: 14px;
-    font-weight: 600;
+    font-weight: 500;
   }
   table {
     width: 100%;
@@ -146,7 +148,7 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
   }
   th {
     text-align: left;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--muted);
     padding: 8px 10px 8px 0;
     border-bottom: 1px solid var(--line);
@@ -173,10 +175,11 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
     border-radius: var(--radius-sm);
     color: var(--muted);
     font-size: var(--fs-xs);
-    font-weight: 600;
+    font-weight: 500;
   }
   .wk.demo {
     border-color: var(--ink);
+    background: var(--paper);
     color: var(--ink);
   }
   .wk.demo::after,
@@ -184,7 +187,7 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
     content: "";
     width: 10px;
     height: 10px;
-    border-radius: 3px;
+    border-radius: 0;
     background: var(--signal);
   }
   .wk.demo::after {

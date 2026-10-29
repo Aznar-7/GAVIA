@@ -33,16 +33,17 @@ const tabs = [
   },
 ];
 const calidad = [
-  { t: "Más de 300 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
-  { t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
-  { t: "Tecnología probada", d: "React, Django y PostgreSQL: cualquier programador puede seguirlo mañana." },
+  { k: "300+", t: "Más de 300 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
+  { k: "Cifrado", t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
+  { k: "Estándar", t: "Tecnología probada", d: "React, Django y PostgreSQL: cualquier programador puede seguirlo mañana." },
 ];
 ---
 
 <section class="section" id="proyectos" aria-labelledby="proyectos-title">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 id="proyectos-title" data-reveal>Lo que ya construimos.</h2>
+    <div class="sec-head split">
+      <p class="kicker" data-reveal>Proyectos</p>
+      <h2 id="proyectos-title" data-reveal>Lo que ya <span class="em">construimos</span>.</h2>
       <p data-reveal style="--d:1">
         Software nuestro, en uso hoy. Mirá por dentro lo mismo que armaríamos para tu empresa.
       </p>
@@ -97,6 +98,7 @@ const calidad = [
         {
           calidad.map((c) => (
             <li>
+              <span class="k" aria-hidden="true">{c.k}</span>
               <strong>{c.t}</strong>
               <span>{c.d}</span>
             </li>
@@ -162,12 +164,11 @@ const calidad = [
 <style>
   .tour {
     display: grid;
-    gap: 28px;
-    padding: clamp(24px, 4vw, 48px);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    gap: 32px;
+    padding: clamp(24px, 4vw, 56px);
+    border-radius: var(--radius-lg);
     background: var(--white);
-    box-shadow: var(--shadow);
+    box-shadow: inset 0 0 0 1px rgb(12 26 43 / 0.06), var(--shadow);
   }
   .tour-head {
     display: flex;
@@ -179,8 +180,10 @@ const calidad = [
   .tour-head h3 {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 14px;
     font-size: var(--fs-2xl);
+    font-weight: 500;
+    letter-spacing: -0.035em;
   }
   .tour-head p {
     margin-top: 4px;
@@ -199,7 +202,7 @@ const calidad = [
     border: 0;
     background: none;
     color: var(--muted);
-    font: 700 var(--fs-md) / 1.3 var(--body);
+    font: 500 var(--fs-md) / 1.3 var(--body);
     text-align: left;
     cursor: pointer;
     transition: color 200ms var(--ease-out);
@@ -213,7 +216,7 @@ const calidad = [
     left: 0;
     right: 0;
     bottom: -1px;
-    height: 3px;
+    height: 2px;
     background: var(--signal);
     transform: scaleX(0);
     transform-origin: left;
@@ -251,22 +254,22 @@ const calidad = [
   }
   .gain {
     font-size: var(--fs-xl);
-    font-weight: 600;
-    line-height: 1.35;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
   }
   .proof {
-    padding-left: 14px;
-    border-left: 2px solid var(--line);
+    padding-left: 16px;
+    border-left: 2px solid var(--signal);
     font-size: var(--fs-sm);
     color: var(--ink-soft);
   }
   .shot {
     margin: 0;
     overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius);
     background: var(--white);
-    box-shadow: 0 1px 2px rgb(18 36 58 / 0.05), 0 8px 24px rgb(18 36 58 / 0.06);
+    box-shadow: inset 0 0 0 1px var(--line), 0 1px 2px rgb(12 26 43 / 0.05), 0 24px 48px -20px rgb(12 26 43 / 0.25);
   }
   .shot :global(img) {
     width: 100%;
@@ -276,16 +279,29 @@ const calidad = [
   .quality {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    gap: 0;
     margin: 0;
-    padding: 24px 0 0;
-    border-top: 1px solid var(--line);
+    padding: 0;
+    border-radius: var(--radius);
+    background: var(--paper);
     list-style: none;
   }
   .quality li {
     display: grid;
-    gap: 4px;
+    gap: 6px;
     align-content: start;
+    padding: 24px 28px;
+  }
+  .quality li + li {
+    border-left: 1px solid var(--line);
+  }
+  .quality .k {
+    margin-bottom: 6px;
+    font: italic 400 var(--fs-2xl) / 1 var(--serif);
+    color: var(--ink);
+  }
+  .quality strong {
+    font-weight: 500;
   }
   .quality span {
     font-size: var(--fs-sm);
@@ -301,7 +317,10 @@ const calidad = [
     }
     .quality {
       grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
+    }
+    .quality li + li {
+      border-left: 0;
+      border-top: 1px solid var(--line);
     }
 
   }

@@ -13,8 +13,9 @@ const iniciales = (n: string) =>
 
 <section class="section tint" id="equipo" aria-labelledby="equipo-title">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 id="equipo-title" data-reveal>Un equipo chico, a propósito.</h2>
+    <div class="sec-head split">
+      <p class="kicker" data-reveal>Equipo</p>
+      <h2 id="equipo-title" data-reveal>Un equipo chico, <span class="em">a propósito</span>.</h2>
       <p data-reveal style="--d:1">
         Elegimos ser pocos para que la persona que te escucha sea la misma que diseña y escribe tu sistema. Cada
         uno conoce tu proyecto de punta a punta, y el que te responde es siempre uno de nosotros.
@@ -60,40 +61,40 @@ const iniciales = (n: string) =>
   li {
     display: grid;
     grid-template-rows: auto auto 1fr auto;
-    gap: 14px;
-    padding: 28px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+    gap: 16px;
+    padding: clamp(24px, 2.6vw, 36px);
+    border-radius: var(--radius-lg);
     background: var(--white);
+    box-shadow: inset 0 0 0 1px rgb(12 26 43 / 0.06), var(--shadow-sm);
     transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), translate 220ms var(--ease-out), opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
   }
   @media (hover: hover) {
     li:hover {
-      border-color: var(--line-strong);
-      box-shadow: var(--shadow);
-      translate: 0 -2px;
+      box-shadow: inset 0 0 0 1px rgb(12 26 43 / 0.08), var(--shadow);
+      translate: 0 -4px;
     }
   }
   .avatar {
     position: relative;
     display: grid;
     place-items: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--ink);
+    width: 72px;
+    height: 72px;
+    margin-bottom: 8px;
+    border-radius: 20px;
+    background: radial-gradient(120% 120% at 20% 0%, #2a4468, var(--night));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 12px 24px -12px rgb(7 17 29 / 0.6);
     color: var(--white);
-    font-weight: 700;
-    font-size: var(--fs-lg);
-    letter-spacing: 0.02em;
+    font: italic 400 1.9rem / 1 var(--serif);
+    letter-spacing: 0;
   }
   .avatar::after {
     content: "";
     position: absolute;
-    right: -2px;
-    bottom: -2px;
-    width: 16px;
-    height: 16px;
+    right: -3px;
+    bottom: -3px;
+    width: 18px;
+    height: 18px;
     border: 3px solid var(--white);
     background: var(--signal);
   }
@@ -102,7 +103,8 @@ const iniciales = (n: string) =>
     gap: 2px;
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
+    font-weight: 500;
   }
   .linea {
     color: var(--ink-soft);
@@ -113,7 +115,7 @@ const iniciales = (n: string) =>
     gap: 0 20px;
     padding-top: 6px;
     border-top: 1px solid var(--line);
-    font-weight: 600;
+    font-weight: 500;
     font-size: var(--fs-sm);
   }
   .links a {
@@ -137,9 +139,11 @@ const iniciales = (n: string) =>
     }
     .avatar {
       grid-row: span 3;
-      width: 52px;
-      height: 52px;
-      font-size: 1.05rem;
+      width: 56px;
+      height: 56px;
+      margin-bottom: 0;
+      border-radius: 16px;
+      font-size: 1.5rem;
     }
     .who,
     .linea,

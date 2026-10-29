@@ -1,5 +1,6 @@
 ---
-// Lo que firmamos: las condiciones de cada proyecto, publicadas.
+// Lo que firmamos: las condiciones de cada proyecto, publicadas como el documento que son,
+// con cláusulas numeradas y la firma de cada uno al pie.
 // Cada línea es un compromiso real: no agregar nada que el equipo no vaya a cumplir.
 // Pendiente de definir: plazo de la garantía y facturación (al constituir la empresa).
 import { TEAM } from "../config";
@@ -9,110 +10,173 @@ const clausulas = [
   { t: "Garantía por escrito", d: "Cada propuesta dice qué cubre la garantía y cuánto dura, antes de que firmes." },
   { t: "Contrato antes de empezar", d: "Con alcance, plazos y precio por escrito." },
 ];
-const firmantes = TEAM.map((m) => m.nombre);
-const check = "M2 7l4 4 8-9";
 ---
 
 <section class="section tint" id="condiciones" aria-labelledby="condiciones-title">
   <div class="wrap">
-    <div class="sec-head">
-      <h2 id="condiciones-title" data-reveal>Lo que firmamos.</h2>
+    <div class="sec-head split">
+      <p class="kicker" data-reveal>Condiciones</p>
+      <h2 id="condiciones-title" data-reveal>Lo que <span class="em">firmamos</span>.</h2>
       <p data-reveal style="--d:1">Las condiciones que casi nadie publica. Nosotros las ponemos acá para que no haya sorpresas.</p>
     </div>
 
-    <div class="card spot" data-reveal>
-      <ul class="terms">
+    <article class="doc spot" data-reveal aria-label="Condiciones de cada proyecto">
+      <header class="doc-head">
+        <p class="doc-title">Condiciones de trabajo</p>
+        <p class="doc-meta">Valen para cada proyecto</p>
+      </header>
+
+      <ol class="terms">
         {
-          clausulas.map((c) => (
+          clausulas.map((c, i) => (
             <li>
-              <svg viewBox="0 0 16 14" width="18" height="16" aria-hidden="true"><path d={check} /></svg>
-              <div>
-                <h3>{c.t}</h3>
-                <p>{c.d}</p>
-              </div>
+              <span class="num">Cláusula {i + 1}</span>
+              <h3>{c.t}</h3>
+              <p>{c.d}</p>
             </li>
           ))
         }
-      </ul>
-      <div class="foot">
-        <p class="by">
-          Lo firman <strong>{firmantes.slice(0, -1).join(", ")} y {firmantes.at(-1)}</strong>, en cada proyecto.
-        </p>
-        <div class="ask">
-          <p>La primera reunión es gratis y sin compromiso.</p>
-          <a class="btn" href="#contacto">Contanos tu proyecto</a>
-        </div>
+      </ol>
+
+      <div class="signs" aria-label="Lo firman">
+        {
+          TEAM.map((m) => (
+            <div class="sign">
+              <span class="scrawl" aria-hidden="true">{m.nombre}</span>
+              <span class="printed">{m.nombre}</span>
+            </div>
+          ))
+        }
       </div>
-    </div>
+
+      <footer class="foot">
+        <p>La primera reunión es gratis y sin compromiso.</p>
+        <a class="btn" href="#contacto">Contanos tu proyecto</a>
+      </footer>
+    </article>
   </div>
 </section>
 
 <style>
-  .card {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+  .doc {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
     background: var(--white);
-    box-shadow: var(--shadow);
+    box-shadow: inset 0 0 0 1px rgb(12 26 43 / 0.06), var(--shadow);
+  }
+  .doc-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px 24px;
+    padding: clamp(24px, 3.4vw, 40px) clamp(24px, 4.4vw, 64px) 20px;
+    border-bottom: 1px solid var(--line);
+  }
+  .doc-title {
+    font: italic 400 var(--fs-2xl) / 1.1 var(--serif);
+    letter-spacing: -0.01em;
+  }
+  .doc-meta {
+    font-size: var(--fs-sm);
+    color: var(--muted);
   }
   .terms {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px 56px;
     margin: 0;
-    padding: clamp(24px, 4vw, 48px);
+    padding: 0;
     list-style: none;
   }
   li {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 14px;
-    align-items: start;
+    gap: 8px;
+    align-content: start;
+    padding: clamp(28px, 3.2vw, 44px) clamp(24px, 4.4vw, 64px);
+    border-bottom: 1px solid var(--line);
   }
-  li svg {
-    margin-top: 5px;
-    fill: none;
-    stroke: var(--success);
-    stroke-width: 2.4;
+  li:nth-child(odd) {
+    border-right: 1px solid var(--line);
+  }
+  .num {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--signal-text);
+    font-variant-numeric: tabular-nums;
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
+    font-weight: 500;
   }
   li p {
-    margin-top: 4px;
-    max-width: 46ch;
+    max-width: 44ch;
     color: var(--ink-soft);
   }
+
+  /* Firmas: el nombre a mano arriba de la línea y en imprenta abajo. */
+  .signs {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px clamp(24px, 4vw, 56px);
+    padding: clamp(32px, 4vw, 48px) clamp(24px, 4.4vw, 64px) clamp(24px, 3vw, 36px);
+  }
+  .sign {
+    display: grid;
+    gap: 8px;
+  }
+  .scrawl {
+    padding: 0 4px 6px;
+    border-bottom: 1px solid var(--ink);
+    font: italic 400 clamp(1.6rem, 2.4vw, 2.1rem) / 1 var(--serif);
+    color: #1d3557;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform: rotate(-2deg);
+    transform-origin: left bottom;
+  }
+  .printed {
+    font-size: var(--fs-xs);
+    font-weight: 500;
+    color: var(--muted);
+  }
+  /* La firma se escribe de izquierda a derecha cuando el documento aparece. */
+  :global(html.js:not(.reduce)) .doc .scrawl {
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1400ms var(--ease-out);
+  }
+  :global(html.js:not(.reduce)) .doc.in .scrawl {
+    clip-path: inset(-20% -10% -20% -2%);
+  }
+  :global(html.js:not(.reduce)) .doc.in .sign:nth-child(2) .scrawl {
+    transition-delay: 350ms;
+  }
+  :global(html.js:not(.reduce)) .doc.in .sign:nth-child(3) .scrawl {
+    transition-delay: 700ms;
+  }
+
   .foot {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 20px 40px;
-    padding: 24px clamp(24px, 4vw, 48px);
+    gap: 16px 32px;
+    padding: 24px clamp(24px, 4.4vw, 64px);
+    background: var(--paper);
     border-top: 1px solid var(--line);
   }
-  .by {
-    color: var(--ink-soft);
-  }
-  .by strong {
-    color: var(--ink);
-  }
-  .ask {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px 20px;
-  }
-  .ask p {
-    font-weight: 600;
+  .foot p {
+    font-weight: 500;
   }
   @media (max-width: 760px) {
-    .terms {
+    .terms,
+    .signs {
       grid-template-columns: minmax(0, 1fr);
-      gap: 24px;
     }
-    .ask,
-    .ask .btn {
+    li:nth-child(odd) {
+      border-right: 0;
+    }
+    .foot .btn {
       width: 100%;
     }
   }
