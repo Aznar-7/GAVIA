@@ -40,7 +40,13 @@ const faqLd = {
 
 <section class="section" id="preguntas" aria-labelledby="preguntas-title">
   <div class="wrap layout">
-    <h2 id="preguntas-title" data-reveal>Preguntas frecuentes.</h2>
+    <div class="side">
+      <h2 id="preguntas-title" data-reveal>Preguntas frecuentes.</h2>
+      <div class="ask" data-reveal style="--d:1">
+        <p>¿No está la tuya? Escribinos: te responde alguien del equipo, no un bot, en menos de un día hábil.</p>
+        <a class="btn secondary" href="#contacto">Hacenos tu pregunta</a>
+      </div>
+    </div>
     <div class="list">
       {
         preguntas.map((p) => (
@@ -64,9 +70,21 @@ const faqLd = {
     gap: 32px 64px;
     align-items: start;
   }
-  h2 {
+  .side {
     position: sticky;
     top: 120px;
+    display: grid;
+    gap: 28px;
+    justify-items: start;
+  }
+  .ask {
+    display: grid;
+    gap: 16px;
+    justify-items: start;
+    max-width: 36ch;
+  }
+  .ask p {
+    color: var(--ink-soft);
   }
   .list {
     border-top: 1px solid var(--line);
@@ -137,8 +155,12 @@ const faqLd = {
     .layout {
       grid-template-columns: minmax(0, 1fr);
     }
-    h2 {
-      position: static;
+    .side {
+      display: contents;
+    }
+    /* En el celular la invitación va después de las preguntas. */
+    .ask {
+      order: 2;
     }
   }
 </style>

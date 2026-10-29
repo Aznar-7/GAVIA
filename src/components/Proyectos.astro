@@ -2,14 +2,12 @@
 // Lo que ya construimos: un recorrido por UTN Hub, software nuestro en uso. Cada pestaña es
 // algo que una empresa necesita, con la captura real que lo prueba. Las pestañas avanzan
 // solas mientras la sección está en pantalla (no con "reducir movimiento"); el cursor o el
-// foco las frenan. Abajo, Flety como producto propio.
+// foco las frenan.
 // Todo lo que dice sale del código de UTN Hub; no sumar números de uso sin un dato real.
 import { Image } from "astro:assets";
 import capInscribot from "../assets/utnhub/inscribot.png";
 import capManager from "../assets/utnhub/utn-manager.png";
 import capProyectos from "../assets/utnhub/proyectos.png";
-// Captura del mapa real de /flety (MapLibre + OpenFreeMap): misma imagen, sin cargar el mapa en la home.
-import mapaFlety from "../assets/flety-mapa.png";
 
 const tabs = [
   {
@@ -88,6 +86,7 @@ const calidad = [
               </p>
             </div>
             <figure class="shot">
+              <div class="browser-bar" aria-hidden="true"><span class="browser-url">utnhub.com.ar</span></div>
               <Image src={t.img} alt={t.alt} widths={[700, 1100, 1500]} sizes="(max-width: 860px) 92vw, 760px" loading="lazy" />
             </figure>
           </div>
@@ -105,18 +104,6 @@ const calidad = [
         }
       </ul>
     </article>
-
-    <a class="flety spot tap" href="/flety">
-      <div class="flety-text">
-        <span class="pill">Producto propio, en desarrollo</span>
-        <h3>Flety: que ningún camión vuelva vacío.</h3>
-        <p>El transportista publica su ruta y encuentra cargas en su camino, en toda la Argentina.</p>
-        <span class="go">Conocer Flety</span>
-      </div>
-      <div class="map">
-        <Image src={mapaFlety} alt="Mapa de la Argentina con rutas de ejemplo: cada camión va cargado y vuelve con carga." widths={[400, 720]} sizes="(max-width: 860px) 92vw, 420px" loading="lazy" />
-      </div>
-    </a>
   </div>
 </section>
 
@@ -278,7 +265,8 @@ const calidad = [
     overflow: hidden;
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
-    line-height: 0;
+    background: var(--white);
+    box-shadow: 0 1px 2px rgb(18 36 58 / 0.05), 0 8px 24px rgb(18 36 58 / 0.06);
   }
   .shot :global(img) {
     width: 100%;
@@ -304,65 +292,8 @@ const calidad = [
     color: var(--ink-soft);
   }
 
-  /* Flety: banda azul marino con la ida y la vuelta dibujadas. Toda la banda es el link. */
-  .flety {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 420px);
-    gap: 32px;
-    align-items: center;
-    margin-top: 24px;
-    padding: clamp(24px, 4vw, 48px);
-    border-radius: var(--radius);
-    background: var(--ink);
-    color: var(--white);
-    text-decoration: none;
-    transition: transform 300ms var(--ease-out), box-shadow 300ms var(--ease-out);
-  }
-  .flety:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-deep);
-  }
-  .flety-text {
-    display: grid;
-    gap: 12px;
-    justify-items: start;
-  }
-  .flety .pill {
-    background: rgb(255 255 255 / 0.12);
-    color: var(--white);
-  }
-  .flety h3 {
-    font-size: var(--fs-2xl);
-  }
-  .flety p {
-    max-width: 48ch;
-    color: var(--paper-soft);
-  }
-  .go {
-    margin-top: 4px;
-    font-weight: 700;
-    text-decoration: underline;
-    text-decoration-color: var(--signal);
-    text-underline-offset: 0.25em;
-  }
-  .map {
-    overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 0.18);
-    border-radius: var(--radius-sm);
-    line-height: 0;
-  }
-  .map :global(img) {
-    width: 100%;
-    height: auto;
-    transition: transform 900ms var(--ease-out);
-  }
-  .flety:hover .map :global(img) {
-    transform: scale(1.04);
-  }
-
   @media (max-width: 860px) {
-    .panel,
-    .flety {
+    .panel {
       grid-template-columns: minmax(0, 1fr);
     }
     .panel .shot {

@@ -16,12 +16,13 @@ const lineas = ["Software a medida", "para tu empresa."];
 <section class="hero" id="top" aria-labelledby="hero-title" data-hero>
   <div class="wrap inner">
     <div class="copy">
+      <p class="eyebrow rise" style="--i:0">Estudio de software de Córdoba</p>
       <h1 id="hero-title">
         {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span>{l}</span></span>)}
       </h1>
       <p class="lead rise" style="--i:2">
         Pasamos tu negocio de Excel y WhatsApp a un sistema propio. Antes de empezar te damos por escrito qué vas a
-        recibir y cuánto cuesta cada etapa. Somos un estudio de software de Córdoba.
+        recibir y cuánto cuesta cada etapa.
       </p>
       <div class="actions rise" style="--i:3">
         <a class="btn" href="#contacto">Contanos tu proyecto</a>
@@ -48,6 +49,7 @@ const lineas = ["Software a medida", "para tu empresa."];
         <Image src={capProyectos} alt="" widths={[500, 800]} sizes="40vw" loading="eager" />
       </div>
       <div class="layer main" style="--z:1">
+        <div class="browser-bar" aria-hidden="true"><span class="browser-url">utnhub.com.ar</span></div>
         <Image
           src={capManager}
           alt="UTN Manager, parte de UTN Hub: próximas entregas y novedades traídas del aula virtual."
@@ -123,6 +125,21 @@ const lineas = ["Software a medida", "para tu empresa."];
     display: grid;
     gap: 24px;
     justify-items: start;
+  }
+  /* Rótulo sobre el título, con el punto de paso de la marca. */
+  .eyebrow {
+    margin-bottom: -6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font: 600 var(--fs-sm) / 1.4 var(--body);
+    color: var(--ink-soft);
+  }
+  .eyebrow::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    background: var(--signal);
   }
   h1 {
     font-size: var(--fs-hero);

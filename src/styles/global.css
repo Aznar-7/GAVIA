@@ -13,10 +13,10 @@
   --signal-text: #b4461a; /* naranja legible como texto sobre blanco (4.9:1) */
   --danger: #b3261e;
   --success: #1e7a4f;
-  --paper-soft: #c7d3df; /* texto secundario sobre azul (Flety, pie) */
+  --paper-soft: #c7d3df; /* texto secundario sobre azul (proceso, pie) */
   --placeholder: #6b7c8f;
 
-  /* Compatibilidad con páginas internas (404, og, Flety). */
+  /* Compatibilidad con páginas internas (404, og). */
   --rule: var(--line);
   --rule-strong: var(--line-strong);
   --shoal: #dce6ee;
@@ -183,6 +183,45 @@ svg {
   height: 7px;
   border-radius: 50%;
   background: var(--success);
+}
+
+/* Barra de navegador sobre una captura real: tres puntos y la dirección del sistema. */
+.browser-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 32px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+.browser-bar::before {
+  content: "";
+  flex: none;
+  width: 8px;
+  height: 8px;
+  margin-right: 26px;
+  border-radius: 50%;
+  background: var(--line-strong);
+  box-shadow: 13px 0 var(--line-strong), 26px 0 var(--line-strong);
+}
+.browser-url {
+  min-width: 0;
+  margin-inline: auto;
+  padding: 1px 14px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--muted);
+  font: 500 var(--fs-xs) / 1.6 var(--body);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+/* Mantiene la dirección centrada: compensa el ancho de los tres puntos. */
+.browser-bar::after {
+  content: "";
+  flex: none;
+  width: 34px;
 }
 
 /* Secciones: blancas por defecto; las alternas van en gris azulado para dar ritmo sin líneas. */
