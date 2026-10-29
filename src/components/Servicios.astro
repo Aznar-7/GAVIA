@@ -34,6 +34,7 @@ const servicios = [
       {
         servicios.map((s, i) => (
           <li data-reveal style={`--d:${i + 1}`}>
+            <span class="n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
             <h3>{s.t}</h3>
             <p>{s.d}</p>
           </li>
@@ -53,16 +54,39 @@ const servicios = [
     list-style: none;
   }
   li {
+    position: relative;
     display: grid;
     gap: 10px;
     align-content: start;
     padding-top: 20px;
-    border-top: 2px solid var(--ink);
-    transition: border-color 220ms var(--ease-out);
   }
-  /* El filete se vuelve naranja en el servicio que estás mirando. */
-  li:hover {
-    border-top-color: var(--signal);
+  /* Filete de arriba: se dibuja de izquierda a derecha al aparecer y se vuelve naranja en el
+     servicio que estás mirando. */
+  li::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: var(--ink);
+    transform-origin: left;
+    transition: background-color 220ms var(--ease-out),
+      transform 1100ms var(--ease-out) calc(var(--d, 0) * 90ms + 120ms);
+  }
+  :global(html.js:not(.reduce)) li:not(.in)::before {
+    transform: scaleX(0);
+  }
+  li:hover::before {
+    background: var(--signal);
+  }
+  .n {
+    font-weight: 700;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    transition: color 220ms var(--ease-out);
+  }
+  li:hover .n {
+    color: var(--signal-text);
   }
   h3 {
     font-size: var(--fs-lg);

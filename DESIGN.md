@@ -107,7 +107,7 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 - **Naranja legible** (signal-text): cuando el naranja tiene que ser texto sobre blanco.
 
 ### Neutral
-- **Azul marino** (ink): títulos y texto. Fondo del pie y de Flety.
+- **Azul marino** (ink): títulos y texto. Fondo de Cómo trabajamos y del pie.
 - **Azul suave** (ink-soft): bajadas y párrafos secundarios.
 - **Gris** (muted): rótulos, notas, datos secundarios.
 - **Gris azulado** (paper): fondo de las secciones alternas y del hero.
