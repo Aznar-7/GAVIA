@@ -13,18 +13,15 @@
   --signal-text: #b4461a; /* naranja legible como texto sobre blanco (4.9:1) */
   --danger: #b3261e;
   --success: #1e7a4f;
-  --paper-soft: #c7d3df; /* texto secundario sobre azul (Flety, pie) */
+  --paper-soft: #c7d3df; /* texto secundario sobre azul (proceso, pie) */
   --placeholder: #6b7c8f;
 
-  /* Compatibilidad con páginas internas (404, og, Flety). */
+  /* Compatibilidad con páginas internas (og, logos). */
   --rule: var(--line);
   --rule-strong: var(--line-strong);
-  --shoal: #dce6ee;
-  --shoal-deep: #c9d7e3;
 
   --display: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
   --body: "Figtree Variable", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
 
   /* Escala tipográfica: todo tamaño de texto sale de acá. */
   --fs-xs: 0.8125rem;
@@ -160,11 +157,6 @@ svg {
   color: var(--muted);
 }
 
-/* Números y medidas: cifras alineadas, sin cambiar de familia. */
-.coord {
-  font-variant-numeric: tabular-nums;
-}
-
 /* Estado corto: "En uso", "En desarrollo". */
 .pill {
   display: inline-flex;
@@ -224,16 +216,8 @@ svg {
     transform 200ms var(--ease-out);
 }
 
-/* El botón se levanta un poco y proyecta una sombra naranja suave; al presionarlo baja. */
 .btn:hover {
   background: var(--signal-hover);
-  transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgb(240 106 42 / 0.28);
-}
-
-.btn:active {
-  transform: translateY(1px);
-  box-shadow: none;
 }
 
 .btn[disabled] {
@@ -347,30 +331,8 @@ html.js:not(.reduce) h2[data-reveal].in {
   translate: 0 0;
 }
 
-/* Brillo que sigue al cursor en tarjetas marcadas con .spot (posición en --mx/--my). */
-.spot {
-  position: relative;
-  isolation: isolate;
-}
-.spot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgb(240 106 42 / 0.09), transparent 60%);
-  opacity: 0;
-  transition: opacity 300ms var(--ease-out);
-  pointer-events: none;
-}
-@media (hover: hover) {
-  .spot:hover::after {
-    opacity: 1;
-  }
-}
-
 /* Respuesta al toque: lo que se puede tocar se hunde apenas. */
 .btn:active,
-.tap:active {
+.tap:not(:disabled):active {
   transform: scale(0.97);
 }

@@ -41,11 +41,11 @@ const org = {
         jobTitle: "Cofundador",
         ...(m.links.length > 0 && { sameAs: m.links.map((l) => l.href) }),
       })),
-      knowsAbout: ["Desarrollo de software a medida", "Sistemas de gestión", "Aplicaciones web", "Aplicaciones móviles", "Integraciones", "Automatización"],
+      knowsAbout: ["Desarrollo de software a medida", "Sistemas de gestión", "Aplicaciones web", "Aplicaciones móviles", "Integraciones", "Automatización", "IoT"],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
         name: "Servicios",
-        itemListElement: ["Sistemas de gestión a medida", "Aplicaciones web y móviles", "Integraciones entre sistemas", "Automatización de procesos", "Mantenimiento de software"].map((name) => ({
+        itemListElement: ["Sistemas de gestión a medida", "Aplicaciones web y móviles", "Integraciones entre sistemas", "Automatización de procesos", "Dispositivos conectados e IoT", "Mantenimiento de software"].map((name) => ({
           "@type": "Offer",
           itemOffered: { "@type": "Service", name, areaServed: "AR" },
         })),
@@ -73,8 +73,8 @@ const org = {
     <title>{title}</title>
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline>
-      // Pantalla de entrada con la marca: cada vez que se entra a la home, solo con JS, sin "reducir
-      // movimiento" y solo si se entra por arriba de la home (no al llegar a un #ancla).
+      // Pantalla de entrada con la marca: una vez por sesión y solo al llegar de nuevo a la home
+      // por arriba. No aparece al recargar, al volver atrás ni al entrar por un #ancla.
       (() => {
         const html = document.documentElement;
         html.classList.add("js");
@@ -82,9 +82,16 @@ const org = {
           html.classList.add("reduce");
           return;
         }
-        if (location.pathname !== "/" || location.hash) return;
+        const llegada = performance.getEntriesByType("navigation")[0]?.type;
+        if (location.pathname !== "/" || location.hash || llegada !== "navigate") return;
+        try {
+          if (sessionStorage.getItem("intro")) return;
+          sessionStorage.setItem("intro", "1");
+        } catch {
+          return;
+        }
         html.classList.add("intro-screen", "had-intro");
-        setTimeout(() => html.classList.remove("intro-screen"), 1900);
+        setTimeout(() => html.classList.remove("intro-screen"), 1200);
       })();
     </script>
     <meta name="description" content={description} />
@@ -125,7 +132,7 @@ const org = {
       // queda quieto y visible.
       const reduce = document.documentElement.classList.contains("reduce");
 
-      // 1. Apariciones al entrar en pantalla.
+      // Apariciones al entrar en pantalla.
       const items = document.querySelectorAll<HTMLElement>("[data-reveal]");
       if (reduce || !("IntersectionObserver" in window)) {
         items.forEach((el) => el.classList.add("in"));
@@ -141,22 +148,6 @@ const org = {
           { rootMargin: "0px 0px -12% 0px" },
         );
         items.forEach((el) => io.observe(el));
-      }
-
-      const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
-      if (fine) {
-        // 2. Brillo que sigue al cursor en las tarjetas .spot.
-        addEventListener(
-          "pointermove",
-          (e) => {
-            const card = (e.target as Element).closest<HTMLElement>(".spot");
-            if (!card) return;
-            const r = card.getBoundingClientRect();
-            card.style.setProperty("--mx", `${e.clientX - r.left}px`);
-            card.style.setProperty("--my", `${e.clientY - r.top}px`);
-          },
-          { passive: true },
-        );
       }
     </script>
   </body>
@@ -178,7 +169,7 @@ const org = {
     place-items: center;
     background: var(--ink);
     color: var(--white);
-    animation: loader-out 650ms cubic-bezier(0.7, 0, 0.2, 1) 1150ms both;
+    animation: loader-out 450ms cubic-bezier(0.7, 0, 0.2, 1) 750ms both;
   }
   .loader-mark {
     display: flex;
@@ -196,19 +187,19 @@ const org = {
     stroke-width: 5.5;
     stroke-linecap: square;
     stroke-dasharray: 1;
-    animation: l-trace 750ms cubic-bezier(0.65, 0, 0.35, 1) 100ms both;
+    animation: l-trace 500ms cubic-bezier(0.65, 0, 0.35, 1) 60ms both;
   }
   .l-dot {
     fill: var(--signal);
     transform-box: fill-box;
     transform-origin: center;
-    animation: l-pop 380ms cubic-bezier(0.2, 0.9, 0.3, 1) 760ms both;
+    animation: l-pop 280ms cubic-bezier(0.2, 0.9, 0.3, 1) 480ms both;
   }
   .l-word {
     font: 800 clamp(3.2rem, 7vw, 5.6rem) / 1 var(--display);
     letter-spacing: -0.03em;
     clip-path: inset(0 100% 0 0);
-    animation: l-word 520ms cubic-bezier(0.16, 1, 0.3, 1) 620ms both;
+    animation: l-word 400ms cubic-bezier(0.16, 1, 0.3, 1) 380ms both;
   }
   .l-course {
     position: absolute;
@@ -218,7 +209,7 @@ const org = {
     width: 100%;
     background: repeating-linear-gradient(90deg, var(--signal) 0 14px, transparent 14px 24px);
     transform-origin: left;
-    animation: l-course 1100ms cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation: l-course 800ms cubic-bezier(0.65, 0, 0.35, 1) both;
   }
   @keyframes l-trace {
     from {

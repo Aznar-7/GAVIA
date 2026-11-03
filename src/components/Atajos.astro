@@ -1,6 +1,6 @@
 ---
-// Atajos para escribir, siempre a mano después del hero y escondidos en Contacto (donde ya
-// están todas las formas de escribirnos).
+// Atajos para escribir: a mano mientras no haya otra acción naranja a la vista y escondidos
+// desde Contacto (donde ya están todas las formas de escribirnos).
 // - Escritorio: WhatsApp flotante, solo si hay número en config.ts.
 // - Celular: barra fija abajo, bajo el pulgar, con "Contanos tu proyecto" y WhatsApp al lado
 //   si hay número. Reemplaza al botón de la barra de arriba.
@@ -23,21 +23,20 @@ const waIcon = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
 
 <script>
   const box = document.querySelector<HTMLElement>("[data-atajos]");
-  const hero = document.getElementById("top");
   const contacto = document.getElementById("contacto");
-  if (box && hero && contacto) {
-    let inHero = true;
+  if (box && contacto) {
+    const naranjas = new Set<Element>();
     let reached = false;
     const io = new IntersectionObserver((entries) => {
       for (const e of entries) {
-        if (e.target === hero) inHero = e.isIntersecting;
         // Desde que Contacto entra en pantalla y hacia abajo (pie incluido), no hace falta.
-        else reached = e.isIntersecting || e.boundingClientRect.top < 0;
+        if (e.target === contacto) reached = e.isIntersecting || e.boundingClientRect.top < 0;
+        else e.isIntersecting ? naranjas.add(e.target) : naranjas.delete(e.target);
       }
-      box.hidden = inHero || reached;
+      box.hidden = reached || naranjas.size > 0;
     });
-    io.observe(hero);
     io.observe(contacto);
+    document.querySelectorAll("main .btn:not(.secondary)").forEach((b) => io.observe(b));
   }
 </script>
 

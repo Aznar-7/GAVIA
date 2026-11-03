@@ -35,6 +35,15 @@ const links = [
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  // Una sola acción naranja por pantalla: si hay otra a la vista, el botón de la barra se apaga.
+  const cta = nav.querySelector<HTMLElement>(".cta")!;
+  const naranjas = new Set<Element>();
+  const ctaIo = new IntersectionObserver((entries) => {
+    for (const e of entries) e.isIntersecting ? naranjas.add(e.target) : naranjas.delete(e.target);
+    cta.classList.toggle("secondary", naranjas.size > 0);
+  });
+  document.querySelectorAll("main .btn:not(.secondary)").forEach((b) => ctaIo.observe(b));
+
   // Sección activa: se marca el link de la sección que ocupa el centro de la pantalla.
   const io = new IntersectionObserver(
     (entries) => {
@@ -56,6 +65,7 @@ const links = [
   menu.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
   links.forEach((l) => l.addEventListener("click", () => setOpen(false)));
   addEventListener("keydown", (e) => e.key === "Escape" && setOpen(false));
+  addEventListener("click", (e) => !nav.contains(e.target as Node) && setOpen(false));
 </script>
 
 <style>
@@ -77,6 +87,7 @@ const links = [
     min-height: 72px;
   }
   .home {
+    padding-block: 6px;
     text-decoration: none;
   }
   nav {
