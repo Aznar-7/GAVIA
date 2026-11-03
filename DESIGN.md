@@ -17,10 +17,10 @@ colors:
 typography:
   hero:
     fontFamily: "Figtree Variable, system-ui, sans-serif"
-    fontSize: "clamp(2.5rem, 5vw, 4.25rem)"
-    fontWeight: 700
-    lineHeight: 1.05
-    letterSpacing: "-0.025em"
+    fontSize: "clamp(2.5rem, 4.4vw, 4.1rem)"
+    fontWeight: 800
+    lineHeight: 1.02
+    letterSpacing: "-0.03em"
   headline:
     fontFamily: "Figtree Variable, system-ui, sans-serif"
     fontSize: "clamp(2rem, 3.6vw, 3rem)"
@@ -86,11 +86,11 @@ La seriedad sale de la calma: blanco y gris azulado alternados por sección, una
 **Dos gestos propios y un pico:**
 - **"Elegí tu problema"** (sección ¿Te suena alguna?): el visitante toca lo que le pasa hoy, el problema se tacha en naranja y al lado aparece el sistema que lo resuelve con una pantalla de ejemplo. "Lo mío es así" precarga el contacto.
 - **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza etapa por etapa y a la derecha los documentos se van apilando: el actual adelante y los de etapas hechas corridos atrás.
-- **Hero en capas:** tres capturas reales de UTN Hub que se salen del borde derecho y se separan apenas con el cursor y el scroll.
+- **Hero en capas:** tres capturas reales de UTN Hub que se salen del borde derecho y se separan apenas con el scroll.
 
 La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" y la línea de rumbo; no en la decoración.
 
-**Movimiento:** pantalla de la marca una vez por sesión; títulos que suben línea por línea; apariciones suaves al entrar en pantalla (`data-reveal`); brillo que sigue al cursor en tarjetas (`.spot`); todo lo tocable se hunde apenas al tocarlo. Todo visible sin JS y quieto con "reducir movimiento".
+**Movimiento:** pantalla de la marca una vez por sesión, de 1,2 s como máximo; títulos que suben línea por línea; apariciones suaves al entrar en pantalla (`data-reveal`); todo lo tocable se hunde apenas al tocarlo. En el celular, la línea de rumbo también avanza con el scroll. Todo visible sin JS y quieto con "reducir movimiento".
 
 **Key Characteristics:**
 - Secciones blancas y gris azulado (#f1f4f7) alternadas: el ritmo lo dan los fondos, no los filetes.
@@ -107,7 +107,7 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 - **Naranja legible** (signal-text): cuando el naranja tiene que ser texto sobre blanco.
 
 ### Neutral
-- **Azul marino** (ink): títulos y texto. Fondo del pie y de Flety.
+- **Azul marino** (ink): títulos y texto. Fondo de Cómo trabajamos y del pie.
 - **Azul suave** (ink-soft): bajadas y párrafos secundarios.
 - **Gris** (muted): rótulos, notas, datos secundarios.
 - **Gris azulado** (paper): fondo de las secciones alternas y del hero.
@@ -123,7 +123,7 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 
 **Familia:** Figtree Variable para títulos y texto. Cálida y clara, de lectura corporativa.
 
-- **Hero** (700, clamp(2.5rem, 5vw, 4.25rem), 1.05): solo el H1.
+- **Hero** (800, clamp(2.5rem, 4.4vw, 4.1rem), 1.02): solo el H1.
 - **Headline** (700, clamp(2rem, 3.6vw, 3rem), 1.1): títulos de sección, siempre con punto final y alineados a la izquierda.
 - **Title** (700, 1.1875rem): títulos de ítem (servicios, etapas, compromisos, integrantes).
 - **Body** (400, 1.0625rem, 1.6): texto corrido; bajadas a 1.1875rem en azul suave, con medida de hasta 60ch.
@@ -137,15 +137,15 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 
 ## Layout
 
-Contenedor de hasta 1280px con margen lateral fluido. Cada sección abre con título y bajada a la izquierda (máximo 760px de ancho) y después el contenido. Las secciones alternan fondo blanco y gris azulado:
+Contenedor de hasta 1600px con margen lateral fluido. Cada sección abre con título y bajada a la izquierda (máximo 760px de ancho) y después el contenido. Las secciones alternan fondo blanco y gris azulado:
 
 Hero (gris) → Qué hacemos (blanco) → ¿Te suena alguna? (gris) → Cómo trabajamos (azul marino, fijo) → Lo que firmamos (gris) → Lo que ya construimos (blanco) → Equipo (gris) → Preguntas (blanco) → Contacto (gris) → pie azul marino.
 
 El texto vive en el contenedor (hasta 1600px); las imágenes del hero y las secciones azul marino van de borde a borde.
 
-- **Hero:** texto a la izquierda (5fr) y captura real de UTN Manager en un marco de navegador a la derecha (6fr). Bajo 960px se apila.
-- **Qué hacemos:** cuatro servicios en fila con un filete de 2px arriba de cada uno; 2 columnas en tablet, 1 en celular. No son tarjetas.
-- **Cómo trabajamos:** cinco columnas que comparten filas (subgrid), unidas por la línea de rumbo. Abajo, dos documentos de ejemplo; en el celular van plegados.
+- **Hero:** texto a la izquierda y tres capturas reales en capas a la derecha, en mitades iguales. Bajo 960px se apila.
+- **Qué hacemos:** cinco servicios en fila con un filete de 2px arriba de cada uno que se dibuja al aparecer; 3 y 2 columnas en pantallas menores, 1 en celular. No son tarjetas.
+- **Cómo trabajamos:** en pantallas grandes queda fija, con las etapas a la izquierda y los documentos apilados a la derecha. En el celular es una lista con la línea de rumbo y cada documento plegado.
 - **Equipo:** tres tarjetas con iniciales (después, fotos), formación, una línea y links.
 
 ## Elevation & Depth
@@ -174,7 +174,7 @@ Fondo blanco, borde de 1px `line`, radio 12px, padding 28px. Sombra solo en las 
 Borde de 1px `line-strong`, radio 8px, alto mínimo 48px. Foco: borde azul marino y anillo naranja suave. Error: borde y mensaje en rojo.
 
 ### Navigation
-Barra fija blanca con filete inferior al bajar. Logo a la izquierda; Servicios, Cómo trabajamos, Proyectos, Equipo y Preguntas; botón principal "Contanos tu proyecto". En el celular: logo y menú; la acción va en la barra fija de abajo.
+Barra fija blanca con filete inferior al bajar. Logo a la izquierda; Servicios, Cómo trabajamos, Proyectos, Equipo y Preguntas; botón "Contanos tu proyecto", que pasa a secundario si hay otra acción naranja a la vista. En el celular: logo y menú; la acción va en la barra fija de abajo, que se esconde en las mismas condiciones.
 
 ### Marca
 "G de recorrido" con el punto de paso cuadrado naranja y la palabra "gavia" en minúscula.
@@ -190,7 +190,7 @@ Barra fija blanca con filete inferior al bajar. Logo a la izquierda; Servicios, 
 
 ### Don't:
 - **Don't** volver a la carta náutica como decoración: marcos dobles, escalas de grados, cuadrículas, brújulas, sellos, coordenadas.
-- **Don't** usar mayúsculas espaciadas, monoespaciado ni textos unidos con " · ".
-- **Don't** poner flechas en los botones ni efectos que sigan al cursor.
+- **Don't** usar mayúsculas espaciadas, monoespaciado, textos unidos con " · ", rótulos sobre los títulos ni numerar lo que no es una secuencia.
+- **Don't** poner flechas en los botones, efectos que sigan al cursor, vidrio esmerilado, halos ni barras falsas de navegador.
 - **Don't** sumar animaciones que no respondan a algo: cada movimiento acompaña el scroll, el cursor o un toque.
 - **Don't** inventar clientes, testimonios, logos ni números.
