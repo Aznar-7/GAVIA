@@ -5,7 +5,7 @@
 import { TEAM } from "../config";
 const clausulas = [
   { t: "Precio cerrado por etapa", d: "Si algo cambia en el camino, lo cotizamos y lo aprobás antes de hacerlo." },
-  { t: "El código es tuyo", d: "Cuando terminás de pagar, te entregamos el código completo y la documentación." },
+  { t: "El código es tuyo", d: "Con cada etapa pagada te entregamos su código y su documentación. Si frenás, te llevás lo que pagaste." },
   { t: "Garantía por escrito", d: "Cada propuesta dice qué cubre la garantía y cuánto dura, antes de que firmes." },
   { t: "Contrato antes de empezar", d: "Con alcance, plazos y precio por escrito." },
 ];
@@ -20,7 +20,7 @@ const check = "M2 7l4 4 8-9";
       <p data-reveal style="--d:1">Las condiciones que casi nadie publica. Nosotros las ponemos acá para que no haya sorpresas.</p>
     </div>
 
-    <div class="card spot" data-reveal>
+    <div class="card" data-reveal>
       <ul class="terms">
         {
           clausulas.map((c) => (

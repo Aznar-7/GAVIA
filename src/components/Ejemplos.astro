@@ -97,7 +97,7 @@ const malos = ["Reponer", "Pendiente"];
 
       {
         casos.map((c, i) => (
-          <article class="solution spot" id={`caso-${i}`} data-panel={i} hidden={i !== 0} aria-live="polite">
+          <article class="solution" id={`caso-${i}`} data-panel={i} hidden={i !== 0} aria-live="polite">
             <h3>{c.con}</h3>
             <p class="detail">{c.detalle}</p>
             <div class="screen" aria-label={`Pantalla de ejemplo: ${c.pantalla}`} role="img">
@@ -123,7 +123,7 @@ const malos = ["Reponer", "Pendiente"];
     </div>
 
     <p class="cta-line">
-      ¿Tenés otro problema? <a href="#contacto">Contanoslo</a> y te decimos si se puede resolver con software, aunque
+      ¿Tenés otro problema? <a href="#contacto">Contanoslo</a> y te decimos si se puede resolver, aunque
       la respuesta sea que no.
     </p>
   </div>
@@ -145,6 +145,7 @@ const malos = ["Reponer", "Pendiente"];
     };
 
     const select = (i: number) => {
+      const y = buttons[i].getBoundingClientRect().top;
       current = i;
       buttons.forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
       panels.forEach((p, k) => {
@@ -152,6 +153,8 @@ const malos = ["Reponer", "Pendiente"];
         p.classList.toggle("enter", k === i);
       });
       place();
+      // En el celular, al cerrarse el panel de arriba la lista se corre: el botón tocado queda donde estaba.
+      if (narrow.matches) scrollBy({ top: buttons[i].getBoundingClientRect().top - y, behavior: "instant" });
     };
 
     buttons.forEach((b, i) => b.addEventListener("click", () => select(i)));
@@ -167,16 +170,18 @@ const malos = ["Reponer", "Pendiente"];
     narrow.addEventListener("change", place);
     place();
 
-    // "Lo mío es así": lleva al contacto con el mensaje ya escrito.
+    // "Lo mío es así": lleva al formulario con el pedido escrito, sin borrar lo que ya haya.
     picker.addEventListener("click", (e) => {
       const btn = (e.target as Element).closest<HTMLElement>("[data-mine]");
       if (!btn) return;
       const i = Number(btn.dataset.mine);
       const hoy = buttons[i].textContent!.trim();
       const con = panels[i].querySelector("h3")!.textContent!.trim();
+      if (document.getElementById("c-done")?.hidden === false) document.getElementById("c-again")?.click();
       const msg = document.getElementById("c-mensaje") as HTMLTextAreaElement | null;
-      if (msg) msg.value = `Hoy: ${hoy}\nMe interesa: ${con}`;
-      document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
+      const pedido = `Hoy: ${hoy}\nMe interesa: ${con}`;
+      if (msg && !msg.value.includes(pedido)) msg.value = msg.value.trim() ? `${msg.value.trim()}\n\n${pedido}` : pedido;
+      document.getElementById("contact-form")?.scrollIntoView();
       setTimeout(() => (document.getElementById("c-nombre") as HTMLInputElement | null)?.focus({ preventScroll: true }), 700);
     });
   }
@@ -380,6 +385,8 @@ const malos = ["Reponer", "Pendiente"];
     color: var(--ink-soft);
   }
   .cta-line a {
+    display: inline-block;
+    padding-block: 12px;
     font-weight: 700;
     color: var(--ink);
   }

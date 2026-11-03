@@ -12,9 +12,9 @@ Astro, deployed on Vercel (chosen by the founders, 2026-10-10).
 
 ## Users
 
-Primary: owners of small and medium businesses (pymes) and entrepreneurs in Córdoba and the rest of Argentina who need a software system built (management systems, web/mobile apps, integrations, automations) and are evaluating whom to hire. They usually run their operation on Excel, WhatsApp and paper today, are wary of being sold vapor, and compare a small studio against freelancers (Workana) and established software factories.
+Primary: owners of small and medium businesses (pymes) and entrepreneurs in Córdoba and the rest of Argentina who need a problem solved with technology (management systems, web/mobile apps, integrations, automations, connected devices) and are evaluating whom to hire. They usually run their operation on Excel, WhatsApp and paper today, are wary of being sold vapor, and compare a small studio against freelancers (Workana) and established software factories.
 
-Secondary: truckers and cargo shippers arriving for Flety; startup programs and accelerators (e.g. Claude for Startups) checking that the team is real.
+Secondary: startup programs and accelerators (e.g. Claude for Startups) checking that the team is real.
 
 ## Product Purpose
 
@@ -22,7 +22,7 @@ Gavia is a software studio from Córdoba, Argentina. It designs, builds, deploys
 
 ## Positioning
 
-A small engineering team where the person who listens to you is the person who writes your code, with the formal engineering process of a large firm (documented requirements, architecture, staged deliveries, contracts) at pyme scale, plus their own products, which proves they find and solve real problems.
+Problem solvers, not an Excel-replacement shop: anything from replacing a spreadsheet to automating a process or connecting devices (founders, 2026-11-03). A small engineering team where the person who listens to you is the person who writes your code, with the formal engineering process of a large firm (documented requirements, architecture, staged deliveries, contracts) at pyme scale, plus their own products, which proves they find and solve real problems.
 
 ## Operating Context
 
@@ -30,8 +30,8 @@ Clients typically contact by WhatsApp or email. Typical engagement: discovery me
 
 ## Capabilities and Constraints
 
-- Services at launch: custom software development, and own products. IoT/hardware is NOT offered yet (do not show hardware projects or claims). Consulting not offered as a standalone line yet.
-- Own product: **Flety** (working name, kept): a backhaul freight app so trucks don't return empty (any A → B route across Argentina; grain Córdoba → port is only an example). Uber/PedidosYa-style: loads and routes matched between truckers and shippers. In development; no users yet.
+- Services: custom software, automation, integrations and IoT/connected devices (IoT added by the founders on 2026-11-03; this reverses the earlier "no hardware" rule). Consulting not offered as a standalone line yet.
+- Own product: **Flety** (working name, kept): a backhaul freight app so trucks don't return empty (any A → B route across Argentina; grain Córdoba → port is only an example). Uber/PedidosYa-style: loads and routes matched between truckers and shippers. In development; no users yet. Hidden from the site on 2026-11-03 until it is more developed, because showing it is a promise: do not mention it on the site. Last version in git at commit 7255e33; `/flety` redirects temporarily (302) to the home.
 - Team: Vicente Aznar (2 years full-stack developer), Agustín García, possibly Benjamín Viberti (third founder, undecided). Engineering students in Córdoba.
 - Not yet incorporated. Domain: www.gaviasoftware.com (bought 2026-10). Official email: equipo@gaviasoftware.com. LinkedIn: linkedin.com/company/gavia-software. Instagram: instagram.com/gaviasoftware.
 - First meeting (discovery call) is free and without commitment (decided 2026-10-10).

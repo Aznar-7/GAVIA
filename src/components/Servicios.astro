@@ -1,5 +1,5 @@
 ---
-// Qué vendemos, en una mirada: cuatro servicios con nombre y una línea cada uno.
+// Qué vendemos, en una mirada: cinco servicios con nombre y una línea cada uno.
 // Lista con divisores, no tarjetas: se lee como el índice de una empresa, no como un catálogo.
 const servicios = [
   {
@@ -15,6 +15,10 @@ const servicios = [
     d: "Conectamos los programas que ya usás y hacemos solos los trámites que hoy alguien repite a mano.",
   },
   {
+    t: "Dispositivos e IoT",
+    d: "Sensores y equipos conectados a tu sistema, para medir y controlar lo que hoy se anota a mano.",
+  },
+  {
     t: "Mantenimiento",
     d: "Después de la entrega seguimos: soporte, mejoras y copias de seguridad con un abono mensual.",
   },
@@ -26,8 +30,8 @@ const servicios = [
     <div class="sec-head">
       <h2 id="servicios-title" data-reveal>Qué hacemos.</h2>
       <p data-reveal style="--d:1">
-        Desarrollamos software a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu equipo
-        hoy y construimos lo que hace falta, ni más ni menos.
+        Software y tecnología a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu
+        equipo hoy y construimos lo que hace falta, ni más ni menos.
       </p>
     </div>
     <ul class="list">
@@ -46,29 +50,47 @@ const servicios = [
 <style>
   .list {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 32px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
   li {
+    position: relative;
     display: grid;
     gap: 10px;
     align-content: start;
     padding-top: 20px;
-    border-top: 2px solid var(--ink);
-    transition: border-color 220ms var(--ease-out);
   }
-  /* El filete se vuelve naranja en el servicio que estás mirando. */
-  li:hover {
-    border-top-color: var(--signal);
+  /* Filete de arriba: se dibuja de izquierda a derecha al aparecer y se vuelve naranja en el
+     servicio que estás mirando. */
+  li::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: var(--ink);
+    transform-origin: left;
+    transition: background-color 220ms var(--ease-out),
+      transform 1100ms var(--ease-out) calc(var(--d, 0) * 90ms + 120ms);
+  }
+  :global(html.js:not(.reduce)) li:not(.in)::before {
+    transform: scaleX(0);
+  }
+  li:hover::before {
+    background: var(--signal);
   }
   h3 {
     font-size: var(--fs-lg);
   }
   p {
     color: var(--ink-soft);
+  }
+  @media (max-width: 1280px) {
+    .list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
   @media (max-width: 1000px) {
     .list {
