@@ -99,7 +99,7 @@ const wa = whatsappUrl();
     const value = contacto.value.trim();
     const formatErr = document.getElementById("e-contacto-formato")!;
     const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    const isPhone = !value.includes("@") && (value.match(/\d/g) ?? []).length >= 8;
+    const isPhone = /^[\d\s()+.-]+$/.test(value) && (value.match(/\d/g) ?? []).length >= 8;
     const badFormat = !!value && !isEmail && !isPhone;
     formatErr.hidden = !badFormat;
     if (badFormat) {
@@ -249,7 +249,7 @@ const wa = whatsappUrl();
   }
   dd a {
     display: inline-block;
-    padding-block: 3px;
+    padding-block: 10px;
   }
   .main {
     position: relative;
@@ -288,9 +288,6 @@ const wa = whatsappUrl();
   .is-sending .send {
     cursor: progress;
   }
-  .is-sending .send :global(.arrow) {
-    animation: nudge 700ms var(--ease-out) infinite;
-  }
   .is-sending .field {
     opacity: 0.5;
     transition: opacity 200ms;
@@ -298,11 +295,6 @@ const wa = whatsappUrl();
   @keyframes run {
     to {
       background-position: 14px 0;
-    }
-  }
-  @keyframes nudge {
-    50% {
-      transform: translateX(6px);
     }
   }
 
@@ -416,7 +408,6 @@ const wa = whatsappUrl();
   }
   @media (prefers-reduced-motion: reduce) {
     .is-sending .send-track,
-    .is-sending .send :global(.arrow),
     .is-done .done-trace,
     .is-done .done-dot,
     .is-done .done h3,

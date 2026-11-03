@@ -48,8 +48,8 @@ export const SOCIAL: { label: string; href: string }[] = [
   { label: "GitHub", href: "" },
 ].filter((s) => s.href);
 
-// Formulario de Formspree que recibe los envíos (contacto y lista de Flety) y los reenvía a
-// equipo@. Las respuestas se ven en formspree.io. Vacío = no hay envío real.
+// Formulario de Formspree que recibe los envíos del contacto y los reenvía a equipo@.
+// Las respuestas se ven en formspree.io. Vacío = no hay envío real.
 export const FORM_ENDPOINT = "https://formspree.io/f/xgaozdej";
 
 export type SendResult = "sent" | "demo" | "mailto";
@@ -72,6 +72,7 @@ export async function sendForm(subject: string, fields: Record<string, string>):
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({ _subject: subject, ...fields }),
+      signal: AbortSignal.timeout(15000), // sin esto, una red colgada deja el botón en "Enviando"
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return "sent";
