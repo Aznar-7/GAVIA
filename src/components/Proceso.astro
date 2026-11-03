@@ -57,10 +57,12 @@ const etapas = [
           {
             etapas.map((e, i) => (
               <li class="stage" id={`etapa-${i + 1}`} data-stage={i}>
-                <button type="button" class="stage-head tap" data-go={i} tabindex="-1">
-                  <span class="num" aria-hidden="true">{i + 1}</span>
-                  <h3>{e.nombre}</h3>
-                </button>
+                <h3>
+                  <button type="button" class="stage-head tap" data-go={i} disabled>
+                    <span class="num" aria-hidden="true">{i + 1}</span>
+                    <span>{e.nombre}</span>
+                  </button>
+                </h3>
                 <div class="body">
                   <div class="body-in">
                   <p class="does">{e.hacemos}</p>
@@ -107,24 +109,34 @@ const etapas = [
   const wide = matchMedia("(min-width: 1000px) and (min-height: 640px)");
   if (root && !reduce) {
     const track = root.querySelector<HTMLElement>(".track")!;
+    const wrap = root.querySelector<HTMLElement>(".stages-wrap")!;
     const stages = [...root.querySelectorAll<HTMLElement>("[data-stage]")];
+    const heads = [...root.querySelectorAll<HTMLButtonElement>("[data-go]")];
     const docs = [...root.querySelectorAll<HTMLElement>("[data-doc]")];
     const count = root.querySelector<HTMLElement>("[data-count]")!;
     const n = stages.length;
     let raf = 0;
+    let lastP = -1;
+    let lastStage = -1;
 
     const update = () => {
       raf = 0;
-      if (!root.classList.contains("pinned")) return;
-      const r = track.getBoundingClientRect();
-      const span = r.height - innerHeight;
-      const p = Math.min(1, Math.max(0, -r.top / span));
-      const current = Math.min(n - 1, Math.floor(p * n));
+      const pinned = root.classList.contains("pinned");
+      const r = (pinned ? track : wrap).getBoundingClientRect();
+      // Fija: avanza con el recorrido de la sección. Apilada: la línea llega hasta donde estás leyendo.
+      const raw = pinned ? -r.top / (r.height - innerHeight) : (innerHeight * 0.6 - r.top) / r.height;
+      const p = Math.min(1, Math.max(0, raw));
+      if (p === lastP) return; // fuera de la sección no se toca nada
+      lastP = p;
       root.style.setProperty("--p", p.toFixed(4));
+      const current = Math.min(n - 1, Math.floor(p * n));
+      if (current === lastStage) return;
+      lastStage = current;
       stages.forEach((s, i) => {
         s.classList.toggle("current", i === current);
         s.classList.toggle("done", i < current);
       });
+      heads.forEach((b, i) => b.toggleAttribute("aria-current", i === current));
       // Los documentos de las etapas hechas quedan apilados detrás del actual.
       docs.forEach((d, i) => {
         d.classList.toggle("current", i === current);
@@ -136,9 +148,11 @@ const etapas = [
     const queue = () => (raf ||= requestAnimationFrame(update));
 
     const mode = () => {
+      root.classList.add("live");
       root.classList.toggle("pinned", wide.matches);
       // Fija, el encabezado de cada etapa es un botón que lleva a esa etapa.
-      root.querySelectorAll<HTMLButtonElement>("[data-go]").forEach((b) => (b.tabIndex = wide.matches ? 0 : -1));
+      heads.forEach((b) => (b.disabled = !wide.matches));
+      lastP = lastStage = -1;
       queue();
     };
     wide.addEventListener("change", mode);
@@ -201,13 +215,11 @@ const etapas = [
     left: 21px;
     width: 3px;
     background: rgb(255 255 255 / 0.14);
-    border-radius: 3px;
   }
   .fill {
     position: absolute;
     inset: 0;
     background: var(--signal);
-    border-radius: inherit;
     transform-origin: top;
   }
   .stage-head {
@@ -219,6 +231,8 @@ const etapas = [
     border: 0;
     background: none;
     color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
     text-align: left;
     cursor: default;
   }
@@ -292,7 +306,7 @@ const etapas = [
 
   /* ---------- Modo fijo (pantallas grandes, con JS y movimiento) ---------- */
   .pinned .track {
-    height: calc(var(--n) * 70vh + 100vh);
+    height: calc(var(--n) * 55vh + 100vh);
   }
   .pinned .sticky {
     grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
@@ -302,27 +316,27 @@ const etapas = [
     align-items: center;
     padding-block: 72px 32px;
   }
-  .pinned .fill {
+  .live .fill {
     transform: scaleY(var(--p));
   }
   .pinned .stage-head {
     cursor: pointer;
   }
-  .pinned .stage-head:hover h3 {
-    color: var(--white);
-  }
   .pinned .stage h3 {
-    color: rgb(255 255 255 / 0.45);
+    color: rgb(255 255 255 / 0.55);
+  }
+  .pinned .stage h3:hover {
+    color: var(--white);
   }
   .pinned .stage.done h3 {
     color: rgb(255 255 255 / 0.75);
   }
-  .pinned .stage.done .num,
-  .pinned .stage.current .num {
+  .live .stage.done .num,
+  .live .stage.current .num {
     background: var(--signal);
     color: var(--ink);
   }
-  .pinned .stage.current .num {
+  .live .stage.current .num {
     transform: scale(1.12);
   }
   .pinned .stage.current h3 {
@@ -382,18 +396,29 @@ const etapas = [
     transform: none;
   }
 
+  /* Laptops bajas: todo tiene que entrar en la pantalla fija. */
+  @media (max-height: 720px) {
+    .pinned .sticky {
+      padding-block: 72px 12px;
+    }
+    .pinned .head {
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .pinned .head p {
+      font-size: var(--fs-md);
+    }
+  }
+
   @media (max-width: 640px) {
-    .body {
-      padding-left: 0;
-    }
     .stages {
       gap: 20px;
     }
-    .rail {
-      display: none;
-    }
-    .stages {
-      gap: 20px;
+    /* El documento usa todo el ancho, por encima de la línea de rumbo. */
+    .mdoc > :global(.doc) {
+      position: relative;
+      width: calc(100% + 62px);
+      margin-left: -62px;
     }
     dl {
       grid-template-columns: minmax(0, 1fr);

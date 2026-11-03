@@ -1,7 +1,7 @@
 ---
 // Primera pantalla: qué hacemos, para quién y cómo se arranca. A la derecha, tres capturas
-// reales de UTN Hub apiladas en profundidad que se salen del borde: se separan apenas con el
-// cursor y con el scroll. Sin ilustraciones: lo que se ve es software nuestro de verdad.
+// reales de UTN Hub apiladas en profundidad que se salen del borde y se separan apenas con el
+// scroll. Sin ilustraciones: lo que se ve es software nuestro de verdad.
 import { Image } from "astro:assets";
 import { TEAM, whatsappUrl } from "../config";
 import capManager from "../assets/utnhub/utn-manager.png";
@@ -10,18 +10,19 @@ import capInscribot from "../assets/utnhub/inscribot.png";
 const wa = whatsappUrl();
 const nombres = `${TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o ${TEAM.at(-1)!.nombre.split(" ")[0]}`;
 const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código es tuyo"];
-const lineas = ["Software a medida", "para tu empresa."];
+const lineas = ["Si tiene solución,", "la construimos."];
 ---
 
-<section class="hero" id="top" aria-labelledby="hero-title" data-hero>
+<section class="hero" id="top" aria-labelledby="hero-title">
   <div class="wrap inner">
     <div class="copy">
       <h1 id="hero-title">
         {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span>{l}</span></span>)}
       </h1>
       <p class="lead rise" style="--i:2">
-        Pasamos tu negocio de Excel y WhatsApp a un sistema propio. Antes de empezar te damos por escrito qué vas a
-        recibir y cuánto cuesta cada etapa. Somos un estudio de software de Córdoba.
+        De reemplazar un Excel a automatizar un proceso o conectar tus máquinas: hacemos software y tecnología a medida
+        para lo que hoy traba tu empresa. Antes de empezar te damos por escrito qué vas a recibir y cuánto cuesta cada
+        etapa. Somos un estudio de Córdoba.
       </p>
       <div class="actions rise" style="--i:3">
         <a class="btn" href="#contacto">Contanos tu proyecto</a>
@@ -66,39 +67,18 @@ const lineas = ["Software a medida", "para tu empresa."];
 </section>
 
 <script>
-  // Profundidad: cada capa se corre según su --z, con el cursor (escritorio) y con el scroll.
-  const hero = document.querySelector<HTMLElement>("[data-hero]");
-  const stage = hero?.querySelector<HTMLElement>("[data-stage]");
-  const reduce = document.documentElement.classList.contains("reduce");
-  if (hero && stage && !reduce) {
-    let px = 0;
-    let py = 0;
-    let sy = 0;
+  // Profundidad: al bajar, cada capa se corre según su --z.
+  const stage = document.querySelector<HTMLElement>("[data-stage]");
+  if (stage && !document.documentElement.classList.contains("reduce")) {
     let raf = 0;
     const apply = () => {
       raf = 0;
-      stage.style.setProperty("--px", px.toFixed(3));
-      stage.style.setProperty("--py", py.toFixed(3));
-      stage.style.setProperty("--sy", sy.toFixed(1));
+      stage.style.setProperty("--sy", scrollY.toFixed(1));
     };
-    const queue = () => (raf ||= requestAnimationFrame(apply));
-    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      hero.addEventListener("pointermove", (e) => {
-        px = e.clientX / innerWidth - 0.5;
-        py = e.clientY / innerHeight - 0.5;
-        queue();
-      });
-      hero.addEventListener("pointerleave", () => {
-        px = py = 0;
-        queue();
-      });
-    }
     addEventListener(
       "scroll",
       () => {
-        if (scrollY > innerHeight * 1.2) return;
-        sy = scrollY;
-        queue();
+        if (scrollY <= innerHeight * 1.2) raf ||= requestAnimationFrame(apply);
       },
       { passive: true },
     );
@@ -197,7 +177,7 @@ const lineas = ["Software a medida", "para tu empresa."];
     animation-delay: calc(var(--intro, 120ms) + 200ms);
   }
   :global(html.had-intro) .hero {
-    --intro: 1300ms;
+    --intro: 800ms;
   }
   @keyframes line-up {
     from {
@@ -219,8 +199,6 @@ const lineas = ["Software a medida", "para tu empresa."];
 
   /* Escenario: tres capturas en capas. Se sale del contenedor por la derecha. */
   .stage {
-    --px: 0;
-    --py: 0;
     --sy: 0;
     position: relative;
     margin: 0 calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2)) 0 0;
@@ -234,11 +212,7 @@ const lineas = ["Software a medida", "para tu empresa."];
     border-radius: var(--radius);
     background: var(--white);
     box-shadow: var(--shadow);
-    transform: translate3d(
-      calc(var(--px) * var(--z) * -22px),
-      calc(var(--py) * var(--z) * -16px + var(--sy) * var(--z) * -0.08px),
-      0
-    );
+    transform: translate3d(0, calc(var(--sy) * var(--z) * -0.08px), 0);
     transition: transform 500ms var(--ease-out);
     will-change: transform;
   }
@@ -275,6 +249,8 @@ const lineas = ["Software a medida", "para tu empresa."];
     color: var(--muted);
   }
   figcaption a {
+    display: inline-block;
+    padding-block: 12px;
     font-weight: 600;
     color: var(--ink);
   }

@@ -24,7 +24,7 @@ const iniciales = (n: string) =>
     <ul class="crew">
       {
         equipo.map((m, i) => (
-          <li class="spot" data-reveal style={`--d:${i}`}>
+          <li data-reveal style={`--d:${i}`}>
             <span class="avatar" aria-hidden="true">{iniciales(m.nombre)}</span>
             <div class="who">
               <h3>{m.nombre}</h3>
@@ -65,13 +65,18 @@ const iniciales = (n: string) =>
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--white);
-    transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out), translate 220ms var(--ease-out), opacity 700ms var(--ease-out), transform 900ms var(--ease-out);
+    transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+  }
+  /* El hover responde al toque; la aparición conserva su propio tiempo escalonado. */
+  :global(html.js:not(.reduce)) li[data-reveal].in {
+    transition: opacity 700ms var(--ease-out) calc(var(--d, 0) * 90ms),
+      transform 900ms var(--ease-out) calc(var(--d, 0) * 90ms), border-color 220ms var(--ease-out),
+      box-shadow 220ms var(--ease-out);
   }
   @media (hover: hover) {
     li:hover {
       border-color: var(--line-strong);
       box-shadow: var(--shadow);
-      translate: 0 -2px;
     }
   }
   .avatar {

@@ -5,7 +5,6 @@
 <p align="center">
   <img alt="Astro 5" src="https://img.shields.io/badge/Astro-5-12243a?style=flat-square&logo=astro&logoColor=f1f4f7&labelColor=12243a">
   <img alt="Deploy en Vercel" src="https://img.shields.io/badge/deploy-Vercel-12243a?style=flat-square&logo=vercel&logoColor=f1f4f7&labelColor=12243a">
-  <img alt="MapLibre" src="https://img.shields.io/badge/mapas-MapLibre-12243a?style=flat-square&labelColor=12243a">
   <img alt="Estado: pre-lanzamiento" src="https://img.shields.io/badge/estado-pre--lanzamiento-f06a2a?style=flat-square&labelColor=12243a">
   <img alt="Córdoba, Argentina" src="https://img.shields.io/badge/31°25′S_·_64°11′O-Córdoba,_AR-dce6ee?style=flat-square&labelColor=12243a">
 </p>
@@ -44,14 +43,6 @@ Cada etapa termina en algo que el cliente puede leer, probar o firmar.
 | `03` | **Desarrollo** | Una versión para probar cada dos semanas. |
 | `04` | **Puesta en marcha** | El sistema andando, tus datos migrados y un manual de uso. |
 | `05` | **Mantenimiento** | Un reporte mensual. Opcional. |
-
-### Flety
-
-Nuestro primer producto propio, hoy en desarrollo: una app para que **ningún camión vuelva vacío**. Conecta al transportista que tiene una vuelta sin carga con alguien que necesita mandar algo en ese camino.
-
-<p align="center">
-  <img src=".github/assets/flety.png" alt="Sección Flety: la ruta de ida y vuelta y un prototipo de la app del transportista." width="100%">
-</p>
 
 ---
 
@@ -99,9 +90,9 @@ GAVIA/
 
 La página principal se lee de arriba abajo en este orden:
 
-`Nav` → `Hero` → `Servicios` → `Ejemplos` → `Proceso` → `Condiciones` → `Flety` → `Proyectos` → `Equipo` → `Preguntas` → `Contacto` → `Footer`
+`Nav` → `Hero` → `Servicios` → `Ejemplos` → `Proceso` → `Condiciones` → `Proyectos` → `Equipo` → `Preguntas` → `Contacto` → `Footer`
 
-**Stack:** [Astro 5](https://astro.build) · CSS propio con tokens, sin frameworks de UI · [MapLibre GL](https://maplibre.org) + [OpenFreeMap](https://openfreemap.org) para el mapa de Flety (se carga solo cuando la sección se acerca, y si falla queda una carta dibujada) · `@astrojs/sitemap` · fuentes autoalojadas con Fontsource.
+**Stack:** [Astro 5](https://astro.build) · CSS propio con tokens, sin frameworks de UI · `@astrojs/sitemap` · fuentes autoalojadas con Fontsource.
 
 ---
 
@@ -149,7 +140,7 @@ Lo que falta configurar está todo en [`src/config.ts`](src/config.ts):
 
 - [x] **`CONTACT_EMAIL`**: `equipo@gaviasoftware.com`.
 - [ ] **`WHATSAPP`**: número en formato internacional sin `+` (ej. `5493511234567`). Vacío = no se muestra.
-- [x] **`FORM_ENDPOINT`**: Formspree (`formspree.io/f/xgaozdej`), reenvía a `equipo@`. Contacto y lista de Flety llegan con asuntos distintos.
+- [x] **`FORM_ENDPOINT`**: Formspree (`formspree.io/f/xgaozdej`), reenvía a `equipo@`.
 - [ ] **`ANALYTICS`**: activar Web Analytics en el panel de Vercel y después ponerlo en `true`.
 - [x] **`SOCIAL`**: LinkedIn e Instagram cargados. Sumar el GitHub del estudio cuando exista.
 - [ ] **Dominio**: `www.gaviasoftware.com` ya está comprado y cargado en `astro.config.mjs` y `robots.txt`; falta apuntarlo a Vercel (con `www` como dominio principal).
