@@ -1,8 +1,6 @@
 ---
 // Lo que ya construimos: un recorrido por UTN Hub, software nuestro en uso. Cada pestaña es
-// algo que una empresa necesita, con la captura real que lo prueba. Con cursor, las pestañas
-// avanzan solas mientras la sección está en pantalla; el cursor o el foco las frenan y elegir
-// una las deja quietas. En pantallas táctiles o con "reducir movimiento" no avanzan.
+// algo que una empresa necesita, con la captura real que lo prueba.
 // Todo lo que dice sale del código de UTN Hub; no sumar números de uso sin un dato real.
 import { Image } from "astro:assets";
 import capInscribot from "../assets/utnhub/inscribot.png";
@@ -33,7 +31,7 @@ const tabs = [
   },
 ];
 const calidad = [
-  { t: "Más de 300 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
+  { t: "Más de 500 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
   { t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
   { t: "Tecnología probada", d: "React, Django y PostgreSQL: cualquier programador puede seguirlo mañana." },
 ];
@@ -44,7 +42,7 @@ const calidad = [
     <div class="sec-head">
       <h2 id="proyectos-title" data-reveal>Lo que ya construimos.</h2>
       <p data-reveal style="--d:1">
-        Software nuestro, en uso hoy. Mirá por dentro lo mismo que armaríamos para tu empresa.
+        Software nuestro, en uso hoy. Mirá por dentro cómo resolvimos problemas parecidos a los de una empresa.
       </p>
     </div>
 
@@ -54,10 +52,12 @@ const calidad = [
           <h3 id="caso-title">UTN Hub <span class="pill live">En uso</span></h3>
           <p>La plataforma de los estudiantes de la UTN Córdoba.</p>
         </div>
-        <a class="btn secondary" href="https://utnhub.com.ar" target="_blank" rel="noopener">Visitar utnhub.com.ar</a>
+        <a class="btn secondary" href="https://utnhub.com.ar" target="_blank" rel="noopener">
+          Visitar utnhub.com.ar<span class="sr-only"> (se abre en otra pestaña)</span>
+        </a>
       </header>
 
-      <div class="tabs" role="tablist" aria-label="Qué hace UTN Hub">
+      <div class="tabs" role="tablist" aria-label="Qué hace UTN Hub" data-js>
         {
           tabs.map((t, i) => (
             <button
@@ -78,7 +78,7 @@ const calidad = [
 
       {
         tabs.map((t, i) => (
-          <div class="panel" role="tabpanel" id={`panel-${i}`} aria-labelledby={`tab-${i}`} hidden={i !== 0}>
+          <div class="panel" role="tabpanel" id={`panel-${i}`} aria-labelledby={`tab-${i}`} data-off={i !== 0 ? "" : undefined}>
             <div class="text">
               <p class="gain">{t.empresa}</p>
               <p class="proof">
@@ -104,6 +104,9 @@ const calidad = [
       </ul>
     </article>
 
+    <p class="hardware" data-reveal>
+      Del lado del hardware también tenemos horas de banco: un tocadiscos con Raspberry Pi y un auto con Arduino.
+    </p>
   </div>
 </section>
 
@@ -112,10 +115,7 @@ const calidad = [
   if (tour) {
     const tabs = [...tour.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
     const panels = [...tour.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
-    let auto = !document.documentElement.classList.contains("reduce") && matchMedia("(hover: hover)").matches;
-    const STEP = 6000;
     let current = 0;
-    let timer = 0;
 
     const show = (i: number, focus = false) => {
       current = i;
@@ -123,45 +123,19 @@ const calidad = [
         t.setAttribute("aria-selected", String(k === i));
         t.tabIndex = k === i ? 0 : -1;
       });
-      panels.forEach((p, k) => (p.hidden = k !== i));
+      panels.forEach((p, k) => p.toggleAttribute("data-off", k !== i));
       if (focus) tabs[i].focus();
-      restart();
-    };
-    // Avance automático: la barra de la pestaña activa se llena en STEP ms (CSS) y pasa a la siguiente.
-    const restart = () => {
-      clearTimeout(timer);
-      tour.classList.remove("playing");
-      if (!auto || tour.classList.contains("paused") || !tour.classList.contains("visible")) return;
-      void tour.offsetWidth; // reinicia la animación de la barra
-      tour.classList.add("playing");
-      timer = window.setTimeout(() => show((current + 1) % tabs.length), STEP);
     };
 
-    tabs.forEach((t, i) =>
-      t.addEventListener("click", () => {
-        auto = false;
-        show(i);
-      }),
-    );
+    tabs.forEach((t, i) => t.addEventListener("click", () => show(i)));
     tour.addEventListener("keydown", (e) => {
-      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
       if (!(e.target as Element).matches('[role="tab"]')) return;
-      auto = false;
-      show((current + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length, true);
+      const n = tabs.length;
+      const next = { ArrowRight: (current + 1) % n, ArrowLeft: (current + n - 1) % n, Home: 0, End: n - 1 }[e.key];
+      if (next === undefined) return;
+      e.preventDefault();
+      show(next, true);
     });
-    // El cursor encima o el foco adentro frenan el avance.
-    const pause = (on: boolean) => {
-      tour.classList.toggle("paused", on);
-      restart();
-    };
-    tour.addEventListener("pointerenter", () => pause(true));
-    tour.addEventListener("pointerleave", () => pause(false));
-    tour.addEventListener("focusin", () => pause(true));
-    tour.addEventListener("focusout", () => pause(false));
-    new IntersectionObserver(([e]) => {
-      tour.classList.toggle("visible", e.isIntersecting);
-      restart();
-    }, { threshold: 0.4 }).observe(tour);
   }
 </script>
 
@@ -193,7 +167,7 @@ const calidad = [
     color: var(--ink-soft);
   }
 
-  /* Pestañas: la activa lleva una barra naranja que se llena mientras avanza sola. */
+  /* Pestañas: la activa lleva una barra naranja. */
   .tabs {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -223,26 +197,23 @@ const calidad = [
     background: var(--signal);
     transform: scaleX(0);
     transform-origin: left;
+    transition: transform 400ms var(--ease-out);
   }
   .tab[aria-selected="true"] .bar {
     transform: scaleX(1);
   }
-  .playing .tab[aria-selected="true"] .bar {
-    animation: fill 6000ms linear both;
-  }
-  @keyframes fill {
-    from {
-      transform: scaleX(0);
-    }
-  }
 
+  .hardware {
+    margin-top: 28px;
+    color: var(--ink-soft);
+  }
   .panel {
     display: grid;
     grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
     gap: clamp(24px, 4vw, 56px);
     align-items: center;
   }
-  :global(html.js:not(.reduce)) .panel:not([hidden]) {
+  :global(html.js:not(.reduce)) .panel:not([data-off]) {
     animation: swap 600ms var(--ease-out);
   }
   @keyframes swap {
@@ -266,16 +237,21 @@ const calidad = [
     font-size: var(--fs-sm);
     color: var(--ink-soft);
   }
+  /* Todas las capturas ocupan lo mismo: cambiar de pestaña no mueve lo que está abajo. */
   .shot {
     margin: 0;
+    aspect-ratio: 1600 / 870;
     overflow: hidden;
+    background: var(--ink);
     border: 1px solid var(--line);
     border-radius: var(--radius-sm);
     line-height: 0;
   }
   .shot :global(img) {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: contain;
+    object-position: top;
   }
 
   .quality {

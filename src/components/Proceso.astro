@@ -32,7 +32,7 @@ const etapas = [
   },
   {
     nombre: "Mantenimiento",
-    hacemos: "Soporte, mejoras y monitoreo con un abono mensual. Es opcional.",
+    hacemos: "Soporte, mejoras y copias de seguridad con un abono mensual. Es opcional.",
     recibis: "Un reporte mensual de lo que se hizo.",
     tuParte: "Nada, salvo pedir lo que necesites.",
   },
@@ -46,8 +46,8 @@ const etapas = [
         <div class="head">
           <h2 id="proceso-title" data-reveal>Cómo trabajamos.</h2>
           <p data-reveal style="--d:1">
-            Cada etapa termina en algo que podés leer, probar o firmar. Pagás etapa por etapa y podés frenar después de
-            cualquiera.
+            Cada paso termina en algo que podés leer, probar o firmar. La construcción se divide en etapas: pagás una
+            por una y podés frenar después de cualquiera.
           </p>
         </div>
 
@@ -90,7 +90,7 @@ const etapas = [
       </div>
 
       <div class="docs" aria-hidden="true">
-        <p class="count" data-count>Etapa 1 de {etapas.length}</p>
+        <p class="count" data-count>Paso 1 de {etapas.length}</p>
         {
           etapas.map((_, i) => (
             <div class="doc-slot" data-doc={i}>
@@ -143,7 +143,7 @@ const etapas = [
         d.classList.toggle("before", i < current);
         d.style.setProperty("--k", String(Math.min(3, current - i)));
       });
-      count.textContent = `Etapa ${current + 1} de ${n}`;
+      count.textContent = `Paso ${current + 1} de ${n}`;
     };
     const queue = () => (raf ||= requestAnimationFrame(update));
 
@@ -259,6 +259,7 @@ const etapas = [
   }
   .body-in {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 12px;
     min-height: 0;
   }

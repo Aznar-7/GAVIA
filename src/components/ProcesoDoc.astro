@@ -39,7 +39,7 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
           </thead>
           <tbody>
             <tr><td>1</td><td>Pedidos y clientes</td><td>3 semanas</td><td>Cerrado</td></tr>
-            <tr><td>2</td><td>Stock y alertas</td><td>2 semanas</td><td>Cerrado</td></tr>
+            <tr><td>2</td><td>Stock y alertas</td><td>3 semanas</td><td>Cerrado</td></tr>
             <tr><td>3</td><td>Reportes</td><td>2 semanas</td><td>Cerrado</td></tr>
           </tbody>
         </table>
@@ -154,8 +154,11 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
   td {
     padding: 10px 10px 10px 0;
     border-bottom: 1px solid var(--line);
-    white-space: nowrap;
     font-variant-numeric: tabular-nums;
+  }
+  td:nth-child(3),
+  td:nth-child(4) {
+    white-space: nowrap;
   }
   .weeks {
     display: grid;
@@ -193,6 +196,10 @@ const titulos = ["Requerimientos", "Propuesta", "Entregas", "Puesta en marcha", 
     left: 8px;
   }
   @media (max-width: 480px) {
+    th:first-child,
+    td:first-child {
+      display: none;
+    }
     .rows li {
       grid-template-columns: minmax(0, 1fr);
       gap: 2px;

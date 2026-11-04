@@ -6,7 +6,7 @@ const preguntas = [
     q: "¿Cuánto cuesta?",
     a: "La primera charla es gratis y sin compromiso. El precio del sistema depende de qué tiene que hacer, cuántas personas lo usan y con qué se conecta. Después del relevamiento te damos un precio cerrado por etapa, así sabés cuánto vas a pagar antes de empezar. Pagás etapa por etapa y podés frenar después de cualquiera: te llevás el código de lo que pagaste.",
   },
-  { q: "¿Cuánto tarda?", a: "Un sistema chico lleva entre 4 y 8 semanas. Las fechas exactas van en la propuesta, etapa por etapa." },
+  { q: "¿Cuánto tarda?", a: "Estimamos entre 4 y 8 semanas para un sistema chico. Las fechas exactas van en la propuesta, etapa por etapa." },
   {
     q: "¿Por qué no contratar a un freelancer?",
     a: "Podés, y a veces conviene. Con nosotros tenés requerimientos por escrito, precio cerrado por etapa, entregas cada dos semanas, el código a tu nombre y alguien que lo mantiene después. Si un freelancer te da eso, también es una buena opción.",
@@ -16,14 +16,14 @@ const preguntas = [
     a: "Nada técnico. Necesitamos a alguien que conozca cómo trabaja tu empresa, una o dos charlas al principio y tiempo para probar cada entrega y decirnos qué ajustar.",
   },
   {
-    q: "¿Con qué tecnologías trabajan?",
-    a: "Con tecnologías probadas y muy usadas, elegidas según lo que necesita tu sistema. Así cualquier programador puede seguirlo el día de mañana, aunque no sea con nosotros.",
+    q: "¿Qué pasa si mañana dejamos de trabajar juntos?",
+    a: "Te quedás con el código y la documentación de lo que pagaste. Usamos tecnologías probadas y muy usadas, así cualquier programador puede seguirlo aunque no sea con nosotros.",
   },
   {
     q: "¿Qué pasa después de la entrega?",
     a: "La garantía va por escrito en la propuesta: qué cubre y cuánto dura. Después, si querés, seguimos con un abono mensual de mantenimiento con soporte y mejoras.",
   },
-  { q: "¿Trabajan fuera de Córdoba?", a: "Sí, con clientes de todo el país de forma remota. En Córdoba podemos ir a verte." },
+  { q: "¿Trabajan fuera de Córdoba?", a: "Sí, podemos trabajar de forma remota con empresas de todo el país. En Córdoba podemos ir a verte." },
 ];
 const faqLd = {
   "@context": "https://schema.org",
@@ -38,7 +38,7 @@ const faqLd = {
 
 <script type="application/ld+json" set:html={JSON.stringify(faqLd)} />
 
-<section class="section" id="preguntas" aria-labelledby="preguntas-title">
+<section class="section tint" id="preguntas" aria-labelledby="preguntas-title">
   <div class="wrap layout">
     <div class="side">
       <h2 id="preguntas-title" data-reveal>Preguntas frecuentes.</h2>
@@ -145,6 +145,11 @@ const faqLd = {
   }
   details[open]::details-content {
     block-size: auto;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    details::details-content {
+      transition: none;
+    }
   }
   details p {
     max-width: 60ch;

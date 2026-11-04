@@ -1,12 +1,11 @@
 ---
-// Primera pantalla: qué hacemos, para quién y cómo se arranca. A la derecha, tres capturas
-// reales de UTN Hub apiladas en profundidad que se salen del borde y se separan apenas con el
-// scroll. Sin ilustraciones: lo que se ve es software nuestro de verdad.
+// Primera pantalla: qué hacemos, para quién y cómo se arranca. A la derecha, software nuestro
+// funcionando: el registro real de InscriBot, legible, sobre una captura de UTN Hub. Las capas
+// se separan apenas con el scroll. Sin ilustraciones.
 import { Image } from "astro:assets";
 import { TEAM, whatsappUrl } from "../config";
 import capManager from "../assets/utnhub/utn-manager.png";
-import capProyectos from "../assets/utnhub/proyectos.png";
-import capInscribot from "../assets/utnhub/inscribot.png";
+import capLog from "../assets/utnhub/inscribot-log.png";
 const wa = whatsappUrl();
 const nombres = `${TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o ${TEAM.at(-1)!.nombre.split(" ")[0]}`;
 const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código es tuyo"];
@@ -20,9 +19,9 @@ const lineas = ["Si tiene solución,", "la construimos."];
         {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span>{l}</span></span>)}
       </h1>
       <p class="lead rise" style="--i:2">
-        De reemplazar un Excel a automatizar un proceso o conectar tus máquinas: hacemos software y tecnología a medida
-        para lo que hoy traba tu empresa. Antes de empezar te damos por escrito qué vas a recibir y cuánto cuesta cada
-        etapa. Somos un estudio de Córdoba.
+        Software y tecnología a medida para lo que hoy traba tu empresa: desde reemplazar un Excel hasta automatizar un
+        proceso o conectar tus máquinas. Antes de construir, te damos por escrito qué vas a recibir y cuánto cuesta cada
+        etapa.
       </p>
       <div class="actions rise" style="--i:3">
         <a class="btn" href="#contacto">Contanos tu proyecto</a>
@@ -39,29 +38,26 @@ const lineas = ["Si tiene solución,", "la construimos."];
         }
       </ul>
       <p class="note rise" style="--i:5">
-        Te responde {nombres} en menos de un día hábil.
+        Somos un estudio de Córdoba. Te responde {nombres} en menos de un día hábil.
         {wa && <a href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a>}
       </p>
     </div>
 
     <figure class="stage" data-stage>
-      <div class="layer back" style="--z:0.5">
-        <Image src={capProyectos} alt="" widths={[500, 800]} sizes="40vw" loading="eager" />
+      <div class="layer main" style="--z:0.6">
+        <Image src={capManager} alt="" widths={[600, 900, 1300]} sizes="(max-width: 960px) 96vw, 50vw" loading="eager" />
       </div>
-      <div class="layer main" style="--z:1">
+      <div class="layer front" style="--z:1.6">
         <Image
-          src={capManager}
-          alt="UTN Manager, parte de UTN Hub: próximas entregas y novedades traídas del aula virtual."
-          widths={[600, 900, 1300]}
-          sizes="(max-width: 960px) 92vw, 760px"
+          src={capLog}
+          alt="Registro de InscriBot: detecta un cupo libre y confirma la inscripción sin que nadie toque nada."
+          widths={[500, 825]}
+          sizes="(max-width: 960px) 92vw, 44vw"
           loading="eager"
           fetchpriority="high"
         />
       </div>
-      <div class="layer front" style="--z:1.8">
-        <Image src={capInscribot} alt="" widths={[400, 700]} sizes="30vw" loading="eager" />
-      </div>
-      <figcaption>UTN Hub, un sistema hecho por nosotros que hoy está en uso. <a href="#proyectos">Ver el caso</a></figcaption>
+      <figcaption>Un robot nuestro haciendo un trámite solo, dentro de UTN Hub. <a href="#proyectos">Ver el caso</a></figcaption>
     </figure>
   </div>
 </section>
@@ -162,8 +158,7 @@ const lineas = ["Si tiene solución,", "la construimos."];
     color: var(--ink);
   }
 
-  /* Entrada: el título sube línea por línea y el resto aparece escalonado. Si hubo pantalla
-     de la marca, espera a que se vaya. */
+  /* Entrada: el título sube línea por línea y el resto aparece escalonado. */
   :global(html.js:not(.reduce)) h1 .l > span {
     animation: line-up 1000ms var(--ease-out) both;
     animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
@@ -175,9 +170,6 @@ const lineas = ["Si tiene solución,", "la construimos."];
   :global(html.js:not(.reduce)) .stage {
     animation: stage-in 1400ms var(--ease-out) both;
     animation-delay: calc(var(--intro, 120ms) + 200ms);
-  }
-  :global(html.had-intro) .hero {
-    --intro: 800ms;
   }
   @keyframes line-up {
     from {
@@ -197,12 +189,12 @@ const lineas = ["Si tiene solución,", "la construimos."];
     }
   }
 
-  /* Escenario: tres capturas en capas. Se sale del contenedor por la derecha. */
+  /* Escenario: dos capturas en capas. La de atrás se sale del contenedor por la derecha. */
   .stage {
     --sy: 0;
     position: relative;
     margin: 0 calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2)) 0 0;
-    aspect-ratio: 16 / 11;
+    aspect-ratio: 16 / 10;
     min-width: 0;
   }
   .layer {
@@ -221,35 +213,29 @@ const lineas = ["Si tiene solución,", "la construimos."];
     height: auto;
   }
   .main {
-    top: 12%;
-    left: 6%;
-    width: 86%;
-    z-index: 2;
-  }
-  .back {
     top: 0;
-    left: 30%;
-    width: 72%;
+    left: 12%;
+    width: 100%;
     z-index: 1;
-    opacity: 0.9;
   }
   .front {
     bottom: 4%;
-    left: -2%;
-    width: 44%;
-    z-index: 3;
+    left: 0;
+    width: 84%;
+    z-index: 2;
     border-color: var(--ink);
     box-shadow: 0 2px 4px rgb(18 36 58 / 0.1), 0 24px 48px rgb(18 36 58 / 0.22);
   }
   figcaption {
     position: absolute;
-    left: 6%;
-    bottom: -44px;
+    left: 0;
+    bottom: -32px;
     font-size: var(--fs-sm);
     color: var(--muted);
   }
   figcaption a {
     display: inline-block;
+    margin-block: -12px;
     padding-block: 12px;
     font-weight: 600;
     color: var(--ink);
@@ -275,10 +261,13 @@ const lineas = ["Si tiene solución,", "la construimos."];
       flex-direction: column;
     }
     .stage {
-      aspect-ratio: 16 / 13;
+      aspect-ratio: 16 / 12;
+    }
+    .front {
+      width: 94%;
     }
     figcaption {
-      bottom: -36px;
+      bottom: -40px;
       right: var(--gutter);
     }
   }
