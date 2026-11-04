@@ -1,39 +1,47 @@
 ---
-// Lo que ya construimos: un recorrido por UTN Hub, software nuestro en uso. Cada pestaña es
-// algo que una empresa necesita, con la captura real que lo prueba.
-// Todo lo que dice sale del código de UTN Hub; no sumar números de uso sin un dato real.
+// Lo que ya construimos: dos casos reales, cada uno con su captura a sangre, y las piezas de
+// hardware que respaldan el servicio de IoT.
+// Cada dato sale de los repositorios y la documentación de cada proyecto: no sumar números de
+// uso sin un dato real. Las fotos de la captura de Propier son de ejemplo, y el sitio lo aclara.
 import { Image } from "astro:assets";
+import capPropier from "../assets/propier/home.png";
 import capInscribot from "../assets/utnhub/inscribot.png";
-import capManager from "../assets/utnhub/utn-manager.png";
-import capProyectos from "../assets/utnhub/proyectos.png";
 
-const tabs = [
+const casos = [
   {
-    t: "Trámites que se hacen solos",
-    empresa: "Ese trámite que alguien de tu equipo repite a mano todos los días lo hace un robot, y te avisa cuando terminó.",
-    prueba: "InscriBot vigila el sistema de la facultad y anota al estudiante apenas se libera un cupo. Avisa por Telegram con una captura.",
+    nombre: "Propier Inmuebles",
+    estado: "En desarrollo",
+    vivo: false,
+    resumen: "Una inmobiliaria de Córdoba que se había quedado sin sitio y no usaba ningún sistema.",
+    img: capPropier,
+    alt: "Portada del sitio de Propier: casa con jardín, buscador de propiedades y una propiedad destacada con su precio.",
+    nota: "Fotos de ejemplo, hasta que esté cargada la cartera real.",
+    datos: [
+      { t: "Qué hacemos", d: "El sitio público, con buscador y fichas, y el panel desde donde publican cada propiedad." },
+      { t: "Antes de programar", d: "Estudiamos 21 sitios inmobiliarios y escribimos requerimientos, casos de uso, arquitectura y seguridad." },
+      { t: "Para que dure", d: "Con el tráfico previsto corre en planes gratuitos: sin gasto mensual de servidores." },
+    ],
+  },
+  {
+    nombre: "UTN Hub",
+    estado: "En uso",
+    vivo: true,
+    resumen: "La plataforma de los estudiantes de la UTN Córdoba, con un robot que hace los trámites solo.",
     img: capInscribot,
     alt: "InscriBot en UTN Hub: el registro de actividad muestra cómo encuentra un cupo y confirma la inscripción solo.",
-  },
-  {
-    t: "Tus sistemas, conectados",
-    empresa: "Los programas que ya usás se pasan los datos entre sí. Nadie carga dos veces lo mismo.",
-    prueba: "UTN Manager lee el aula virtual y la autogestión, detecta qué cambió y agenda las entregas en el calendario.",
-    img: capManager,
-    alt: "UTN Manager en UTN Hub: próximas entregas y novedades traídas del aula virtual, con botón para agendarlas.",
-  },
-  {
-    t: "El día a día, en un lugar",
-    empresa: "Pedidos, stock, turnos o lo que maneje tu equipo, en un sistema en vez de planillas y chats.",
-    prueba: "Materias, materiales, foros, tableros de proyecto y cambios de comisión con emparejamiento automático.",
-    img: capProyectos,
-    alt: "Tablero de proyecto en UTN Hub: tareas por hacer, en curso, en revisión y hechas, con responsable y fecha.",
+    link: { href: "https://utnhub.com.ar", label: "Visitar utnhub.com.ar" },
+    datos: [
+      { t: "Trámites solos", d: "InscriBot vigila el sistema de la facultad, anota al estudiante apenas se libera un cupo y avisa por Telegram." },
+      { t: "Sistemas conectados", d: "UTN Manager lee el aula virtual, detecta qué cambió y agenda las entregas en el calendario." },
+      { t: "Hecho para durar", d: "Más de 500 pruebas automáticas, claves cifradas y tecnología probada: React, Django y PostgreSQL." },
+    ],
   },
 ];
-const calidad = [
-  { t: "Más de 500 pruebas automáticas", d: "Cada cambio se revisa solo antes de publicarse." },
-  { t: "Datos de acceso cifrados", d: "Las claves que guarda el sistema no quedan a la vista de nadie." },
-  { t: "Tecnología probada", d: "React, Django y PostgreSQL: cualquier programador puede seguirlo mañana." },
+
+const hardware = [
+  { t: "SenseBoard", d: "Panel IoT para equipos con ESP32: temperatura, humedad, alertas e historial.", href: "https://github.com/Aznar-7/SenseBoard_Front" },
+  { t: "AutoFull", d: "Robot Wi-Fi con Arduino y ESP32, control web y sensores.", href: "https://github.com/Aznar-7/AutoFull" },
+  { t: "Eco Records", d: "Un tocadiscos NFC hecho con Raspberry Pi.", href: "https://github.com/Aznar-7/proyect-ecoRecords-pi" },
 ];
 ---
 
@@ -41,259 +49,185 @@ const calidad = [
   <div class="wrap">
     <div class="sec-head">
       <h2 id="proyectos-title" data-reveal>Lo que ya construimos.</h2>
-      <p data-reveal style="--d:1">
-        Software nuestro, en uso hoy. Mirá por dentro cómo resolvimos problemas parecidos a los de una empresa.
-      </p>
+      <p data-reveal style="--d:1">Un cliente real y un sistema nuestro en uso. Mirá qué hicimos y cómo.</p>
     </div>
 
-    <article class="tour" aria-labelledby="caso-title" data-tour data-reveal>
-      <header class="tour-head">
-        <div>
-          <h3 id="caso-title">UTN Hub <span class="pill live">En uso</span></h3>
-          <p>La plataforma de los estudiantes de la UTN Córdoba.</p>
-        </div>
-        <a class="btn secondary" href="https://utnhub.com.ar" target="_blank" rel="noopener">
-          Visitar utnhub.com.ar<span class="sr-only"> (se abre en otra pestaña)</span>
-        </a>
-      </header>
-
-      <div class="tabs" role="tablist" aria-label="Qué hace UTN Hub" data-js>
-        {
-          tabs.map((t, i) => (
-            <button
-              type="button"
-              role="tab"
-              class="tab tap"
-              id={`tab-${i}`}
-              aria-controls={`panel-${i}`}
-              aria-selected={i === 0 ? "true" : "false"}
-              tabindex={i === 0 ? 0 : -1}
-            >
-              {t.t}
-              <span class="bar" aria-hidden="true"></span>
-            </button>
-          ))
-        }
-      </div>
-
-      {
-        tabs.map((t, i) => (
-          <div class="panel" role="tabpanel" id={`panel-${i}`} aria-labelledby={`tab-${i}`} data-off={i !== 0 ? "" : undefined}>
-            <div class="text">
-              <p class="gain">{t.empresa}</p>
-              <p class="proof">
-                <strong>En UTN Hub:</strong> {t.prueba}
-              </p>
-            </div>
-            <figure class="shot">
-              <Image src={t.img} alt={t.alt} widths={[700, 1100, 1500]} sizes="(max-width: 860px) 92vw, 760px" loading="lazy" />
-            </figure>
+    {
+      casos.map((c, i) => (
+        <article class:list={["case", { flip: i % 2 === 1 }]}>
+          <div class="text" data-reveal>
+            <h3>{c.nombre} <span class:list={["pill", { live: c.vivo }]}>{c.estado}</span></h3>
+            <p class="lead">{c.resumen}</p>
+            <dl>
+              {c.datos.map((d) => (
+                <div>
+                  <dt>{d.t}</dt>
+                  <dd>{d.d}</dd>
+                </div>
+              ))}
+            </dl>
+            {c.link && (
+              <a class="btn secondary" href={c.link.href} target="_blank" rel="noopener">
+                {c.link.label}<span class="sr-only"> (se abre en otra pestaña)</span>
+              </a>
+            )}
           </div>
-        ))
-      }
+          <figure class="shot" data-reveal>
+            <Image src={c.img} alt={c.alt} widths={[700, 1100, 1440]} sizes="(max-width: 960px) 96vw, 62vw" loading="lazy" />
+            {c.nota && <figcaption>{c.nota}</figcaption>}
+          </figure>
+        </article>
+      ))
+    }
 
-      <ul class="quality">
+    <div class="iron">
+      <h3 data-reveal>Y del lado del hardware</h3>
+      <ul>
         {
-          calidad.map((c) => (
-            <li>
-              <strong>{c.t}</strong>
-              <span>{c.d}</span>
+          hardware.map((h, i) => (
+            <li data-reveal style={`--d:${i + 1}`}>
+              <a href={h.href} target="_blank" rel="noopener">
+                {h.t}<span class="sr-only"> (se abre en otra pestaña)</span>
+              </a>
+              <p>{h.d}</p>
             </li>
           ))
         }
       </ul>
-    </article>
-
-    <p class="hardware" data-reveal>
-      Del lado del hardware también tenemos horas de banco: un tocadiscos con Raspberry Pi y un auto con Arduino.
-    </p>
+    </div>
   </div>
 </section>
 
-<script>
-  const tour = document.querySelector<HTMLElement>("[data-tour]");
-  if (tour) {
-    const tabs = [...tour.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
-    const panels = [...tour.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
-    let current = 0;
-
-    const show = (i: number, focus = false) => {
-      current = i;
-      tabs.forEach((t, k) => {
-        t.setAttribute("aria-selected", String(k === i));
-        t.tabIndex = k === i ? 0 : -1;
-      });
-      panels.forEach((p, k) => p.toggleAttribute("data-off", k !== i));
-      if (focus) tabs[i].focus();
-    };
-
-    tabs.forEach((t, i) => t.addEventListener("click", () => show(i)));
-    tour.addEventListener("keydown", (e) => {
-      if (!(e.target as Element).matches('[role="tab"]')) return;
-      const n = tabs.length;
-      const next = { ArrowRight: (current + 1) % n, ArrowLeft: (current + n - 1) % n, Home: 0, End: n - 1 }[e.key];
-      if (next === undefined) return;
-      e.preventDefault();
-      show(next, true);
-    });
-  }
-</script>
-
 <style>
-  .tour {
+  #proyectos {
+    overflow-x: clip;
+  }
+  /* Cada caso: texto de un lado y la captura a sangre, que se va por el borde de la pantalla. */
+  .case {
+    --bleed: calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2));
     display: grid;
-    gap: 28px;
-    padding: clamp(24px, 4vw, 48px);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-    box-shadow: var(--shadow);
-  }
-  .tour-head {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px 32px;
-  }
-  .tour-head h3 {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: var(--fs-2xl);
-  }
-  .tour-head p {
-    margin-top: 4px;
-    color: var(--ink-soft);
-  }
-
-  /* Pestañas: la activa lleva una barra naranja. */
-  .tabs {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-bottom: 1px solid var(--line);
-  }
-  .tab {
-    position: relative;
-    padding: 14px 4px 18px;
-    border: 0;
-    background: none;
-    color: var(--muted);
-    font: 700 var(--fs-md) / 1.3 var(--body);
-    text-align: left;
-    cursor: pointer;
-    transition: color 200ms var(--ease-out);
-  }
-  .tab:hover,
-  .tab[aria-selected="true"] {
-    color: var(--ink);
-  }
-  .bar {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
-    height: 3px;
-    background: var(--signal);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 400ms var(--ease-out);
-  }
-  .tab[aria-selected="true"] .bar {
-    transform: scaleX(1);
-  }
-
-  .hardware {
-    margin-top: 28px;
-    color: var(--ink-soft);
-  }
-  .panel {
-    display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
-    gap: clamp(24px, 4vw, 56px);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+    gap: clamp(32px, 5vw, 80px);
     align-items: center;
   }
-  :global(html.js:not(.reduce)) .panel:not([data-off]) {
-    animation: swap 600ms var(--ease-out);
+  .case + .case {
+    margin-top: clamp(64px, 8vw, 112px);
   }
-  @keyframes swap {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
+  .flip {
+    grid-template-columns: minmax(0, 8fr) minmax(0, 5fr);
+  }
+  .flip .text {
+    order: 2;
   }
   .text {
     display: grid;
     gap: 16px;
+    justify-items: start;
   }
-  .gain {
-    font-size: var(--fs-xl);
-    font-weight: 600;
-    line-height: 1.35;
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    font-size: var(--fs-2xl);
   }
-  .proof {
-    padding-left: 14px;
-    border-left: 2px solid var(--line);
+  .lead {
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+  }
+  dl {
+    display: grid;
+    width: 100%;
+    margin: 8px 0;
+  }
+  dl > div {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
+    gap: 4px 20px;
+    padding-block: 14px;
+    border-top: 1px solid var(--line);
+  }
+  dt {
+    font-weight: 700;
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+  }
+  dd {
+    margin: 0;
     font-size: var(--fs-sm);
     color: var(--ink-soft);
   }
-  /* Todas las capturas ocupan lo mismo: cambiar de pestaña no mueve lo que está abajo. */
   .shot {
-    margin: 0;
-    aspect-ratio: 1600 / 870;
-    overflow: hidden;
-    background: var(--ink);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-sm);
-    line-height: 0;
+    margin: 0 var(--bleed) 0 0;
+    min-width: 0;
+  }
+  .flip .shot {
+    margin: 0 0 0 var(--bleed);
   }
   .shot :global(img) {
     width: 100%;
-    height: 100%;
-    object-fit: contain;
-    object-position: top;
+    height: auto;
+    box-shadow: var(--shadow);
+  }
+  figcaption {
+    margin-top: 10px;
+    font-size: var(--fs-sm);
+    color: var(--muted);
   }
 
-  .quality {
+  .iron {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 9fr);
+    gap: 24px clamp(32px, 5vw, 80px);
+    margin-top: clamp(64px, 8vw, 112px);
+    padding-top: 32px;
+    border-top: 2px solid var(--ink);
+  }
+  .iron h3 {
+    font-size: var(--fs-xl);
+  }
+  .iron ul {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    gap: 24px 32px;
     margin: 0;
-    padding: 24px 0 0;
-    border-top: 1px solid var(--line);
+    padding: 0;
     list-style: none;
   }
-  .quality li {
-    display: grid;
-    gap: 4px;
-    align-content: start;
+  .iron a {
+    display: inline-block;
+    margin-block: -6px;
+    padding-block: 6px;
+    font-weight: 700;
+    text-decoration-color: var(--line-strong);
   }
-  .quality span {
+  .iron p {
+    margin-top: 4px;
     font-size: var(--fs-sm);
     color: var(--ink-soft);
   }
 
-  @media (max-width: 860px) {
-    .panel {
+  @media (max-width: 960px) {
+    .case,
+    .flip {
       grid-template-columns: minmax(0, 1fr);
     }
-    .panel .shot {
-      order: -1;
+    .flip .text {
+      order: 0;
     }
-    .quality {
+    .flip .shot {
+      margin: 0 var(--bleed) 0 0;
+    }
+    .iron {
       grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
     }
-
   }
-  @media (max-width: 560px) {
-    .tabs {
+  @media (max-width: 640px) {
+    .iron ul {
       grid-template-columns: minmax(0, 1fr);
-      border-bottom: 0;
     }
-    .tab {
-      padding: 12px 0 14px;
-      border-bottom: 1px solid var(--line);
+    dl > div {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>
