@@ -87,6 +87,8 @@ La seriedad sale de la calma: blanco y gris azulado alternados por sección, una
 - **"Elegí tu problema"** (sección ¿Te suena alguna?): el visitante toca lo que le pasa hoy, el problema se tacha en naranja y al lado aparece el sistema que lo resuelve con una pantalla de ejemplo. "Lo mío es así" precarga el contacto.
 - **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza paso por paso y a la derecha los documentos se van apilando: el actual adelante y los de pasos hechos corridos atrás.
 - **Hero en capas:** el registro real de InscriBot, legible, sobre una captura de UTN Hub que se sale del borde derecho. Se separan apenas con el scroll.
+- **Proyectos:** cada caso lleva texto de un lado y la captura a sangre del otro, alternando lados. Sin tarjetas.
+- **Lo que firmamos:** se lee como un contrato, con cláusulas numeradas y líneas de firma que incluyen la del cliente.
 
 La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" y la línea de rumbo; no en la decoración.
 
