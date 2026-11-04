@@ -7,9 +7,9 @@ const year = new Date().getFullYear();
 const wa = whatsappUrl();
 const secciones = [
   { href: "/#servicios", label: "Servicios" },
+  { href: "/#proyectos", label: "Proyectos" },
   { href: "/#como-trabajamos", label: "Cómo trabajamos" },
   { href: "/#condiciones", label: "Condiciones" },
-  { href: "/#proyectos", label: "Proyectos" },
   { href: "/#equipo", label: "Equipo" },
   { href: "/#preguntas", label: "Preguntas" },
 ];
@@ -38,7 +38,7 @@ const secciones = [
         <div class="col">
           <p class="label">Redes</p>
           <ul>
-            {SOCIAL.map((s) => <li><a href={s.href} target="_blank" rel="noopener">{s.label}</a></li>)}
+            {SOCIAL.map((s) => <li><a href={s.href} target="_blank" rel="noopener">{s.label}<span class="sr-only"> (se abre en otra pestaña)</span></a></li>)}
           </ul>
         </div>
       )
@@ -75,7 +75,8 @@ const secciones = [
   }
   .grid {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) repeat(3, minmax(0, 2fr));
+    /* La última columna toma el ancho del mail, que no se puede cortar. */
+    grid-template-columns: minmax(0, 5fr) minmax(0, 2fr) minmax(0, 2fr) auto;
     gap: 40px;
     padding-block: clamp(56px, 7vw, 96px) 48px;
   }
@@ -169,7 +170,7 @@ const secciones = [
   }
   @media (max-width: 960px) {
     .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
     }
     .title-block {
       grid-column: 1 / -1;

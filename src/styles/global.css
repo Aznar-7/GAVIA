@@ -14,7 +14,7 @@
   --danger: #b3261e;
   --success: #1e7a4f;
   --paper-soft: #c7d3df; /* texto secundario sobre azul (proceso, pie) */
-  --placeholder: #6b7c8f;
+  --placeholder: #5f7084;
 
   /* Compatibilidad con páginas internas (og, logos). */
   --rule: var(--line);
@@ -129,6 +129,19 @@ a:hover {
   display: none !important;
 }
 
+/* Sin JS: los paneles alternativos se ven todos y se esconde lo que solo funciona con JS. */
+html.js [data-off],
+html:not(.js) [data-js] {
+  display: none !important;
+}
+
+/* En el celular la barra de abajo no tiene que tapar lo que recibe el foco. */
+@media (max-width: 640px) {
+  html {
+    scroll-padding-bottom: 88px;
+  }
+}
+
 img,
 svg {
   display: block;
@@ -216,8 +229,10 @@ svg {
     transform 200ms var(--ease-out);
 }
 
-.btn:hover {
-  background: var(--signal-hover);
+@media (hover: hover) {
+  .btn:hover {
+    background: var(--signal-hover);
+  }
 }
 
 .btn[disabled] {
@@ -231,9 +246,11 @@ svg {
   color: var(--ink);
 }
 
-.btn.secondary:hover {
-  background: var(--white);
-  box-shadow: inset 0 0 0 1px var(--ink), 0 6px 18px rgb(18 36 58 / 0.08);
+@media (hover: hover) {
+  .btn.secondary:hover {
+    background: var(--white);
+    box-shadow: inset 0 0 0 1px var(--ink), 0 6px 18px rgb(18 36 58 / 0.08);
+  }
 }
 
 /* Campos de formulario compartidos. */

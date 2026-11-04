@@ -3,8 +3,8 @@ import Logo from "./Logo.astro";
 
 const links = [
   { href: "#servicios", label: "Servicios" },
-  { href: "#como-trabajamos", label: "Cómo trabajamos" },
   { href: "#proyectos", label: "Proyectos" },
+  { href: "#como-trabajamos", label: "Cómo trabajamos" },
   { href: "#equipo", label: "Equipo" },
   { href: "#preguntas", label: "Preguntas" },
 ];
@@ -13,16 +13,16 @@ const links = [
 <header class="nav" data-nav>
   <div class="wrap row">
     <a href="#top" class="home" aria-label="Gavia, ir al inicio"><Logo size={24} /></a>
+    <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links" data-js>
+      <span class="sr-only">Abrir menú</span>
+      <span class="bars" aria-hidden="true"></span>
+    </button>
     <nav aria-label="Secciones" id="nav-links">
       <ul>
         {links.map((l) => <li><a href={l.href} data-spy={l.href.slice(1)}>{l.label}</a></li>)}
       </ul>
     </nav>
     <a class="btn cta" href="#contacto">Contanos tu proyecto</a>
-    <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links">
-      <span class="sr-only">Abrir menú</span>
-      <span class="bars" aria-hidden="true"></span>
-    </button>
   </div>
 </header>
 
@@ -64,7 +64,11 @@ const links = [
   };
   menu.addEventListener("click", () => setOpen(!nav.classList.contains("open")));
   links.forEach((l) => l.addEventListener("click", () => setOpen(false)));
-  addEventListener("keydown", (e) => e.key === "Escape" && setOpen(false));
+  addEventListener("keydown", (e) => {
+    if (e.key !== "Escape" || !nav.classList.contains("open")) return;
+    setOpen(false);
+    menu.focus();
+  });
   addEventListener("click", (e) => !nav.contains(e.target as Node) && setOpen(false));
 </script>
 
@@ -73,7 +77,7 @@ const links = [
     position: sticky;
     top: 0;
     z-index: 20;
-    background: rgb(255 255 255 / 0.96);
+    background: var(--white);
     border-bottom: 1px solid transparent;
     transition: border-color 200ms var(--ease-out);
   }
@@ -102,12 +106,13 @@ const links = [
   }
   /* Subrayado naranja que crece de izquierda a derecha al pasar el cursor y en la sección activa. */
   ul a {
-    padding-block: 6px;
+    display: block;
+    padding-block: 12px;
     font-size: var(--fs-sm);
     font-weight: 500;
     color: var(--ink-soft);
     text-decoration: none;
-    background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 2px no-repeat;
+    background: linear-gradient(var(--signal), var(--signal)) left calc(100% - 6px) / 0 2px no-repeat;
     transition: color 160ms var(--ease-out), background-size 260ms var(--ease-out);
   }
   ul a:hover,
@@ -133,6 +138,7 @@ const links = [
       margin-left: auto;
     }
     .menu {
+      order: 1;
       display: grid;
       place-items: center;
       width: 44px;
@@ -194,6 +200,8 @@ const links = [
       overflow-clip-margin: 2px;
     }
     .open nav {
+      max-height: calc(100dvh - 72px);
+      overflow-y: auto;
       clip-path: inset(0 0 0 0);
       visibility: visible;
       transition: clip-path 300ms var(--ease-out);
