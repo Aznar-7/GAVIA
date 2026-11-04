@@ -1,6 +1,6 @@
 ---
 // Qué vendemos, en una mirada: cinco servicios con nombre y una línea cada uno.
-// Lista con divisores, no tarjetas: se lee como el índice de una empresa, no como un catálogo.
+// Un índice: el título queda fijo a la izquierda y los servicios corren en filas a la derecha.
 const servicios = [
   {
     t: "Sistemas de gestión",
@@ -26,7 +26,7 @@ const servicios = [
 ---
 
 <section class="section" id="servicios" aria-labelledby="servicios-title">
-  <div class="wrap">
+  <div class="wrap layout">
     <div class="sec-head">
       <h2 id="servicios-title" data-reveal>Qué hacemos.</h2>
       <p data-reveal style="--d:1">
@@ -48,20 +48,30 @@ const servicios = [
 </section>
 
 <style>
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
+    gap: 32px clamp(32px, 6vw, 96px);
+    align-items: start;
+  }
+  .sec-head {
+    position: sticky;
+    top: 120px;
+    margin-bottom: 0;
+  }
   .list {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 32px;
     margin: 0;
     padding: 0;
     list-style: none;
+    border-bottom: 1px solid var(--line);
   }
   li {
     position: relative;
     display: grid;
-    gap: 10px;
-    align-content: start;
-    padding-top: 20px;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: 8px 32px;
+    padding-block: 24px;
   }
   /* Filete de arriba: se dibuja de izquierda a derecha al aparecer y se vuelve naranja en el
      servicio que estás mirando. */
@@ -69,7 +79,7 @@ const servicios = [
     content: "";
     position: absolute;
     inset: 0 0 auto;
-    height: 2px;
+    height: 1px;
     background: var(--ink);
     transform-origin: left;
     transition: background-color 220ms var(--ease-out),
@@ -78,30 +88,29 @@ const servicios = [
   :global(html.js:not(.reduce)) li:not(.in)::before {
     transform: scaleX(0);
   }
-  li:hover::before {
-    background: var(--signal);
+  @media (hover: hover) {
+    li:hover::before {
+      background: var(--signal);
+    }
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
   }
   p {
     color: var(--ink-soft);
   }
-  @media (max-width: 1280px) {
-    .list {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-  }
   @media (max-width: 1000px) {
-    .list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 32px 40px;
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .sec-head {
+      position: static;
     }
   }
-  @media (max-width: 560px) {
-    .list {
+  @media (max-width: 640px) {
+    li {
       grid-template-columns: minmax(0, 1fr);
-      gap: 24px;
+      padding-block: 20px;
     }
   }
 </style>

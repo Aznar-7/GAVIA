@@ -1,14 +1,7 @@
 ---
-// Quiénes somos: nombre, formación, qué hace cada uno y dónde ver su trabajo.
-// Las iniciales ocupan el lugar de la foto hasta que tengamos fotos del equipo: se cambia
-// sumando `foto` a cada integrante en config.ts.
+// Quiénes somos: nombre, formación, qué hace cada uno y dónde ver su trabajo. Sin fotos todavía:
+// cuando estén, van arriba de cada nombre.
 import { TEAM as equipo } from "../config";
-const iniciales = (n: string) =>
-  n
-    .split(" ")
-    .map((p) => p[0])
-    .slice(0, 2)
-    .join("");
 ---
 
 <section class="section" id="equipo" aria-labelledby="equipo-title">
@@ -25,7 +18,6 @@ const iniciales = (n: string) =>
       {
         equipo.map((m, i) => (
           <li data-reveal style={`--d:${i}`}>
-            <span class="avatar" aria-hidden="true">{iniciales(m.nombre)}</span>
             <div class="who">
               <h3>{m.nombre}</h3>
               <p class="label">{m.formacion}</p>
@@ -52,51 +44,24 @@ const iniciales = (n: string) =>
   .crew {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px;
+    gap: 32px clamp(24px, 4vw, 64px);
     margin: 0;
     padding: 0;
     list-style: none;
   }
   li {
     display: grid;
-    grid-template-rows: auto auto 1fr auto;
-    gap: 14px;
-    padding: 28px;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-    transition: border-color 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
-  }
-  /* El hover responde al toque; la aparición conserva su propio tiempo escalonado. */
-  :global(html.js:not(.reduce)) li[data-reveal].in {
-    transition: opacity 700ms var(--ease-out) calc(var(--d, 0) * 90ms),
-      transform 900ms var(--ease-out) calc(var(--d, 0) * 90ms), border-color 220ms var(--ease-out),
-      box-shadow 220ms var(--ease-out);
-  }
-  @media (hover: hover) {
-    li:hover {
-      border-color: var(--line-strong);
-      box-shadow: var(--shadow);
-    }
-  }
-  .avatar {
-    display: grid;
-    place-items: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: var(--ink);
-    color: var(--white);
-    font-weight: 700;
-    font-size: var(--fs-lg);
-    letter-spacing: 0.02em;
+    grid-template-rows: auto 1fr auto;
+    gap: 12px;
+    padding-top: 20px;
+    border-top: 2px solid var(--ink);
   }
   .who {
     display: grid;
     gap: 2px;
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
   }
   .linea {
     color: var(--ink-soft);
@@ -105,8 +70,6 @@ const iniciales = (n: string) =>
     display: flex;
     flex-wrap: wrap;
     gap: 0 20px;
-    padding-top: 6px;
-    border-top: 1px solid var(--line);
     font-weight: 600;
     font-size: var(--fs-sm);
   }
@@ -118,27 +81,9 @@ const iniciales = (n: string) =>
   .links a:hover {
     text-decoration-color: var(--signal);
   }
-  @media (max-width: 960px) {
+  @media (max-width: 860px) {
     .crew {
       grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
-    }
-    li {
-      grid-template-columns: auto minmax(0, 1fr);
-      grid-template-rows: none;
-      column-gap: 18px;
-      padding: 22px;
-    }
-    .avatar {
-      grid-row: span 3;
-      width: 52px;
-      height: 52px;
-      font-size: 1.05rem;
-    }
-    .who,
-    .linea,
-    .links {
-      grid-column: 2;
     }
   }
 </style>
