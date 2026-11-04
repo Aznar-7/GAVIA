@@ -22,7 +22,7 @@ Gavia is a software studio from Córdoba, Argentina. It designs, builds, deploys
 
 ## Positioning
 
-Problem solvers, not an Excel-replacement shop: anything from replacing a spreadsheet to automating a process or connecting devices (founders, 2026-11-03). A small engineering team where the person who listens to you is the person who writes your code, with the formal engineering process of a large firm (documented requirements, architecture, staged deliveries, contracts) at pyme scale, plus their own products, which proves they find and solve real problems.
+A service company, not a portfolio: the site leads with what the owner can hire and uses cases as proof (founders, 2026-11-04). Problem solvers, not an Excel-replacement shop: anything from replacing a spreadsheet to automating a process or connecting devices (founders, 2026-11-03). A small engineering team where the person who listens to you is the person who writes your code, with the formal engineering process of a large firm (documented requirements, architecture, staged deliveries, contracts) at pyme scale, plus their own products, which proves they find and solve real problems.
 
 ## Operating Context
 
