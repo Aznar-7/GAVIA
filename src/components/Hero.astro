@@ -1,177 +1,250 @@
 ---
-// Primera pantalla: qué hacemos, para quién y cómo se arranca. A la derecha, software nuestro
-// funcionando: el registro real de InscriBot, legible, sobre una captura de UTN Hub. Las capas
-// se separan apenas con el scroll. Sin ilustraciones.
-import { Image } from "astro:assets";
+// Primera pantalla, en el azul de la marca. A la izquierda, qué somos y qué hacemos en una frase.
+// A la derecha, lo que nos diferencia hecho objeto: la propuesta escrita que te llevás antes de
+// que construyamos nada. Se firma sola al cargar. Es un ejemplo y dice que lo es.
 import { TEAM, whatsappUrl } from "../config";
-import capManager from "../assets/utnhub/utn-manager.png";
-import capLog from "../assets/utnhub/inscribot-log.png";
 const wa = whatsappUrl();
 const nombres = `${TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o ${TEAM.at(-1)!.nombre.split(" ")[0]}`;
-const facts = ["Primera charla gratis", "Precio cerrado por etapa", "El código es tuyo"];
-const lineas = ["Si tiene solución,", "la construimos."];
+const etapas = [
+  ["Pedidos y clientes", "3 semanas"],
+  ["Stock y alertas", "3 semanas"],
+  ["Reportes", "2 semanas"],
+];
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-title">
   <div class="wrap inner">
     <div class="copy">
       <h1 id="hero-title">
-        {lineas.map((l, i) => <span class="l" style={`--i:${i}`}><span>{l}</span></span>)}
+        <span class="l" style="--i:0"><span>Si tiene solución,</span></span>
+        <span class="l" style="--i:1"><span>la construimos.</span></span>
+        <span class="tone rise" style="--i:2">Software y tecnología a medida para lo que hoy traba tu empresa.</span>
       </h1>
-      <p class="lead rise" style="--i:2">
-        Software y tecnología a medida para lo que hoy traba tu empresa: desde reemplazar un Excel hasta automatizar un
-        proceso o conectar tus máquinas. Antes de construir, te damos por escrito qué vas a recibir y cuánto cuesta cada
-        etapa.
+      <p class="lead rise" style="--i:3">
+        Desde reemplazar un Excel hasta automatizar un proceso o conectar tus máquinas. Antes de construir, te damos por
+        escrito qué vas a recibir y cuánto cuesta.
       </p>
-      <div class="actions rise" style="--i:3">
+      <div class="actions rise" style="--i:4">
         <a class="btn" href="#contacto">Contanos tu proyecto</a>
-        <a class="btn secondary" href="#como-trabajamos">Ver cómo trabajamos</a>
+        <a class="btn ghost" href="#proyectos">Ver proyectos</a>
       </div>
-      <ul class="facts rise" style="--i:4" aria-label="Condiciones">
-        {
-          facts.map((f) => (
-            <li>
-              <svg viewBox="0 0 16 14" width="16" height="14" aria-hidden="true"><path d="M2 7l4 4 8-9" /></svg>
-              {f}
-            </li>
-          ))
-        }
-      </ul>
       <p class="note rise" style="--i:5">
-        Somos un estudio de Córdoba. Te responde {nombres} en menos de un día hábil.
+        La primera charla es gratis. Te responde {nombres} en menos de un día hábil.
         {wa && <a href={wa} target="_blank" rel="noopener">Escribinos por WhatsApp</a>}
       </p>
     </div>
 
-    <figure class="stage" data-stage>
-      <div class="layers">
-        <div class="layer main" style="--z:0.6">
-          <Image src={capManager} alt="" widths={[600, 900, 1300]} sizes="(max-width: 960px) 96vw, 50vw" loading="eager" />
-        </div>
-        <div class="layer front" style="--z:1.6">
-          <Image
-            src={capLog}
-            alt="Registro de InscriBot: detecta un cupo libre y confirma la inscripción sin que nadie toque nada."
-            widths={[500, 825]}
-            sizes="(max-width: 960px) 92vw, 44vw"
-            loading="eager"
-            fetchpriority="high"
-          />
-        </div>
+    <figure class="sheet" aria-label="Ejemplo de la propuesta que te damos por escrito antes de empezar">
+      <div class="head">
+        <p class="title">Propuesta</p>
+        <span class="tag">Ejemplo</span>
       </div>
-      <figcaption>Un robot nuestro haciendo un trámite solo, dentro de UTN Hub. <a href="#proyectos">Ver el caso</a></figcaption>
+      <table>
+        <thead>
+          <tr><th>Etapa</th><th>Plazo</th><th>Precio</th></tr>
+        </thead>
+        <tbody>
+          {etapas.map(([e, p]) => <tr><td>{e}</td><td>{p}</td><td>Cerrado</td></tr>)}
+        </tbody>
+      </table>
+      <ul>
+        <li>Pagás etapa por etapa y podés frenar cuando quieras.</li>
+        <li>Con cada etapa pagada, el código es tuyo.</li>
+      </ul>
+      <div class="sign">
+        <div>
+          <svg viewBox="0 0 120 44" aria-hidden="true"><path pathLength="1" d="M4 32C14 14 22 6 26 8c5 3-8 26-4 27 5 1 12-18 17-17 4 1-3 14 1 15 5 1 9-9 14-8 5 1 3 7 8 6 9-1 26-8 50-12" /></svg>
+          <p>Gavia</p>
+        </div>
+        <div><p>Vos</p></div>
+      </div>
     </figure>
   </div>
 </section>
 
-<script>
-  // Profundidad: al bajar, cada capa se corre según su --z.
-  const stage = document.querySelector<HTMLElement>("[data-stage]");
-  if (stage && !document.documentElement.classList.contains("reduce")) {
-    let raf = 0;
-    const apply = () => {
-      raf = 0;
-      stage.style.setProperty("--sy", scrollY.toFixed(1));
-    };
-    addEventListener(
-      "scroll",
-      () => {
-        if (scrollY <= innerHeight * 1.2) raf ||= requestAnimationFrame(apply);
-      },
-      { passive: true },
-    );
-  }
-</script>
-
 <style>
   .hero {
-    overflow: hidden;
-    background: var(--paper);
-    padding-block: clamp(48px, 7vw, 96px) clamp(64px, 9vw, 120px);
+    position: relative;
+    z-index: 1;
+    background: var(--navy);
+    color: var(--on-navy);
+    padding-block: clamp(40px, 6vw, 88px) clamp(48px, 6vw, 80px);
   }
   .inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(32px, 5vw, 80px);
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 40px clamp(40px, 6vw, 104px);
     align-items: center;
   }
   .copy {
-    position: relative;
-    z-index: 2;
     display: grid;
-    gap: 24px;
+    gap: 22px;
     justify-items: start;
   }
   h1 {
-    font-size: var(--fs-hero);
-    font-weight: 800;
-    line-height: 1.02;
-    letter-spacing: -0.03em;
+    font-size: clamp(2.75rem, 6.2vw, 5.75rem);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
   }
   h1 .l {
     display: block;
     overflow: hidden;
-    padding-bottom: 0.08em;
-    margin-bottom: -0.08em;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
   }
   h1 .l > span {
     display: block;
   }
+  .tone {
+    display: block;
+    max-width: 19em;
+    margin-top: 0.42em;
+    font-size: 0.56em;
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.025em;
+    color: var(--paper-soft);
+  }
   .lead {
-    max-width: 44ch;
+    max-width: 54ch;
     font-size: var(--fs-lead);
-    line-height: 1.55;
-    color: var(--ink-soft);
+    line-height: 1.5;
+    color: var(--paper-soft);
   }
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    margin-top: 6px;
   }
-  .facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 24px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    font-weight: 600;
-    font-size: var(--fs-sm);
+  .ghost {
+    background: transparent;
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.4);
+    color: var(--on-navy);
   }
-  .facts li {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .facts svg {
-    fill: none;
-    stroke: var(--success);
-    stroke-width: 2.4;
+  @media (hover: hover) {
+    .ghost:hover {
+      background: rgb(255 255 255 / 0.1);
+    }
   }
   .note {
     font-size: var(--fs-sm);
-    color: var(--muted);
+    color: var(--paper-soft);
   }
   .note a {
     display: inline-block;
+    margin-block: -12px;
     margin-left: 4px;
     padding-block: 12px;
     font-weight: 700;
-    color: var(--ink);
+    color: var(--on-navy);
   }
 
-  /* Entrada: el título sube línea por línea y el resto aparece escalonado. */
+  /* La hoja: papel en los dos temas. Baja sobre la sección siguiente, como un documento apoyado. */
+  .sheet {
+    --tinta: var(--navy);
+    --raya: rgb(18 36 58 / 0.14);
+    position: relative;
+    align-self: end;
+    margin: 0 0 calc(clamp(48px, 6vw, 80px) * -1 - 64px);
+    padding: clamp(24px, 2.6vw, 36px);
+    border-radius: var(--radius-sm);
+    background: var(--on-navy);
+    color: var(--tinta);
+    font-size: var(--fs-sm);
+    box-shadow: 0 2px 4px rgb(8 18 30 / 0.2), 0 32px 64px rgb(8 18 30 / 0.34);
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--tinta);
+  }
+  .title {
+    font: 600 var(--fs-xl) / 1.1 var(--display);
+    letter-spacing: -0.02em;
+  }
+  .tag {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgb(18 36 58 / 0.08);
+    font-size: var(--fs-xs);
+    font-weight: 600;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    padding: 12px 8px 8px 0;
+    border-bottom: 1px solid var(--raya);
+    color: rgb(18 36 58 / 0.68);
+    font-weight: 600;
+    text-align: left;
+  }
+  td {
+    padding: 11px 8px 11px 0;
+    border-bottom: 1px solid var(--raya);
+    font-variant-numeric: tabular-nums;
+  }
+  td:not(:first-child) {
+    white-space: nowrap;
+  }
+  td:first-child {
+    font-weight: 600;
+  }
+  ul {
+    display: grid;
+    gap: 4px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sign {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    align-items: end;
+    margin-top: 20px;
+  }
+  .sign svg {
+    display: block;
+    width: 112px;
+    height: 42px;
+    margin-bottom: -6px;
+    overflow: visible;
+  }
+  .sign path {
+    fill: none;
+    stroke: var(--signal);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+  }
+  .sign p {
+    padding-top: 8px;
+    border-top: 1px solid var(--tinta);
+    font-weight: 600;
+  }
+
+  /* Entrada: el título sube línea por línea, la hoja se apoya y al final se firma. */
   :global(html.js:not(.reduce)) h1 .l > span {
     animation: line-up 1000ms var(--ease-out) both;
-    animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
+    animation-delay: calc(120ms + var(--i) * 110ms);
   }
   :global(html.js:not(.reduce)) .rise {
     animation: rise 900ms var(--ease-out) both;
-    animation-delay: calc(var(--intro, 120ms) + var(--i) * 110ms);
+    animation-delay: calc(120ms + var(--i) * 110ms);
   }
-  :global(html.js:not(.reduce)) .stage {
-    animation: stage-in 1400ms var(--ease-out) both;
-    animation-delay: calc(var(--intro, 120ms) + 200ms);
+  :global(html.js:not(.reduce)) .sheet {
+    animation: lay 1100ms var(--ease-out) 240ms both;
+  }
+  :global(html.js:not(.reduce)) .sign path {
+    animation: sign 1100ms cubic-bezier(0.65, 0, 0.35, 1) 1100ms both;
   }
   @keyframes line-up {
     from {
@@ -184,94 +257,49 @@ const lineas = ["Si tiene solución,", "la construimos."];
       transform: translateY(14px);
     }
   }
-  @keyframes stage-in {
+  @keyframes lay {
     from {
       opacity: 0;
-      transform: translateX(60px);
+      transform: translateY(32px) rotate(1deg);
+    }
+  }
+  @keyframes sign {
+    from {
+      stroke-dashoffset: 1;
+    }
+    to {
+      stroke-dashoffset: 0;
     }
   }
 
-  /* Escenario: dos capturas en capas. La de atrás se sale del contenedor por la derecha. */
-  .stage {
-    --sy: 0;
-    margin: 0;
-    min-width: 0;
-  }
-  .layers {
-    position: relative;
-    margin-right: calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2));
-    aspect-ratio: 16 / 9;
-  }
-  .layer {
-    position: absolute;
-    overflow: hidden;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    background: var(--white);
-    box-shadow: var(--shadow);
-    transform: translate3d(0, calc(var(--sy) * var(--z) * -0.08px), 0);
-    transition: transform 500ms var(--ease-out);
-    will-change: transform;
-  }
-  .layer :global(img) {
-    width: 100%;
-    height: auto;
-  }
-  .main {
-    top: 0;
-    left: 12%;
-    width: 100%;
-    z-index: 1;
-  }
-  .front {
-    bottom: 0;
-    left: 0;
-    width: 84%;
-    z-index: 2;
-    border-color: var(--ink);
-    box-shadow: 0 2px 4px rgb(18 36 58 / 0.1), 0 24px 48px rgb(18 36 58 / 0.22);
-  }
-  figcaption {
-    margin-top: 16px;
-    font-size: var(--fs-sm);
-    color: var(--muted);
-  }
-  figcaption a {
-    display: inline-block;
-    margin-block: -12px;
-    padding-block: 12px;
-    font-weight: 600;
-    color: var(--ink);
-  }
-
-  @media (max-width: 960px) {
-    /* Apilado, la imagen queda lejos del inicio: sin esto las capas se despegan del epígrafe. */
-    .layer {
-      transform: none;
+  /* Laptops bajas: los botones tienen que quedar en la primera pantalla. */
+  @media (min-width: 1001px) and (max-height: 760px) {
+    .hero {
+      padding-top: 32px;
     }
+    h1 {
+      font-size: clamp(2.75rem, 5vw, 4.5rem);
+    }
+    .copy {
+      gap: 16px;
+    }
+  }
+  @media (max-width: 1000px) {
     .inner {
       grid-template-columns: minmax(0, 1fr);
     }
-    .stage {
-      margin-top: 8px;
+    h1 {
+      font-size: clamp(2.75rem, 8.6vw, 5rem);
+    }
+    .sheet {
+      max-width: 560px;
+      margin-bottom: 0;
     }
   }
   @media (max-width: 640px) {
-    .copy {
-      gap: 20px;
-    }
     .actions {
       display: grid;
       width: 100%;
-    }
-    .facts {
-      flex-direction: column;
-    }
-    .layers {
-      aspect-ratio: 16 / 11;
-    }
-    .front {
-      width: 94%;
     }
   }
 </style>

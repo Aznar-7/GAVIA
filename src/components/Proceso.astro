@@ -173,12 +173,12 @@ const etapas = [
 <style>
   .process {
     --p: 0;
-    background: var(--ink);
-    color: var(--white);
+    background: var(--navy);
+    color: var(--on-navy);
   }
   .process ::selection {
     background: var(--signal);
-    color: var(--ink);
+    color: var(--on-signal);
   }
   .sticky {
     display: grid;
@@ -245,7 +245,7 @@ const etapas = [
     height: 44px;
     border-radius: 50%;
     border: 3px solid var(--signal);
-    background: var(--ink);
+    background: var(--navy);
     font-weight: 700;
     transition: background-color 300ms var(--ease-out), color 300ms var(--ease-out), transform 300ms var(--ease-out);
   }
@@ -327,7 +327,7 @@ const etapas = [
     color: rgb(255 255 255 / 0.55);
   }
   .pinned .stage h3:hover {
-    color: var(--white);
+    color: var(--on-navy);
   }
   .pinned .stage.done h3 {
     color: rgb(255 255 255 / 0.75);
@@ -335,13 +335,13 @@ const etapas = [
   .live .stage.done .num,
   .live .stage.current .num {
     background: var(--signal);
-    color: var(--ink);
+    color: var(--on-signal);
   }
   .live .stage.current .num {
     transform: scale(1.12);
   }
   .pinned .stage.current h3 {
-    color: var(--white);
+    color: var(--on-navy);
   }
   /* Solo la etapa actual muestra su detalle; el resto queda en una línea. */
   .pinned .body {

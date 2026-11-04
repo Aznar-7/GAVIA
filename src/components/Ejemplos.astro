@@ -69,7 +69,7 @@ const casos: { hoy: string; con: string; detalle: string; pantalla: string; fila
 const malos = ["Reponer", "Pendiente"];
 ---
 
-<section class="section tint" id="ejemplos" aria-labelledby="ejemplos-title">
+<section class="section" id="ejemplos" aria-labelledby="ejemplos-title">
   <div class="wrap">
     <div class="sec-head">
       <h2 id="ejemplos-title" data-reveal>¿Te suena alguna?</h2>
@@ -242,16 +242,15 @@ const malos = ["Reponer", "Pendiente"];
   }
   @media (hover: hover) {
     .problem:hover {
-      background-color: rgb(255 255 255 / 0.6);
+      background-color: var(--paper);
     }
     .problem:hover .hoy {
       background-size: 18% 2px;
     }
   }
   .problem[aria-pressed="true"] {
-    background: var(--white);
+    background: var(--paper);
     border-color: var(--line);
-    box-shadow: var(--shadow);
     color: var(--muted);
   }
   .problem[aria-pressed="true"]::before {
@@ -335,13 +334,13 @@ const malos = ["Reponer", "Pendiente"];
     justify-content: space-between;
     align-items: center;
     padding: 10px 14px;
-    background: var(--ink);
-    color: var(--white);
+    background: var(--navy);
+    color: var(--on-navy);
     font-weight: 700;
   }
   .screen-bar .pill {
     background: rgb(255 255 255 / 0.14);
-    color: var(--white);
+    color: var(--on-navy);
   }
   .screen ul {
     margin: 0;
@@ -367,14 +366,14 @@ const malos = ["Reponer", "Pendiente"];
     min-width: 84px;
     padding: 2px 10px;
     border-radius: 999px;
-    background: #e6f2ec;
+    background: var(--ok-bg);
     color: var(--success);
     font-size: var(--fs-xs);
     font-weight: 700;
     text-align: center;
   }
   .chip.warn {
-    background: #fdece3;
+    background: var(--warn-bg);
     color: var(--signal-text);
   }
   .notice {

@@ -16,29 +16,29 @@ colors:
   danger: "#b3261e"
 typography:
   hero:
-    fontFamily: "Figtree Variable, system-ui, sans-serif"
+    fontFamily: "Schibsted Grotesk Variable, system-ui, sans-serif"
     fontSize: "clamp(2.5rem, 4.4vw, 4.1rem)"
     fontWeight: 800
     lineHeight: 1.02
     letterSpacing: "-0.03em"
   headline:
-    fontFamily: "Figtree Variable, system-ui, sans-serif"
+    fontFamily: "Schibsted Grotesk Variable, system-ui, sans-serif"
     fontSize: "clamp(2rem, 3.6vw, 3rem)"
     fontWeight: 700
     lineHeight: 1.1
     letterSpacing: "-0.02em"
   title:
-    fontFamily: "Figtree Variable, system-ui, sans-serif"
+    fontFamily: "Schibsted Grotesk Variable, system-ui, sans-serif"
     fontSize: "1.1875rem"
     fontWeight: 700
     lineHeight: 1.15
   body:
-    fontFamily: "Figtree Variable, system-ui, sans-serif"
+    fontFamily: "Schibsted Grotesk Variable, system-ui, sans-serif"
     fontSize: "1.0625rem"
     fontWeight: 400
     lineHeight: 1.6
   label:
-    fontFamily: "Figtree Variable, system-ui, sans-serif"
+    fontFamily: "Schibsted Grotesk Variable, system-ui, sans-serif"
     fontSize: "0.9375rem"
     fontWeight: 600
     lineHeight: 1.4
@@ -86,8 +86,8 @@ La seriedad sale de la calma: blanco y gris azulado alternados por sección, una
 **Dos gestos propios y un pico:**
 - **"Elegí tu problema"** (sección ¿Te suena alguna?): el visitante toca lo que le pasa hoy, el problema se tacha en naranja y al lado aparece el sistema que lo resuelve con una pantalla de ejemplo. "Lo mío es así" precarga el contacto.
 - **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza paso por paso y a la derecha los documentos se van apilando: el actual adelante y los de pasos hechos corridos atrás.
-- **Hero en capas:** el registro real de InscriBot, legible, sobre una captura de UTN Hub que se sale del borde derecho. Se separan apenas con el scroll.
-- **Proyectos:** cada caso lleva texto de un lado y la captura a sangre del otro, alternando lados. Sin tarjetas.
+- **Portada:** azul de marca, título en dos tonos y la propuesta escrita como objeto: una hoja de papel, marcada Ejemplo, que se firma al cargar y baja sobre la sección siguiente.
+- **Proyectos:** cada caso sigue el mismo orden: encabezado, dos pantallas pegadas y tres datos. Sin tarjetas.
 - **Lo que firmamos:** se lee como un contrato, con cláusulas numeradas y líneas de firma que incluyen la del cliente.
 
 La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" y la línea de rumbo; no en la decoración.
@@ -97,7 +97,7 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 **Key Characteristics:**
 - Secciones blancas y gris azulado (#f1f4f7) alternadas: el ritmo lo dan los fondos, no los filetes.
 - Naranja solo para la acción principal y la línea de rumbo.
-- Figtree para todo, en minúscula normal: sin mayúsculas espaciadas, sin monoespaciado, sin textos unidos con " · ".
+- Schibsted Grotesk para todo, en minúscula normal: sin mayúsculas espaciadas, sin monoespaciado, sin textos unidos con " · ".
 - Esquinas suaves (8px en controles, 12px en tarjetas e imágenes) y una sola sombra.
 - Imágenes: capturas reales de software nuestro, en un marco simple. Nada de ilustraciones de producto inventadas.
 
@@ -107,6 +107,9 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 - **Naranja señal** (signal): botón principal ("Contanos tu proyecto", "Enviar mensaje") y la línea de rumbo del proceso. Texto azul marino encima (5.4:1).
 - **Naranja claro** (signal-hover): solo el hover del botón principal.
 - **Naranja legible** (signal-text): cuando el naranja tiene que ser texto sobre blanco.
+
+### Temas
+- Claro u oscuro: arranca con el del sistema y el botón de la barra lo cambia y lo recuerda. La barra, la portada, el proceso y el pie son azul de marca en los dos temas; la hoja de la portada es papel en los dos.
 
 ### Neutral
 - **Azul marino** (ink): títulos y texto. Fondo de Cómo trabajamos y del pie.
@@ -123,7 +126,7 @@ La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" 
 
 ## Typography
 
-**Familia:** Figtree Variable para títulos y texto. Cálida y clara, de lectura corporativa.
+**Familia:** Schibsted Grotesk Variable para títulos y texto. Seria y clara, de lectura corporativa.
 
 - **Hero** (800, clamp(2.5rem, 4.4vw, 4.1rem), 1.02): solo el H1.
 - **Headline** (700, clamp(2rem, 3.6vw, 3rem), 1.1): títulos de sección, siempre con punto final y alineados a la izquierda.
@@ -145,7 +148,7 @@ Hero (gris) → Qué hacemos (blanco) → ¿Te suena alguna? (gris) → Cómo tr
 
 El texto vive en el contenedor (hasta 1600px); las imágenes del hero y las secciones azul marino van de borde a borde.
 
-- **Hero:** texto a la izquierda y dos capturas reales en capas a la derecha, en mitades iguales. Bajo 960px se apila.
+- **Portada:** texto a la izquierda y la hoja de la propuesta a la derecha. Bajo 1000px se apila.
 - **Qué hacemos:** cinco servicios en fila con un filete de 2px arriba de cada uno que se dibuja al aparecer; 3 y 2 columnas en pantallas menores, 1 en celular. No son tarjetas.
 - **Cómo trabajamos:** en pantallas grandes queda fija, con las etapas a la izquierda y los documentos apilados a la derecha. En el celular es una lista con la línea de rumbo y cada documento plegado.
 - **Equipo:** tres tarjetas con iniciales (después, fotos), formación, una línea y links.
