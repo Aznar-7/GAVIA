@@ -85,12 +85,12 @@ La seriedad sale de la calma: blanco y gris azulado alternados por sección, una
 
 **Dos gestos propios y un pico:**
 - **"Elegí tu problema"** (sección ¿Te suena alguna?): el visitante toca lo que le pasa hoy, el problema se tacha en naranja y al lado aparece el sistema que lo resuelve con una pantalla de ejemplo. "Lo mío es así" precarga el contacto.
-- **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza etapa por etapa y a la derecha los documentos se van apilando: el actual adelante y los de etapas hechas corridos atrás.
-- **Hero en capas:** tres capturas reales de UTN Hub que se salen del borde derecho y se separan apenas con el scroll.
+- **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza paso por paso y a la derecha los documentos se van apilando: el actual adelante y los de pasos hechos corridos atrás.
+- **Hero en capas:** el registro real de InscriBot, legible, sobre una captura de UTN Hub que se sale del borde derecho. Se separan apenas con el scroll.
 
 La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" y la línea de rumbo; no en la decoración.
 
-**Movimiento:** pantalla de la marca una vez por sesión, de 1,2 s como máximo; títulos que suben línea por línea; apariciones suaves al entrar en pantalla (`data-reveal`); todo lo tocable se hunde apenas al tocarlo. En el celular, la línea de rumbo también avanza con el scroll. Todo visible sin JS y quieto con "reducir movimiento".
+**Movimiento:** sin pantalla de carga; títulos que suben línea por línea; apariciones suaves al entrar en pantalla (`data-reveal`); todo lo tocable se hunde apenas al tocarlo. En el celular, la línea de rumbo también avanza con el scroll. Todo visible sin JS y quieto con "reducir movimiento".
 
 **Key Characteristics:**
 - Secciones blancas y gris azulado (#f1f4f7) alternadas: el ritmo lo dan los fondos, no los filetes.
@@ -143,7 +143,7 @@ Hero (gris) → Qué hacemos (blanco) → ¿Te suena alguna? (gris) → Cómo tr
 
 El texto vive en el contenedor (hasta 1600px); las imágenes del hero y las secciones azul marino van de borde a borde.
 
-- **Hero:** texto a la izquierda y tres capturas reales en capas a la derecha, en mitades iguales. Bajo 960px se apila.
+- **Hero:** texto a la izquierda y dos capturas reales en capas a la derecha, en mitades iguales. Bajo 960px se apila.
 - **Qué hacemos:** cinco servicios en fila con un filete de 2px arriba de cada uno que se dibuja al aparecer; 3 y 2 columnas en pantallas menores, 1 en celular. No son tarjetas.
 - **Cómo trabajamos:** en pantallas grandes queda fija, con las etapas a la izquierda y los documentos apilados a la derecha. En el celular es una lista con la línea de rumbo y cada documento plegado.
 - **Equipo:** tres tarjetas con iniciales (después, fotos), formación, una línea y links.
