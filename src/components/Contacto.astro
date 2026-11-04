@@ -3,7 +3,7 @@ import { CONTACT_EMAIL, FORM_ENDPOINT, TEAM, whatsappUrl } from "../config";
 const wa = whatsappUrl();
 ---
 
-<section class="section" id="contacto" aria-labelledby="contacto-title">
+<section class="section tint" id="contacto" aria-labelledby="contacto-title">
   <div class="wrap">
     <div class="box" data-contact data-reveal>
       <div class="side">
@@ -38,6 +38,7 @@ const wa = whatsappUrl();
             <label for="c-mensaje">¿Qué necesitás?</label>
             <textarea class="input" id="c-mensaje" name="mensaje" required aria-describedby="e-mensaje"
               placeholder="Ej.: hoy llevamos los pedidos en Excel y queremos un sistema para el equipo de ventas."></textarea>
+            <p class="hint">Si no sabés cómo explicarlo, contanos cómo es un día normal en tu empresa.</p>
             <p class="error" id="e-mensaje" hidden>Contanos aunque sea en una línea qué necesitás.</p>
           </div>
           <div class="field">

@@ -87,7 +87,7 @@ La seriedad sale de la calma: blanco y gris azulado alternados por sección, una
 - **"Elegí tu problema"** (sección ¿Te suena alguna?): el visitante toca lo que le pasa hoy, el problema se tacha en naranja y al lado aparece el sistema que lo resuelve con una pantalla de ejemplo. "Lo mío es así" precarga el contacto.
 - **Cómo trabajamos, el pico**, en azul marino de borde a borde: en pantallas grandes queda fijo mientras bajás, la línea de rumbo naranja avanza paso por paso y a la derecha los documentos se van apilando: el actual adelante y los de pasos hechos corridos atrás.
 - **Portada:** azul de marca, título en dos tonos y la propuesta escrita como objeto: una hoja de papel, marcada Ejemplo, que se firma al cargar y baja sobre la sección siguiente.
-- **Proyectos:** cada caso sigue el mismo orden: encabezado, dos pantallas pegadas y tres datos. Sin tarjetas.
+- **Casos:** dos casos lado a lado con una captura cada uno y el mismo orden: qué le pasaba, qué hicimos, cómo y qué tiene hoy. Son prueba de la oferta, sin tarjetas.
 - **Lo que firmamos:** se lee como un contrato, con cláusulas numeradas y líneas de firma que incluyen la del cliente.
 
 La metáfora náutica vive en el nombre, el logo, la frase "Software con rumbo" y la línea de rumbo; no en la decoración.

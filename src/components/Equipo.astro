@@ -4,10 +4,10 @@
 import { TEAM as equipo } from "../config";
 ---
 
-<section class="section" id="equipo" aria-labelledby="equipo-title">
+<section class="section tint" id="equipo" aria-labelledby="equipo-title">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="equipo-title" data-reveal>Un equipo chico, a propósito.</h2>
+      <h2 id="equipo-title" data-reveal>Te atienden los que lo hacen.</h2>
       <p data-reveal style="--d:1">
         Elegimos ser pocos para que la persona que te escucha sea la misma que diseña y escribe tu sistema. Cada
         uno conoce tu proyecto de punta a punta, y el que te responde es siempre uno de nosotros.
@@ -25,12 +25,9 @@ import { TEAM as equipo } from "../config";
             <p class="linea">{m.linea}</p>
             {m.links.length > 0 && (
               <p class="links">
-                {m.links.map((l) => (
-                  <a href={l.href} target="_blank" rel="noopener">
-                    {l.label}
-                    <span class="sr-only"> de {m.nombre} (se abre en otra pestaña)</span>
-                  </a>
-                ))}
+                <a href={m.links[0].href} target="_blank" rel="noopener">
+                  Ver perfil<span class="sr-only"> de {m.nombre} (se abre en otra pestaña)</span>
+                </a>
               </p>
             )}
           </li>
