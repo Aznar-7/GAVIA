@@ -1,241 +1,170 @@
 ---
-// Lo que ya construimos: cada caso sigue el mismo orden. Quién es, dos pantallas reales y tres
-// datos. Abajo, las piezas de hardware que respaldan el servicio de IoT.
+// Casos: prueba de lo que ofrecemos, no una galería. Mismo orden en los dos: quién es, qué le
+// pasaba, qué hicimos y qué tiene hoy. Una captura por caso.
 // Cada dato sale de los repositorios y la documentación de cada proyecto: no sumar números de
-// uso sin un dato real. Las fotos de las capturas de Propier son de ejemplo, y el sitio lo aclara.
+// uso sin un dato real. Las fotos de la captura de Propier son de ejemplo, y el sitio lo aclara.
 import { Image } from "astro:assets";
 import capFicha from "../assets/propier/ficha.png";
-import capLista from "../assets/propier/lista.png";
 import capInicio from "../assets/utnhub/inicio.png";
-import capBot from "../assets/utnhub/inscribot-panel.png";
 
 const casos = [
   {
     nombre: "Propier Inmuebles",
     estado: "En desarrollo",
     vivo: false,
-    resumen: "Una inmobiliaria de Córdoba que se había quedado sin sitio y no usaba ningún sistema.",
+    quien: "Una inmobiliaria de Córdoba.",
+    img: capFicha,
+    alt: "Ficha de una casa en el sitio de Propier: fotos, precio, datos de la propiedad y botón de WhatsApp.",
     nota: "Fotos de ejemplo, hasta que esté cargada la cartera real.",
-    pantallas: [
-      { img: capFicha, alt: "Ficha de una casa en el sitio de Propier: fotos, precio, datos de la propiedad y botón de WhatsApp." },
-      { img: capLista, alt: "Listado de propiedades en venta del sitio de Propier, con foto y precio." },
-    ],
     datos: [
-      { t: "Qué hacemos", d: "El sitio público, con buscador y fichas, y el panel desde donde publican cada propiedad." },
-      { t: "Antes de programar", d: "Estudiamos 21 sitios inmobiliarios y escribimos requerimientos, casos de uso, arquitectura y seguridad." },
-      { t: "Para que dure", d: "Con el tráfico previsto corre en planes gratuitos: sin gasto mensual de servidores." },
+      { t: "Qué le pasaba", d: "Se había quedado sin sitio y no usaba ningún sistema." },
+      { t: "Qué hacemos", d: "Un sitio con buscador y fichas, y un panel para publicar cada propiedad." },
+      { t: "Cómo lo encaramos", d: "Estudiamos 21 sitios inmobiliarios y escribimos los requerimientos antes de programar." },
+      { t: "Qué va a tener", d: "Con el tráfico previsto corre en planes gratuitos: sin gasto mensual de servidores." },
     ],
   },
   {
     nombre: "UTN Hub",
     estado: "En uso",
     vivo: true,
-    resumen: "La plataforma de los estudiantes de la UTN Córdoba, con un robot que hace los trámites solo.",
+    quien: "Un sistema propio para los estudiantes de la UTN Córdoba.",
+    img: capInicio,
+    alt: "Pantalla de inicio de UTN Hub: avance de la carrera, agenda del día y próximos compromisos.",
     link: { href: "https://utnhub.com.ar", label: "Visitar utnhub.com.ar" },
-    pantallas: [
-      { img: capInicio, alt: "Pantalla de inicio de UTN Hub: avance de la carrera, agenda del día y próximos compromisos." },
-      { img: capBot, alt: "InscriBot trabajando: escanea el sistema, detecta un cupo y confirma la inscripción.", entera: true },
-    ],
     datos: [
-      { t: "Trámites solos", d: "InscriBot vigila el sistema de la facultad, anota al estudiante apenas se libera un cupo y avisa por Telegram." },
-      { t: "Sistemas conectados", d: "UTN Manager lee el aula virtual, detecta qué cambió y agenda las entregas en el calendario." },
-      { t: "Hecho para durar", d: "Más de 500 pruebas automáticas, claves cifradas y tecnología probada: React, Django y PostgreSQL." },
+      { t: "Qué pasaba", d: "Conseguir cupo en una materia era revisar el sistema a mano hasta que se liberara uno." },
+      { t: "Qué hicimos", d: "Un robot que vigila el sistema, anota al estudiante y avisa por Telegram." },
+      { t: "Cómo lo encaramos", d: "Lo fuimos sumando por partes: aula virtual, entregas y calendario en un solo lugar." },
+      { t: "Qué tiene hoy", d: "Más de 500 pruebas automáticas revisan cada cambio antes de publicarlo." },
     ],
   },
 ];
-
-const hardware = [
-  { t: "SenseBoard", d: "Panel IoT para equipos con ESP32: temperatura, humedad, alertas e historial.", href: "https://github.com/Aznar-7/SenseBoard_Front" },
-  { t: "AutoFull", d: "Robot Wi-Fi con Arduino y ESP32, control web y sensores.", href: "https://github.com/Aznar-7/AutoFull" },
-  { t: "Eco Records", d: "Un tocadiscos NFC hecho con Raspberry Pi.", href: "https://github.com/Aznar-7/proyect-ecoRecords-pi" },
-];
 ---
 
-<section class="section" id="proyectos" aria-labelledby="proyectos-title">
+<section class="section" id="casos" aria-labelledby="casos-title">
   <div class="wrap">
     <div class="sec-head">
-      <h2 id="proyectos-title" data-reveal>Lo que ya construimos.</h2>
-      <p data-reveal style="--d:1">Un cliente real y un sistema nuestro en uso. Mirá qué hicimos y cómo.</p>
+      <h2 id="casos-title" data-reveal>Dos casos reales.</h2>
+      <p data-reveal style="--d:1">Un cliente y un sistema propio en uso. Así resolvimos cada uno.</p>
     </div>
 
-    {
-      casos.map((c) => (
-        <article class="case">
-          <header data-reveal>
+    <div class="cases">
+      {
+        casos.map((c, i) => (
+          <article data-reveal style={`--d:${i}`}>
+            <Image src={c.img} alt={c.alt} widths={[640, 960, 1400]} sizes="(max-width: 860px) 96vw, 46vw" loading="lazy" />
             <h3>{c.nombre} <span class:list={["pill", { live: c.vivo }]}>{c.estado}</span></h3>
-            <div class="about">
-              <p>{c.resumen}</p>
-              {c.link && (
-                <a href={c.link.href} target="_blank" rel="noopener">
-                  {c.link.label}<span class="sr-only"> (se abre en otra pestaña)</span>
-                </a>
-              )}
-            </div>
-          </header>
-          <div class="duo" data-reveal>
-            {c.pantallas.map((p, i) => (
-              <Image
-                src={p.img}
-                alt={p.alt}
-                class={"entera" in p ? "entera" : undefined}
-                widths={[640, 960, 1400]}
-                sizes={i === 0 ? "(max-width: 760px) 100vw, 62vw" : "(max-width: 760px) 100vw, 44vw"}
-                loading="lazy"
-              />
-            ))}
-          </div>
-          {c.nota && <p class="nota">{c.nota}</p>}
-          <dl data-reveal>
-            {c.datos.map((d) => (
-              <div>
-                <dt>{d.t}</dt>
-                <dd>{d.d}</dd>
-              </div>
-            ))}
-          </dl>
-        </article>
-      ))
-    }
-
-    <div class="iron">
-      <h3 data-reveal>Y del lado del hardware</h3>
-      <ul>
-        {
-          hardware.map((h, i) => (
-            <li data-reveal style={`--d:${i + 1}`}>
-              <a href={h.href} target="_blank" rel="noopener">
-                {h.t}<span class="sr-only"> (se abre en otra pestaña)</span>
+            <p class="quien">{c.quien}</p>
+            <dl>
+              {c.datos.map((d) => (
+                <div>
+                  <dt>{d.t}</dt>
+                  <dd>{d.d}</dd>
+                </div>
+              ))}
+            </dl>
+            {c.nota && <p class="nota">{c.nota}</p>}
+            {c.link && (
+              <a class="link" href={c.link.href} target="_blank" rel="noopener">
+                {c.link.label}<span class="sr-only"> (se abre en otra pestaña)</span>
               </a>
-              <p>{h.d}</p>
-            </li>
-          ))
-        }
-      </ul>
+            )}
+          </article>
+        ))
+      }
     </div>
+
+    <p class="mine" data-reveal>¿Tu caso se parece a alguno? <a href="#contacto">Contanoslo</a>.</p>
   </div>
 </section>
 
 <style>
-  .case + .case {
-    margin-top: clamp(72px, 9vw, 128px);
-  }
-  header {
+  .cases {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 12px 8px;
-    align-items: end;
-    margin-bottom: clamp(20px, 2.4vw, 28px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px clamp(32px, 5vw, 72px);
+    align-items: start;
   }
-  h3 {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px 14px;
-    font-size: var(--fs-2xl);
-  }
-  h3 .pill {
-    letter-spacing: 0;
-  }
-  .about p {
-    font-size: var(--fs-lg);
-    line-height: 1.45;
-    color: var(--ink-soft);
-  }
-  .about a {
-    display: inline-block;
-    margin-top: 4px;
-    padding-block: 8px;
-    font-weight: 700;
-    text-decoration-color: var(--signal);
-  }
-  /* Dos pantallas de la misma altura, pegadas, en el ancho de la página. */
-  .duo {
+  article {
     display: grid;
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    gap: 8px;
+    gap: 10px;
+    justify-items: start;
   }
-  .duo :global(img) {
+  article :global(img) {
     width: 100%;
-    height: clamp(240px, 36vw, 560px);
+    height: auto;
+    aspect-ratio: 16 / 10;
     object-fit: cover;
     object-position: left top;
     border-radius: var(--radius-sm);
     outline: 1px solid var(--line);
     outline-offset: -1px;
   }
-  /* Esta se ve completa: el fondo es el mismo de la captura, así no se notan los márgenes. */
-  .duo :global(img.entera) {
-    object-fit: contain;
-    object-position: center;
-    background: #0a0b0e;
-  }
   .nota {
-    margin-top: 10px;
     font-size: var(--fs-sm);
     color: var(--muted);
   }
-  dl {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px clamp(24px, 4vw, 56px);
-    margin: clamp(20px, 2.4vw, 28px) 0 0;
+  h3 {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+    margin-top: 10px;
+    font-size: var(--fs-2xl);
   }
-  dt {
-    font-weight: 700;
+  h3 .pill {
+    letter-spacing: 0;
   }
-  dd {
-    margin: 4px 0 0;
+  .quien {
+    font-size: var(--fs-lg);
     color: var(--ink-soft);
   }
-
-  .iron {
-    display: grid;
-    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
-    gap: 24px clamp(32px, 5vw, 80px);
-    margin-top: clamp(72px, 9vw, 128px);
-    padding-top: 28px;
-    border-top: 2px solid var(--ink);
+  dl {
+    width: 100%;
+    margin: 8px 0 0;
   }
-  .iron h3 {
-    font-size: var(--fs-xl);
-    letter-spacing: -0.015em;
-  }
-  .iron ul {
+  dl > div {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 24px 32px;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
+    gap: 2px 20px;
+    padding-block: 12px;
+    border-top: 1px solid var(--line);
+  }
+  dt {
+    font-weight: 600;
+    font-size: var(--fs-sm);
+    line-height: 1.6;
+  }
+  dd {
     margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .iron a {
-    display: inline-block;
-    margin-block: -6px;
-    padding-block: 6px;
-    font-weight: 700;
-    text-decoration-color: var(--line-strong);
-  }
-  .iron p {
-    margin-top: 4px;
     font-size: var(--fs-sm);
     color: var(--ink-soft);
   }
-
-  @media (max-width: 960px) {
-    header,
-    .iron {
+  .link {
+    margin-top: 4px;
+    padding-block: 8px;
+    font-weight: 600;
+    text-decoration-color: var(--signal);
+  }
+  .mine {
+    margin-top: 40px;
+    font-size: var(--fs-lg);
+    color: var(--ink-soft);
+  }
+  .mine a {
+    display: inline-block;
+    margin-block: -10px;
+    padding-block: 10px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  @media (max-width: 860px) {
+    .cases {
       grid-template-columns: minmax(0, 1fr);
     }
   }
-  @media (max-width: 760px) {
-    .duo {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .duo :global(img) {
-      height: 62vw;
-    }
-    dl,
-    .iron ul {
+  @media (max-width: 480px) {
+    dl > div {
       grid-template-columns: minmax(0, 1fr);
     }
   }
