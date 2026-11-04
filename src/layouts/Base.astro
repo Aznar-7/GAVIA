@@ -73,26 +73,9 @@ const org = {
     <title>{title}</title>
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline>
-      // Pantalla de entrada con la marca: una vez por sesión y solo al llegar de nuevo a la home
-      // por arriba. No aparece al recargar, al volver atrás ni al entrar por un #ancla.
-      (() => {
-        const html = document.documentElement;
-        html.classList.add("js");
-        if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
-          html.classList.add("reduce");
-          return;
-        }
-        const llegada = performance.getEntriesByType("navigation")[0]?.type;
-        if (location.pathname !== "/" || location.hash || llegada !== "navigate") return;
-        try {
-          if (sessionStorage.getItem("intro")) return;
-          sessionStorage.setItem("intro", "1");
-        } catch {
-          return;
-        }
-        html.classList.add("intro-screen", "had-intro");
-        setTimeout(() => html.classList.remove("intro-screen"), 1200);
-      })();
+      // Antes de pintar: marca que hay JS y si la persona pidió reducir movimiento.
+      document.documentElement.classList.add("js");
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("reduce");
     </script>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -114,16 +97,6 @@ const org = {
     <script type="application/ld+json" set:html={JSON.stringify(org)} />
   </head>
   <body>
-    <div class="loader" aria-hidden="true">
-      <div class="loader-mark">
-        <svg viewBox="0 0 48 48">
-          <path class="l-trace" d="M40 9H9v30h30V26H26" pathLength="1"></path>
-          <rect class="l-dot" x="20" y="21" width="11" height="11"></rect>
-        </svg>
-        <span class="l-word">gavia</span>
-      </div>
-      <span class="l-course"></span>
-    </div>
     <a class="skip" href="#contenido">Saltar al contenido</a>
     <slot />
     {ANALYTICS && !noindex && <Analytics />}
@@ -152,101 +125,6 @@ const org = {
     </script>
   </body>
 </html>
-
-<style is:global>
-  /* Pantalla de entrada: oculta por defecto (sin JS no existe). */
-  .loader {
-    display: none;
-  }
-  html.intro-screen {
-    overflow: hidden;
-  }
-  html.intro-screen .loader {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    display: grid;
-    place-items: center;
-    background: var(--ink);
-    color: var(--white);
-    animation: loader-out 450ms cubic-bezier(0.7, 0, 0.2, 1) 750ms both;
-  }
-  .loader-mark {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-  .loader svg {
-    width: clamp(64px, 9vw, 104px);
-    height: clamp(64px, 9vw, 104px);
-    overflow: visible;
-  }
-  .l-trace {
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 5.5;
-    stroke-linecap: square;
-    stroke-dasharray: 1;
-    animation: l-trace 500ms cubic-bezier(0.65, 0, 0.35, 1) 60ms both;
-  }
-  .l-dot {
-    fill: var(--signal);
-    transform-box: fill-box;
-    transform-origin: center;
-    animation: l-pop 280ms cubic-bezier(0.2, 0.9, 0.3, 1) 480ms both;
-  }
-  .l-word {
-    font: 800 clamp(3.2rem, 7vw, 5.6rem) / 1 var(--display);
-    letter-spacing: -0.03em;
-    clip-path: inset(0 100% 0 0);
-    animation: l-word 400ms cubic-bezier(0.16, 1, 0.3, 1) 380ms both;
-  }
-  .l-course {
-    position: absolute;
-    left: 0;
-    bottom: 18%;
-    height: 3px;
-    width: 100%;
-    background: repeating-linear-gradient(90deg, var(--signal) 0 14px, transparent 14px 24px);
-    transform-origin: left;
-    animation: l-course 800ms cubic-bezier(0.65, 0, 0.35, 1) both;
-  }
-  @keyframes l-trace {
-    from {
-      stroke-dashoffset: 1;
-    }
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-  @keyframes l-pop {
-    from {
-      transform: scale(0);
-    }
-    to {
-      transform: scale(1);
-    }
-  }
-  @keyframes l-word {
-    to {
-      clip-path: inset(0 0 0 0);
-    }
-  }
-  @keyframes l-course {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
-  }
-  /* El panel sube y destapa la página. */
-  @keyframes loader-out {
-    to {
-      clip-path: inset(0 0 100% 0);
-    }
-  }
-</style>
 
 <style>
   .skip {
