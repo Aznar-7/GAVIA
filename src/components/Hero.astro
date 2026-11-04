@@ -44,18 +44,20 @@ const lineas = ["Si tiene solución,", "la construimos."];
     </div>
 
     <figure class="stage" data-stage>
-      <div class="layer main" style="--z:0.6">
-        <Image src={capManager} alt="" widths={[600, 900, 1300]} sizes="(max-width: 960px) 96vw, 50vw" loading="eager" />
-      </div>
-      <div class="layer front" style="--z:1.6">
-        <Image
-          src={capLog}
-          alt="Registro de InscriBot: detecta un cupo libre y confirma la inscripción sin que nadie toque nada."
-          widths={[500, 825]}
-          sizes="(max-width: 960px) 92vw, 44vw"
-          loading="eager"
-          fetchpriority="high"
-        />
+      <div class="layers">
+        <div class="layer main" style="--z:0.6">
+          <Image src={capManager} alt="" widths={[600, 900, 1300]} sizes="(max-width: 960px) 96vw, 50vw" loading="eager" />
+        </div>
+        <div class="layer front" style="--z:1.6">
+          <Image
+            src={capLog}
+            alt="Registro de InscriBot: detecta un cupo libre y confirma la inscripción sin que nadie toque nada."
+            widths={[500, 825]}
+            sizes="(max-width: 960px) 92vw, 44vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
       </div>
       <figcaption>Un robot nuestro haciendo un trámite solo, dentro de UTN Hub. <a href="#proyectos">Ver el caso</a></figcaption>
     </figure>
@@ -192,10 +194,13 @@ const lineas = ["Si tiene solución,", "la construimos."];
   /* Escenario: dos capturas en capas. La de atrás se sale del contenedor por la derecha. */
   .stage {
     --sy: 0;
-    position: relative;
-    margin: 0 calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2)) 0 0;
-    aspect-ratio: 16 / 10;
+    margin: 0;
     min-width: 0;
+  }
+  .layers {
+    position: relative;
+    margin-right: calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2));
+    aspect-ratio: 16 / 9;
   }
   .layer {
     position: absolute;
@@ -219,7 +224,7 @@ const lineas = ["Si tiene solución,", "la construimos."];
     z-index: 1;
   }
   .front {
-    bottom: 4%;
+    bottom: 0;
     left: 0;
     width: 84%;
     z-index: 2;
@@ -227,9 +232,7 @@ const lineas = ["Si tiene solución,", "la construimos."];
     box-shadow: 0 2px 4px rgb(18 36 58 / 0.1), 0 24px 48px rgb(18 36 58 / 0.22);
   }
   figcaption {
-    position: absolute;
-    left: 0;
-    bottom: -32px;
+    margin-top: 16px;
     font-size: var(--fs-sm);
     color: var(--muted);
   }
@@ -242,11 +245,15 @@ const lineas = ["Si tiene solución,", "la construimos."];
   }
 
   @media (max-width: 960px) {
+    /* Apilado, la imagen queda lejos del inicio: sin esto las capas se despegan del epígrafe. */
+    .layer {
+      transform: none;
+    }
     .inner {
       grid-template-columns: minmax(0, 1fr);
     }
     .stage {
-      margin: 8px calc(var(--gutter) * -1) 40px 0;
+      margin-top: 8px;
     }
   }
   @media (max-width: 640px) {
@@ -260,15 +267,11 @@ const lineas = ["Si tiene solución,", "la construimos."];
     .facts {
       flex-direction: column;
     }
-    .stage {
-      aspect-ratio: 16 / 12;
+    .layers {
+      aspect-ratio: 16 / 11;
     }
     .front {
       width: 94%;
-    }
-    figcaption {
-      bottom: -40px;
-      right: var(--gutter);
     }
   }
 </style>

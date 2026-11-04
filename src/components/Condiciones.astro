@@ -9,8 +9,7 @@ const clausulas = [
   { t: "Garantía por escrito", d: "Cada propuesta dice qué cubre la garantía y cuánto dura, antes de que firmes." },
   { t: "Contrato antes de empezar", d: "Con alcance, plazos y precio por escrito." },
 ];
-const firmantes = TEAM.map((m) => m.nombre);
-const check = "M2 7l4 4 8-9";
+const firmas = [...TEAM.map((m) => m.nombre), "Vos"];
 ---
 
 <section class="section tint" id="condiciones" aria-labelledby="condiciones-title">
@@ -20,88 +19,91 @@ const check = "M2 7l4 4 8-9";
       <p data-reveal style="--d:1">Las condiciones de cada proyecto, a la vista antes de que hablemos.</p>
     </div>
 
-    <div class="card" data-reveal>
-      <ul class="terms">
+    <div class="acta" data-reveal>
+      <ol class="terms">
         {
           clausulas.map((c) => (
             <li>
-              <svg viewBox="0 0 16 14" width="18" height="16" aria-hidden="true"><path d={check} /></svg>
-              <div>
-                <h3>{c.t}</h3>
-                <p>{c.d}</p>
-              </div>
+              <h3>{c.t}</h3>
+              <p>{c.d}</p>
             </li>
           ))
         }
+      </ol>
+      <ul class="firmas" aria-label="Firman">
+        {firmas.map((f) => <li>{f}</li>)}
       </ul>
-      <div class="foot">
-        <p class="by">
-          Lo firman <strong>{firmantes.slice(0, -1).join(", ")} y {firmantes.at(-1)}</strong>, en cada proyecto.
-        </p>
-        <div class="ask">
-          <p>La primera reunión es gratis y sin compromiso.</p>
-          <a class="btn" href="#contacto">Contanos tu proyecto</a>
-        </div>
-      </div>
+    </div>
+    <div class="ask" data-reveal>
+      <p>La primera reunión es gratis y sin compromiso.</p>
+      <a class="btn" href="#contacto">Contanos tu proyecto</a>
     </div>
   </div>
 </section>
 
 <style>
-  .card {
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
+  /* Se lee como un contrato: cláusulas numeradas y al pie las líneas de firma, con la tuya. */
+  .acta {
+    padding: clamp(24px, 5vw, 64px);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
     background: var(--white);
-    box-shadow: var(--shadow);
   }
   .terms {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px 56px;
+    gap: 36px clamp(32px, 6vw, 96px);
     margin: 0;
-    padding: clamp(24px, 4vw, 48px);
+    padding: 0;
     list-style: none;
+    counter-reset: clausula;
   }
-  li {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 14px;
-    align-items: start;
+  .terms li {
+    position: relative;
+    padding-left: 44px;
+    counter-increment: clausula;
   }
-  li svg {
-    margin-top: 5px;
-    fill: none;
-    stroke: var(--success);
-    stroke-width: 2.4;
+  .terms li::before {
+    content: counter(clausula) ".";
+    position: absolute;
+    left: 0;
+    top: 0;
+    font: 700 var(--fs-xl) / 1.15 var(--display);
+    color: var(--signal-text);
+    font-variant-numeric: tabular-nums;
   }
   h3 {
-    font-size: var(--fs-lg);
+    font-size: var(--fs-xl);
   }
-  li p {
-    margin-top: 4px;
+  .terms p {
+    margin-top: 6px;
     max-width: 46ch;
     color: var(--ink-soft);
   }
-  .foot {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px 40px;
-    padding: 24px clamp(24px, 4vw, 48px);
-    border-top: 1px solid var(--line);
+  .firmas {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+    margin: clamp(48px, 6vw, 72px) 0 0;
+    padding: 0;
+    list-style: none;
   }
-  .by {
-    color: var(--ink-soft);
+  .firmas li {
+    padding-top: 10px;
+    border-top: 1px solid var(--ink);
+    font-size: var(--fs-sm);
+    font-weight: 600;
   }
-  .by strong {
-    color: var(--ink);
+  .firmas li:last-child {
+    color: var(--signal-text);
   }
   .ask {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px 20px;
+    justify-content: space-between;
+    gap: 12px 24px;
+    margin-top: 24px;
   }
   .ask p {
     font-weight: 600;
@@ -111,7 +113,10 @@ const check = "M2 7l4 4 8-9";
       grid-template-columns: minmax(0, 1fr);
       gap: 24px;
     }
-    .ask,
+    .firmas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 40px 24px;
+    }
     .ask .btn {
       width: 100%;
     }

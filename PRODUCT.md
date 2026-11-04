@@ -46,7 +46,7 @@ Clients typically contact by WhatsApp or email. Typical engagement: discovery me
 
 ## Evidence on Hand
 
-Real projects to show: UTN Hub (academic management system with an automated course-enrollment bot), a record player built with a Raspberry Pi, a car built with Arduino. No clients, testimonials, metrics or case studies yet. Never fabricate testimonials, client logos, counters or statistics.
+Real projects to show: Propier Inmuebles (first client, a real-estate agency in Córdoba: public site and admin panel, in development, not live yet, its site still shows sample properties and says so), UTN Hub (academic management system with an automated course-enrollment bot), SenseBoard (ESP32 IoT dashboard), AutoFull (Arduino + ESP32 robot) and Eco Records (NFC record player with Raspberry Pi). No testimonials or usage metrics yet. Never fabricate testimonials, client logos, counters or statistics.
 
 ## Product Principles
 

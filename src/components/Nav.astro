@@ -35,15 +35,6 @@ const links = [
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  // Una sola acción naranja por pantalla: si hay otra a la vista, el botón de la barra se apaga.
-  const cta = nav.querySelector<HTMLElement>(".cta")!;
-  const naranjas = new Set<Element>();
-  const ctaIo = new IntersectionObserver((entries) => {
-    for (const e of entries) e.isIntersecting ? naranjas.add(e.target) : naranjas.delete(e.target);
-    cta.classList.toggle("secondary", naranjas.size > 0);
-  });
-  document.querySelectorAll("main .btn:not(.secondary)").forEach((b) => ctaIo.observe(b));
-
   // Sección activa: se marca el link de la sección que ocupa el centro de la pantalla.
   const io = new IntersectionObserver(
     (entries) => {
@@ -123,11 +114,19 @@ const links = [
   ul a[aria-current] {
     font-weight: 700;
   }
+  /* Azul fijo: siempre a mano, sin competir con el naranja de cada sección. */
   .cta {
     min-height: 44px;
     padding-block: 0.6em;
+    background: var(--ink);
+    color: var(--white);
     font-size: var(--fs-sm);
     white-space: nowrap;
+  }
+  @media (hover: hover) {
+    .cta:hover {
+      background: var(--ink-soft);
+    }
   }
   .menu {
     display: none;
