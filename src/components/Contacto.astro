@@ -8,7 +8,7 @@ const wa = whatsappUrl();
     <div class="box" data-contact data-reveal>
       <div class="side">
         <h2 id="contacto-title">Contanos qué necesitás.</h2>
-        <p>Con dos o tres líneas alcanza. Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]}, en menos de un día hábil. Sin bots ni vendedores.</p>
+        <p>Te responde {TEAM.slice(0, -1).map((m) => m.nombre.split(" ")[0]).join(", ")} o {TEAM.at(-1)!.nombre.split(" ")[0]}, en menos de un día hábil. Sin bots ni vendedores.</p>
         <ol class="next" aria-label="Qué pasa después de escribirnos">
           <li><b>Nos escribís</b> con dos o tres líneas.</li>
           <li><b>Te respondemos</b> y coordinamos una primera charla, gratis.</li>
@@ -23,14 +23,16 @@ const wa = whatsappUrl();
 
       <div class="main">
         <form id="contact-form" method="POST" action={FORM_ENDPOINT} novalidate>
-          <div class="field">
-            <label for="c-nombre">Nombre</label>
-            <input class="input" id="c-nombre" name="nombre" autocomplete="name" required aria-describedby="e-nombre" />
-            <p class="error" id="e-nombre" hidden>Decinos cómo te llamás.</p>
-          </div>
-          <div class="field">
-            <label for="c-empresa">Empresa <span class="hint">(opcional)</span></label>
-            <input class="input" id="c-empresa" name="empresa" autocomplete="organization" />
+          <div class="pair">
+            <div class="field">
+              <label for="c-nombre">Nombre</label>
+              <input class="input" id="c-nombre" name="nombre" autocomplete="name" required aria-describedby="e-nombre" />
+              <p class="error" id="e-nombre" hidden>Decinos cómo te llamás.</p>
+            </div>
+            <div class="field">
+              <label for="c-empresa">Empresa <span class="hint">(opcional)</span></label>
+              <input class="input" id="c-empresa" name="empresa" autocomplete="organization" />
+            </div>
           </div>
           <div class="field">
             <label for="c-mensaje">¿Qué necesitás?</label>
@@ -192,8 +194,8 @@ const wa = whatsappUrl();
   }
   .side {
     display: grid;
+    grid-template-rows: auto auto auto 1fr;
     gap: 20px;
-    align-content: start;
     padding: clamp(28px, 4vw, 56px);
     background: #f8fafc;
     border-right: 1px solid var(--line);
@@ -246,8 +248,10 @@ const wa = whatsappUrl();
     color: var(--ink);
   }
   dl {
-    display: grid;
-    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 40px;
+    align-self: end;
     margin: 12px 0 0;
   }
   dd {
@@ -265,6 +269,15 @@ const wa = whatsappUrl();
   form {
     display: grid;
     gap: 22px;
+  }
+  .pair {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: start;
+  }
+  textarea {
+    min-height: 112px !important;
   }
   form .btn {
     justify-self: start;
@@ -407,6 +420,10 @@ const wa = whatsappUrl();
     }
   }
   @media (max-width: 560px) {
+    .pair {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 22px;
+    }
     .side,
     .main {
       padding: 24px 20px;
