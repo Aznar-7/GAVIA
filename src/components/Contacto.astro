@@ -1,9 +1,9 @@
 ---
-import { CONTACT_EMAIL, TEAM, whatsappUrl } from "../config";
+import { CONTACT_EMAIL, FORM_ENDPOINT, TEAM, whatsappUrl } from "../config";
 const wa = whatsappUrl();
 ---
 
-<section class="section tint" id="contacto" aria-labelledby="contacto-title">
+<section class="section" id="contacto" aria-labelledby="contacto-title">
   <div class="wrap">
     <div class="box" data-contact data-reveal>
       <div class="side">
@@ -12,7 +12,7 @@ const wa = whatsappUrl();
         <ol class="next" aria-label="Qué pasa después de escribirnos">
           <li><b>Nos escribís</b> con dos o tres líneas.</li>
           <li><b>Te respondemos</b> y coordinamos una primera charla, gratis.</li>
-          <li><b>Te mandamos</b> una primera idea de alcance, sin compromiso.</li>
+          <li><b>Si te sirve,</b> arrancamos con el relevamiento.</li>
         </ol>
         <dl>
           <div><dt class="label">Mail</dt><dd><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></dd></div>
@@ -22,7 +22,7 @@ const wa = whatsappUrl();
       </div>
 
       <div class="main">
-        <form id="contact-form" novalidate>
+        <form id="contact-form" method="POST" action={FORM_ENDPOINT} novalidate>
           <div class="field">
             <label for="c-nombre">Nombre</label>
             <input class="input" id="c-nombre" name="nombre" autocomplete="name" required aria-describedby="e-nombre" />
@@ -53,6 +53,7 @@ const wa = whatsappUrl();
             <span class="send-label">Enviar mensaje</span>
             <span class="send-track" aria-hidden="true"></span>
           </button>
+          <p class="privacy">Usamos estos datos solo para responderte.</p>
           <p class="status" id="c-status" role="status" aria-live="polite"></p>
         </form>
 
@@ -94,12 +95,13 @@ const wa = whatsappUrl();
       if (err) err.hidden = !bad;
       if (bad && !firstInvalid) firstInvalid = el;
     }
-    // El contacto tiene que servir para responder: un mail o un teléfono con al menos 8 dígitos.
+    // El contacto tiene que servir para responder: un mail o un teléfono con código de área.
     const contacto = field("contacto");
     const value = contacto.value.trim();
     const formatErr = document.getElementById("e-contacto-formato")!;
-    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    const isPhone = /^[\d\s()+.-]+$/.test(value) && (value.match(/\d/g) ?? []).length >= 8;
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@.]{2,}$/.test(value);
+    const digitos = (value.match(/\d/g) ?? []).length;
+    const isPhone = /^[\d\s()+.-]+$/.test(value) && digitos >= 10 && digitos <= 15;
     const badFormat = !!value && !isEmail && !isPhone;
     formatErr.hidden = !badFormat;
     if (badFormat) {
@@ -111,7 +113,7 @@ const wa = whatsappUrl();
       return;
     }
 
-    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const data = Object.fromEntries([...new FormData(form)].map(([k, v]) => [k, String(v).trim()]));
     box.classList.add("is-sending");
     button.disabled = true;
     button.setAttribute("aria-busy", "true");
@@ -129,7 +131,7 @@ const wa = whatsappUrl();
       doneText.textContent =
         result === "demo"
           ? "Modo prueba: el envío real se activa al configurar el formulario. Así lo va a ver el cliente."
-          : `Gracias, ${data.nombre.split(" ")[0]}. Te respondemos a ${data.contacto} en menos de un día hábil.`;
+          : `Gracias, ${data.nombre.split(/\s+/)[0]}. Te respondemos a ${data.contacto} en menos de un día hábil.`;
       box.classList.add("is-done");
       form.hidden = true;
       done.hidden = false;
@@ -141,6 +143,11 @@ const wa = whatsappUrl();
       button.disabled = false;
       button.removeAttribute("aria-busy");
       label.textContent = "Enviar mensaje";
+      // Si no se envió, el foco vuelve al botón y el aviso queda a la vista.
+      if (!form.hidden) {
+        button.focus({ preventScroll: true });
+        status.scrollIntoView({ block: "nearest" });
+      }
     }
   });
 
@@ -262,6 +269,11 @@ const wa = whatsappUrl();
   form .btn {
     justify-self: start;
   }
+  .privacy {
+    margin-top: -10px;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
   .status {
     min-height: 1.5em;
     color: var(--ink-soft);
@@ -373,7 +385,7 @@ const wa = whatsappUrl();
   }
   .again {
     margin-top: 8px;
-    padding: 0;
+    padding: 12px 0;
     border: 0;
     background: none;
     font: 600 var(--fs-md) var(--body);
