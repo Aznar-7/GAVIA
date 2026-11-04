@@ -1,9 +1,9 @@
 ---
-import "@fontsource-variable/figtree/wght.css";
+import "@fontsource-variable/schibsted-grotesk/wght.css";
 import "../styles/global.css";
 import { ANALYTICS, CONTACT_EMAIL, SOCIAL, TEAM } from "../config";
 import Analytics from "@vercel/analytics/astro";
-import bodyFont from "@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2?url";
+import bodyFont from "@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -73,9 +73,16 @@ const org = {
     <title>{title}</title>
     <link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
     <script is:inline>
-      // Antes de pintar: marca que hay JS y si la persona pidió reducir movimiento.
-      document.documentElement.classList.add("js");
-      if (matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("reduce");
+      // Antes de pintar: marca que hay JS, si la persona pidió reducir movimiento y qué tema usar
+      // (el que eligió o, si no eligió, el de su sistema). Así no hay destello al cargar.
+      const html = document.documentElement;
+      html.classList.add("js");
+      if (matchMedia("(prefers-reduced-motion: reduce)").matches) html.classList.add("reduce");
+      let tema = null;
+      try {
+        tema = localStorage.getItem("tema");
+      } catch {}
+      html.dataset.theme = tema ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     </script>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
@@ -133,8 +140,8 @@ const org = {
     top: -60px;
     z-index: 100;
     padding: 10px 16px;
-    background: var(--ink);
-    color: var(--white);
+    background: var(--navy);
+    color: var(--on-navy);
     border-radius: var(--radius-sm);
     font-weight: 600;
   }

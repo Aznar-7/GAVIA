@@ -2,8 +2,8 @@
 import Logo from "./Logo.astro";
 
 const links = [
-  { href: "#servicios", label: "Servicios" },
   { href: "#proyectos", label: "Proyectos" },
+  { href: "#servicios", label: "Servicios" },
   { href: "#como-trabajamos", label: "Cómo trabajamos" },
   { href: "#equipo", label: "Equipo" },
   { href: "#preguntas", label: "Preguntas" },
@@ -12,7 +12,7 @@ const links = [
 
 <header class="nav" data-nav>
   <div class="wrap row">
-    <a href="#top" class="home" aria-label="Gavia, ir al inicio"><Logo size={24} /></a>
+    <a href="#top" class="home" aria-label="Gavia, ir al inicio"><Logo size={24} tone="paper" /></a>
     <button class="menu" type="button" aria-expanded="false" aria-controls="nav-links" data-js>
       <span class="sr-only">Abrir menú</span>
       <span class="bars" aria-hidden="true"></span>
@@ -22,6 +22,11 @@ const links = [
         {links.map((l) => <li><a href={l.href} data-spy={l.href.slice(1)}>{l.label}</a></li>)}
       </ul>
     </nav>
+    <button class="theme" type="button" aria-pressed="false" data-js>
+      <span class="sr-only">Modo oscuro</span>
+      <svg class="moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" /></svg>
+      <svg class="sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M5.3 18.7l2.1-2.1M16.6 7.4l2.1-2.1" /></svg>
+    </button>
     <a class="btn cta" href="#contacto">Contanos tu proyecto</a>
   </div>
 </header>
@@ -47,6 +52,19 @@ const links = [
   );
   document.querySelectorAll("main section[id]").forEach((s) => io.observe(s));
 
+  // Tema claro u oscuro. El primero lo define Base.astro antes de pintar; acá se cambia y se recuerda.
+  const html = document.documentElement;
+  const tema = nav.querySelector<HTMLButtonElement>(".theme")!;
+  const marcar = () => tema.setAttribute("aria-pressed", String(html.dataset.theme === "dark"));
+  marcar();
+  tema.addEventListener("click", () => {
+    html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+    marcar();
+    try {
+      localStorage.setItem("tema", html.dataset.theme);
+    } catch {}
+  });
+
   // Menú de celular.
   const setOpen = (open: boolean) => {
     nav.classList.toggle("open", open);
@@ -68,12 +86,13 @@ const links = [
     position: sticky;
     top: 0;
     z-index: 20;
-    background: var(--white);
+    background: var(--navy);
+    color: var(--on-navy);
     border-bottom: 1px solid transparent;
     transition: border-color 200ms var(--ease-out);
   }
   .nav.scrolled {
-    border-bottom-color: var(--line);
+    border-bottom-color: rgb(255 255 255 / 0.14);
   }
   .row {
     display: flex;
@@ -101,48 +120,84 @@ const links = [
     padding-block: 12px;
     font-size: var(--fs-sm);
     font-weight: 500;
-    color: var(--ink-soft);
+    color: var(--paper-soft);
     text-decoration: none;
     background: linear-gradient(var(--signal), var(--signal)) left calc(100% - 6px) / 0 2px no-repeat;
     transition: color 160ms var(--ease-out), background-size 260ms var(--ease-out);
   }
   ul a:hover,
   ul a[aria-current] {
-    color: var(--ink);
+    color: var(--on-navy);
     background-size: 100% 2px;
   }
-  ul a[aria-current] {
-    font-weight: 700;
-  }
-  /* Azul fijo: siempre a mano, sin competir con el naranja de cada sección. */
+  /* Blanco fijo: siempre a mano, sin competir con el naranja de cada sección. */
   .cta {
     min-height: 44px;
     padding-block: 0.6em;
-    background: var(--ink);
-    color: var(--white);
+    background: var(--on-navy);
+    color: var(--on-signal);
     font-size: var(--fs-sm);
     white-space: nowrap;
   }
   @media (hover: hover) {
     .cta:hover {
-      background: var(--ink-soft);
+      background: var(--paper-soft);
     }
+  }
+  .theme {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-inline: -8px;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    color: var(--paper-soft);
+    cursor: pointer;
+    transition: color 160ms var(--ease-out), background-color 160ms var(--ease-out);
+  }
+  .theme:hover {
+    color: var(--on-navy);
+    background: rgb(255 255 255 / 0.1);
+  }
+  .theme svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .sun,
+  :global([data-theme="dark"]) .moon {
+    display: none;
+  }
+  :global([data-theme="dark"]) .sun {
+    display: block;
   }
   .menu {
     display: none;
   }
 
   @media (max-width: 960px) {
+    .row {
+      gap: 12px;
+    }
     .cta {
       margin-left: auto;
     }
-    .menu {
+    .theme {
       order: 1;
+      margin-inline: 0;
+    }
+    .menu {
+      order: 2;
       display: grid;
       place-items: center;
       width: 44px;
       height: 44px;
-      border: 1px solid var(--line-strong);
+      border: 1px solid rgb(255 255 255 / 0.3);
       border-radius: var(--radius-sm);
       background: transparent;
       cursor: pointer;
@@ -153,7 +208,7 @@ const links = [
       display: block;
       width: 18px;
       height: 2px;
-      background: var(--ink);
+      background: var(--on-navy);
       transition: transform 260ms var(--ease-out), opacity 200ms;
     }
     .bars {
@@ -186,8 +241,8 @@ const links = [
       left: 0;
       right: 0;
       margin: 0;
-      background: var(--white);
-      border-bottom: 1px solid var(--line);
+      background: var(--navy);
+      border-bottom: 1px solid rgb(255 255 255 / 0.14);
       clip-path: inset(0 0 100% 0);
       visibility: hidden;
       transition: clip-path 300ms var(--ease-out), visibility 0s 300ms;
@@ -214,7 +269,7 @@ const links = [
       display: block;
       padding: 14px 0;
       font-size: var(--fs-lg);
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid rgb(255 255 255 / 0.14);
       background: none;
     }
   }
@@ -223,7 +278,7 @@ const links = [
     .cta {
       display: none;
     }
-    .menu {
+    .theme {
       margin-left: auto;
     }
   }

@@ -56,16 +56,16 @@ const waIcon = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
     padding: 0 18px;
     border: 0;
     border-radius: var(--radius-sm);
-    background: var(--ink);
+    background: var(--navy);
     box-shadow: var(--shadow);
-    color: var(--paper);
+    color: var(--on-navy);
     font-weight: 700;
     text-decoration: none;
     transition: background 200ms var(--ease-out), color 200ms var(--ease-out);
   }
   .wa:hover {
-    background: var(--paper);
-    color: var(--ink);
+    background: var(--on-navy);
+    color: var(--navy);
   }
   /* Celular: una barra al pie, con margen para la barra de gestos del teléfono. */
   @media (max-width: 640px) {
@@ -76,7 +76,7 @@ const waIcon = `<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="tru
       display: flex;
       gap: 8px;
       padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
-      background: rgb(255 255 255 / 0.97);
+      background: var(--white);
       border-top: 1px solid var(--line);
       animation: rise 260ms var(--ease-out);
     }

@@ -6,8 +6,8 @@ import { CONTACT_EMAIL, SOCIAL, whatsappUrl } from "../config";
 const year = new Date().getFullYear();
 const wa = whatsappUrl();
 const secciones = [
-  { href: "/#servicios", label: "Servicios" },
   { href: "/#proyectos", label: "Proyectos" },
+  { href: "/#servicios", label: "Servicios" },
   { href: "/#como-trabajamos", label: "Cómo trabajamos" },
   { href: "/#condiciones", label: "Condiciones" },
   { href: "/#equipo", label: "Equipo" },
@@ -66,12 +66,12 @@ const secciones = [
 <style>
   footer {
     border-top: 1px solid rgb(255 255 255 / 0.12);
-    background: var(--ink);
-    color: var(--paper);
+    background: var(--navy);
+    color: var(--on-navy);
   }
   footer ::selection {
     background: var(--signal);
-    color: var(--ink);
+    color: var(--on-signal);
   }
   .grid {
     display: grid;
@@ -93,7 +93,7 @@ const secciones = [
     margin-top: 4px;
     font: 700 var(--fs-2xl) / 1.1 var(--display);
     letter-spacing: -0.02em;
-    color: var(--white);
+    color: var(--on-navy);
   }
   /* El punto final es el punto de paso de la marca. */
   .tagline::after {
@@ -125,7 +125,7 @@ const secciones = [
   }
   ul a {
     display: inline-block;
-    color: var(--paper);
+    color: var(--on-navy);
     text-decoration: none;
     background: linear-gradient(var(--signal), var(--signal)) left bottom / 0 1.5px no-repeat;
     /* Área táctil de 44px; el subrayado queda pegado al texto. */
@@ -154,7 +154,7 @@ const secciones = [
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    color: var(--paper);
+    color: var(--on-navy);
     padding-block: 10px;
     text-decoration: none;
     font-weight: 600;
