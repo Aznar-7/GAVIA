@@ -130,6 +130,7 @@ const malos = ["Reponer", "Pendiente"];
 </section>
 
 <script>
+  import { pedirContacto } from "../config";
   const picker = document.querySelector<HTMLElement>("[data-picker]");
   if (picker) {
     const buttons = [...picker.querySelectorAll<HTMLButtonElement>(".problem")];
@@ -177,15 +178,7 @@ const malos = ["Reponer", "Pendiente"];
       const i = Number(btn.dataset.mine);
       const hoy = buttons[i].textContent!.trim();
       const con = panels[i].querySelector("h3")!.textContent!.trim();
-      if (document.getElementById("c-done")?.hidden === false) document.getElementById("c-again")?.click();
-      const msg = document.getElementById("c-mensaje") as HTMLTextAreaElement | null;
-      const pedido = `Hoy: ${hoy}\nMe interesa: ${con}`;
-      if (msg && !msg.value.includes(pedido)) {
-        msg.value = msg.value.trim() ? `${msg.value.trim()}\n\n${pedido}` : pedido;
-        msg.dispatchEvent(new Event("input", { bubbles: true })); // limpia el error si lo había
-      }
-      document.getElementById("contact-form")?.scrollIntoView();
-      setTimeout(() => (document.getElementById("c-nombre") as HTMLInputElement | null)?.focus({ preventScroll: true }), 700);
+      pedirContacto(`Hoy: ${hoy}\nMe interesa: ${con}`);
     });
   }
 </script>

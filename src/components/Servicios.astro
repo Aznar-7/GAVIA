@@ -1,25 +1,30 @@
 ---
-// Qué vendemos, en una mirada: cinco servicios con nombre y una línea cada uno.
-// Un índice: el título queda fijo a la izquierda y los servicios corren en filas a la derecha.
+// Qué vendemos: cada servicio se nombra por lo que le resuelve al dueño, con su categoría al lado
+// para quien la busque así. "Consultar por esto" lleva al formulario con el pedido escrito.
 const servicios = [
   {
-    t: "Sistemas de gestión",
+    t: "Ordenar tu negocio",
+    tipo: "Sistemas de gestión",
     d: "Stock, pedidos, turnos, clientes o facturación en un solo lugar, con lo que necesita ver cada persona de tu equipo.",
   },
   {
-    t: "Apps web y móviles",
-    d: "Para tu equipo o para tus clientes, en la computadora o en el celular, conectadas al mismo sistema.",
+    t: "Atender mejor a tus clientes",
+    tipo: "Sitios, apps web y móviles",
+    d: "Un sitio, un portal o una app para que te encuentren, pidan o reserven sin tener que llamarte.",
   },
   {
-    t: "Integraciones y automatización",
+    t: "Sacarte tareas de encima",
+    tipo: "Integraciones y automatización",
     d: "Conectamos los programas que ya usás y hacemos solos los trámites que hoy alguien repite a mano.",
   },
   {
-    t: "Dispositivos conectados (IoT)",
-    d: "Sensores y equipos conectados a tu sistema, para medir y controlar lo que hoy se anota a mano.",
+    t: "Saber qué pasa en tu planta",
+    tipo: "Dispositivos conectados (IoT)",
+    d: "Sensores y equipos conectados a tu sistema, para medir y controlar lo que hoy se anota a mano. Ya armamos paneles con ESP32 y equipos con Raspberry Pi.",
   },
   {
-    t: "Mantenimiento",
+    t: "Que todo siga andando",
+    tipo: "Mantenimiento",
     d: "Después de la entrega seguimos: soporte, mejoras y copias de seguridad con un abono mensual.",
   },
 ];
@@ -30,22 +35,42 @@ const servicios = [
     <div class="sec-head">
       <h2 id="servicios-title" data-reveal>Qué hacemos.</h2>
       <p data-reveal style="--d:1">
-        Software y tecnología a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu
-        equipo hoy y construimos lo que hace falta.
+        Software y tecnología a medida para pymes de Córdoba y de todo el país. Partimos de cómo trabaja tu equipo hoy
+        y construimos lo que hace falta.
+      </p>
+      <p class="honest" data-reveal style="--d:2">
+        Si un programa que ya existe te alcanza, te lo decimos. Preferimos que no gastes de más.
       </p>
     </div>
     <ul class="list">
       {
         servicios.map((s, i) => (
           <li data-reveal style={`--d:${i + 1}`}>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
+            <div>
+              <h3>{s.t}</h3>
+              <p class="tipo">{s.tipo}</p>
+            </div>
+            <div class="d">
+              <p>{s.d}</p>
+              <a href="#contacto" data-pedir={s.t}>Consultar por esto<span class="sr-only">: {s.t}</span></a>
+            </div>
           </li>
         ))
       }
     </ul>
   </div>
 </section>
+
+<script>
+  import { pedirContacto } from "../config";
+  // Con JS, el link además deja el pedido escrito. Sin JS, igual lleva al formulario.
+  document.querySelectorAll<HTMLAnchorElement>("[data-pedir]").forEach((a) =>
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      pedirContacto(`Me interesa: ${a.dataset.pedir}`);
+    }),
+  );
+</script>
 
 <style>
   .layout {
@@ -71,7 +96,25 @@ const servicios = [
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     gap: 8px 32px;
-    padding-block: 24px;
+    padding-block: 22px;
+  }
+  .honest {
+    padding-left: 14px;
+    border-left: 1px solid var(--signal);
+    font-size: var(--fs-md);
+  }
+  .tipo {
+    margin-top: 4px;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .d a {
+    display: inline-block;
+    margin-top: 2px;
+    padding-block: 8px;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration-color: var(--signal);
   }
   /* Filete de arriba: se dibuja de izquierda a derecha al aparecer y se vuelve naranja en el
      servicio que estás mirando. */

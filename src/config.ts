@@ -52,6 +52,21 @@ export const SOCIAL: { label: string; href: string }[] = [
 // Las respuestas se ven en formspree.io. Vacío = no hay envío real.
 export const FORM_ENDPOINT = "https://formspree.io/f/xgaozdej";
 
+/**
+ * Lleva al formulario con el pedido ya escrito, sin borrar lo que la persona haya puesto.
+ * Lo usan "¿Te suena alguna?" y Qué hacemos.
+ */
+export function pedirContacto(pedido: string) {
+  if (document.getElementById("c-done")?.hidden === false) document.getElementById("c-again")?.click();
+  const msg = document.getElementById("c-mensaje") as HTMLTextAreaElement | null;
+  if (msg && !msg.value.includes(pedido)) {
+    msg.value = msg.value.trim() ? `${msg.value.trim()}\n\n${pedido}` : pedido;
+    msg.dispatchEvent(new Event("input", { bubbles: true })); // limpia el error si lo había
+  }
+  document.getElementById("contact-form")?.scrollIntoView();
+  setTimeout(() => (document.getElementById("c-nombre") as HTMLInputElement | null)?.focus({ preventScroll: true }), 700);
+}
+
 export type SendResult = "sent" | "demo" | "mailto";
 
 /**
