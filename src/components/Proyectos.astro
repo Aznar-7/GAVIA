@@ -1,11 +1,13 @@
 ---
-// Lo que ya construimos: dos casos reales, cada uno con su captura a sangre, y las piezas de
-// hardware que respaldan el servicio de IoT.
+// Lo que ya construimos: cada caso sigue el mismo orden. Quién es, dos pantallas reales y tres
+// datos. Abajo, las piezas de hardware que respaldan el servicio de IoT.
 // Cada dato sale de los repositorios y la documentación de cada proyecto: no sumar números de
-// uso sin un dato real. Las fotos de la captura de Propier son de ejemplo, y el sitio lo aclara.
+// uso sin un dato real. Las fotos de las capturas de Propier son de ejemplo, y el sitio lo aclara.
 import { Image } from "astro:assets";
-import capPropier from "../assets/propier/home.png";
-import capInscribot from "../assets/utnhub/inscribot.png";
+import capFicha from "../assets/propier/ficha.png";
+import capLista from "../assets/propier/lista.png";
+import capInicio from "../assets/utnhub/inicio.png";
+import capBot from "../assets/utnhub/inscribot-panel.png";
 
 const casos = [
   {
@@ -13,9 +15,11 @@ const casos = [
     estado: "En desarrollo",
     vivo: false,
     resumen: "Una inmobiliaria de Córdoba que se había quedado sin sitio y no usaba ningún sistema.",
-    img: capPropier,
-    alt: "Portada del sitio de Propier: casa con jardín, buscador de propiedades y una propiedad destacada con su precio.",
     nota: "Fotos de ejemplo, hasta que esté cargada la cartera real.",
+    pantallas: [
+      { img: capFicha, alt: "Ficha de una casa en el sitio de Propier: fotos, precio, datos de la propiedad y botón de WhatsApp." },
+      { img: capLista, alt: "Listado de propiedades en venta del sitio de Propier, con foto y precio." },
+    ],
     datos: [
       { t: "Qué hacemos", d: "El sitio público, con buscador y fichas, y el panel desde donde publican cada propiedad." },
       { t: "Antes de programar", d: "Estudiamos 21 sitios inmobiliarios y escribimos requerimientos, casos de uso, arquitectura y seguridad." },
@@ -27,9 +31,11 @@ const casos = [
     estado: "En uso",
     vivo: true,
     resumen: "La plataforma de los estudiantes de la UTN Córdoba, con un robot que hace los trámites solo.",
-    img: capInscribot,
-    alt: "InscriBot en UTN Hub: el registro de actividad muestra cómo encuentra un cupo y confirma la inscripción solo.",
     link: { href: "https://utnhub.com.ar", label: "Visitar utnhub.com.ar" },
+    pantallas: [
+      { img: capInicio, alt: "Pantalla de inicio de UTN Hub: avance de la carrera, agenda del día y próximos compromisos." },
+      { img: capBot, alt: "InscriBot trabajando: escanea el sistema, detecta un cupo y confirma la inscripción.", entera: true },
+    ],
     datos: [
       { t: "Trámites solos", d: "InscriBot vigila el sistema de la facultad, anota al estudiante apenas se libera un cupo y avisa por Telegram." },
       { t: "Sistemas conectados", d: "UTN Manager lee el aula virtual, detecta qué cambió y agenda las entregas en el calendario." },
@@ -53,29 +59,40 @@ const hardware = [
     </div>
 
     {
-      casos.map((c, i) => (
-        <article class:list={["case", { flip: i % 2 === 1 }]}>
-          <div class="text" data-reveal>
+      casos.map((c) => (
+        <article class="case">
+          <header data-reveal>
             <h3>{c.nombre} <span class:list={["pill", { live: c.vivo }]}>{c.estado}</span></h3>
-            <p class="lead">{c.resumen}</p>
-            <dl>
-              {c.datos.map((d) => (
-                <div>
-                  <dt>{d.t}</dt>
-                  <dd>{d.d}</dd>
-                </div>
-              ))}
-            </dl>
-            {c.link && (
-              <a class="btn secondary" href={c.link.href} target="_blank" rel="noopener">
-                {c.link.label}<span class="sr-only"> (se abre en otra pestaña)</span>
-              </a>
-            )}
+            <div class="about">
+              <p>{c.resumen}</p>
+              {c.link && (
+                <a href={c.link.href} target="_blank" rel="noopener">
+                  {c.link.label}<span class="sr-only"> (se abre en otra pestaña)</span>
+                </a>
+              )}
+            </div>
+          </header>
+          <div class="duo" data-reveal>
+            {c.pantallas.map((p, i) => (
+              <Image
+                src={p.img}
+                alt={p.alt}
+                class={"entera" in p ? "entera" : undefined}
+                widths={[640, 960, 1400]}
+                sizes={i === 0 ? "(max-width: 760px) 100vw, 62vw" : "(max-width: 760px) 100vw, 44vw"}
+                loading="lazy"
+              />
+            ))}
           </div>
-          <figure class="shot" data-reveal>
-            <Image src={c.img} alt={c.alt} widths={[700, 1100, 1440]} sizes="(max-width: 960px) 96vw, 62vw" loading="lazy" />
-            {c.nota && <figcaption>{c.nota}</figcaption>}
-          </figure>
+          {c.nota && <p class="nota">{c.nota}</p>}
+          <dl data-reveal>
+            {c.datos.map((d) => (
+              <div>
+                <dt>{d.t}</dt>
+                <dd>{d.d}</dd>
+              </div>
+            ))}
+          </dl>
         </article>
       ))
     }
@@ -99,92 +116,89 @@ const hardware = [
 </section>
 
 <style>
-  #proyectos {
-    overflow-x: clip;
-  }
-  /* Cada caso: texto de un lado y la captura a sangre, que se va por el borde de la pantalla. */
-  .case {
-    --bleed: calc(var(--gutter) * -1 - max(0px, (100vw - var(--max)) / 2));
-    display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 8fr);
-    gap: clamp(32px, 5vw, 80px);
-    align-items: center;
-  }
   .case + .case {
-    margin-top: clamp(64px, 8vw, 112px);
+    margin-top: clamp(72px, 9vw, 128px);
   }
-  .flip {
-    grid-template-columns: minmax(0, 8fr) minmax(0, 5fr);
-  }
-  .flip .text {
-    order: 2;
-  }
-  .text {
+  header {
     display: grid;
-    gap: 16px;
-    justify-items: start;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 12px 8px;
+    align-items: end;
+    margin-bottom: clamp(20px, 2.4vw, 28px);
   }
   h3 {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px 12px;
+    gap: 8px 14px;
     font-size: var(--fs-2xl);
   }
-  .lead {
+  h3 .pill {
+    letter-spacing: 0;
+  }
+  .about p {
     font-size: var(--fs-lg);
+    line-height: 1.45;
     color: var(--ink-soft);
   }
-  dl {
-    display: grid;
-    width: 100%;
-    margin: 8px 0;
-  }
-  dl > div {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 5fr);
-    gap: 4px 20px;
-    padding-block: 14px;
-    border-top: 1px solid var(--line);
-  }
-  dt {
+  .about a {
+    display: inline-block;
+    margin-top: 4px;
+    padding-block: 8px;
     font-weight: 700;
-    font-size: var(--fs-sm);
-    line-height: 1.5;
+    text-decoration-color: var(--signal);
   }
-  dd {
-    margin: 0;
-    font-size: var(--fs-sm);
-    color: var(--ink-soft);
+  /* Dos pantallas de la misma altura, pegadas, en el ancho de la página. */
+  .duo {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 8px;
   }
-  .shot {
-    margin: 0 var(--bleed) 0 0;
-    min-width: 0;
-  }
-  .flip .shot {
-    margin: 0 0 0 var(--bleed);
-  }
-  .shot :global(img) {
+  .duo :global(img) {
     width: 100%;
-    height: auto;
-    box-shadow: var(--shadow);
+    height: clamp(240px, 36vw, 560px);
+    object-fit: cover;
+    object-position: left top;
+    border-radius: var(--radius-sm);
+    outline: 1px solid var(--line);
+    outline-offset: -1px;
   }
-  figcaption {
+  /* Esta se ve completa: el fondo es el mismo de la captura, así no se notan los márgenes. */
+  .duo :global(img.entera) {
+    object-fit: contain;
+    object-position: center;
+    background: #0a0b0e;
+  }
+  .nota {
     margin-top: 10px;
     font-size: var(--fs-sm);
     color: var(--muted);
   }
+  dl {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px clamp(24px, 4vw, 56px);
+    margin: clamp(20px, 2.4vw, 28px) 0 0;
+  }
+  dt {
+    font-weight: 700;
+  }
+  dd {
+    margin: 4px 0 0;
+    color: var(--ink-soft);
+  }
 
   .iron {
     display: grid;
-    grid-template-columns: minmax(0, 4fr) minmax(0, 9fr);
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
     gap: 24px clamp(32px, 5vw, 80px);
-    margin-top: clamp(64px, 8vw, 112px);
-    padding-top: 32px;
+    margin-top: clamp(72px, 9vw, 128px);
+    padding-top: 28px;
     border-top: 2px solid var(--ink);
   }
   .iron h3 {
     font-size: var(--fs-xl);
+    letter-spacing: -0.015em;
   }
   .iron ul {
     display: grid;
@@ -208,25 +222,20 @@ const hardware = [
   }
 
   @media (max-width: 960px) {
-    .case,
-    .flip {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .flip .text {
-      order: 0;
-    }
-    .flip .shot {
-      margin: 0 var(--bleed) 0 0;
-    }
+    header,
     .iron {
       grid-template-columns: minmax(0, 1fr);
     }
   }
-  @media (max-width: 640px) {
-    .iron ul {
+  @media (max-width: 760px) {
+    .duo {
       grid-template-columns: minmax(0, 1fr);
     }
-    dl > div {
+    .duo :global(img) {
+      height: 62vw;
+    }
+    dl,
+    .iron ul {
       grid-template-columns: minmax(0, 1fr);
     }
   }
