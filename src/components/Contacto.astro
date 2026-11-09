@@ -38,7 +38,7 @@ const wa = whatsappUrl();
             <label for="c-mensaje">¿Qué necesitás?</label>
             <textarea class="input" id="c-mensaje" name="mensaje" required aria-describedby="e-mensaje"
               placeholder="Ej.: hoy llevamos los pedidos en Excel y queremos un sistema para el equipo de ventas."></textarea>
-            <p class="hint">Si no sabés cómo explicarlo, contanos cómo es un día normal en tu empresa.</p>
+            <p class="hint">Si no sabés cómo explicarlo, contanos cómo es un día normal en tu empresa. Si tenés preguntas puntuales, hacelas acá: te las respondemos una por una.</p>
             <p class="error" id="e-mensaje" hidden>Contanos aunque sea en una línea qué necesitás.</p>
           </div>
           <div class="field">
@@ -278,7 +278,10 @@ const wa = whatsappUrl();
     align-items: start;
   }
   textarea {
-    min-height: 112px !important;
+    min-height: 136px !important;
+    /* Crece con lo que escribís, sin tener que arrastrar la esquina (donde el navegador lo soporta). */
+    field-sizing: content;
+    max-height: 60vh;
   }
   form .btn {
     justify-self: start;
