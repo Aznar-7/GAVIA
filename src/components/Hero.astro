@@ -10,6 +10,8 @@ const etapas = [
   ["Stock y alertas", "3 semanas"],
   ["Reportes", "2 semanas"],
 ];
+// Lo que un cliente real preguntó antes de contratar: usuarios, datos y capacitación.
+const incluido = ["Usuarios sin costo por persona", "Tus planillas de Excel, migradas", "Capacitación para tu equipo"];
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-title">
@@ -47,6 +49,10 @@ const etapas = [
           {etapas.map(([e, p]) => <tr><td>{e}</td><td>{p}</td><td>Cerrado</td></tr>)}
         </tbody>
       </table>
+      <p class="inc-t">Incluido en el precio</p>
+      <ul class="inc">
+        {incluido.map((t) => <li>{t}</li>)}
+      </ul>
       <ul>
         <li>Pagás etapa por etapa y podés frenar cuando quieras.</li>
         <li>Con cada etapa pagada, el código es tuyo.</li>
@@ -202,6 +208,32 @@ const etapas = [
     margin: 16px 0 0;
     padding: 0;
     list-style: none;
+  }
+  .inc-t {
+    margin-top: 16px;
+    color: rgb(18 36 58 / 0.68);
+    font-weight: 600;
+  }
+  ul.inc {
+    gap: 6px;
+    margin-top: 8px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--raya);
+    font-weight: 600;
+  }
+  /* El cuadradito naranja del logo, como viñeta. */
+  .inc li {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .inc li::before {
+    content: "";
+    flex: none;
+    width: 7px;
+    height: 7px;
+    background: var(--signal);
+    translate: 0 -1px;
   }
   .sign {
     display: grid;

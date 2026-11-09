@@ -4,9 +4,21 @@
 const preguntas = [
   {
     q: "¿Cuánto cuesta?",
-    a: "La primera charla es gratis y sin compromiso. El precio del sistema depende de qué tiene que hacer, cuántas personas lo usan y con qué se conecta. Después del relevamiento te damos un precio cerrado por etapa, así sabés cuánto vas a pagar antes de empezar. Pagás etapa por etapa y podés frenar después de cualquiera: te llevás el código de lo que pagaste.",
+    a: "La primera charla es gratis y sin compromiso. El precio del sistema depende de qué tiene que hacer y con qué se conecta. Después del relevamiento te damos un precio cerrado por etapa, así sabés cuánto vas a pagar antes de empezar. Pagás etapa por etapa y podés frenar después de cualquiera: te llevás el código de lo que pagaste. El hosting se paga aparte y te pasamos el costo antes de empezar.",
+  },
+  {
+    q: "¿Me pasan el precio de cada parte por separado?",
+    a: "Sí. La propuesta trae cada parte del sistema con su precio y su plazo, agrupadas en etapas. Así podés elegir con qué arrancar y qué dejar para más adelante.",
+  },
+  {
+    q: "¿Cobran por usuario?",
+    a: "No. El sistema es tuyo, así que lo usa toda la gente que necesites, cada persona con sus permisos. Si el uso crece mucho puede hacer falta ampliar el hosting, y eso te lo avisamos antes.",
   },
   { q: "¿Cuánto tarda?", a: "Estimamos entre 4 y 8 semanas para un sistema chico. Las fechas exactas van en la propuesta, etapa por etapa." },
+  {
+    q: "¿Pasan los datos que ya tengo?",
+    a: "Lo que tenés en Excel lo migramos nosotros y está dentro del precio. Lo que está en papel lo carga tu equipo desde el sistema, cuando quiera. Si son muchas fichas, lo vemos juntos y lo cotizamos aparte.",
+  },
   {
     q: "¿Por qué no contratar a un freelancer?",
     a: "Podés, y a veces conviene. Con nosotros tenés requerimientos por escrito, precio cerrado por etapa, entregas cada dos semanas, el código a tu nombre y alguien que lo mantiene después. Si un freelancer te da eso, también es una buena opción.",
@@ -21,7 +33,7 @@ const preguntas = [
   },
   {
     q: "¿Qué pasa después de la entrega?",
-    a: "La garantía va por escrito en la propuesta: qué cubre y cuánto dura. Después, si querés, seguimos con un abono mensual de mantenimiento con soporte y mejoras.",
+    a: "La garantía va por escrito en la propuesta: qué cubre y cuánto dura. Después, si querés, seguimos con un abono mensual de mantenimiento: soporte, copias de seguridad y mejoras. Es opcional y lo cancelás cuando quieras.",
   },
   { q: "¿Trabajan fuera de Córdoba?", a: "Sí, podemos trabajar de forma remota con empresas de todo el país. En Córdoba podemos ir a verte." },
 ];
@@ -42,7 +54,10 @@ const faqLd = {
   <div class="wrap layout">
     <div class="side">
       <h2 id="preguntas-title" data-reveal>Preguntas frecuentes.</h2>
-      <div class="ask" data-reveal style="--d:1">
+      <p class="origin" data-reveal style="--d:1">
+        Las de precio por parte, usuarios y datos nos las hizo un consultorio por mail. Por eso están acá.
+      </p>
+      <div class="ask" data-reveal style="--d:2">
         <p>¿No está la tuya? Escribinos y te responde alguien del equipo.</p>
         <a class="btn secondary" href="#contacto">Hacenos tu pregunta</a>
       </div>
@@ -84,6 +99,12 @@ const faqLd = {
     max-width: 36ch;
   }
   .ask p {
+    color: var(--ink-soft);
+  }
+  .origin {
+    max-width: 34ch;
+    padding-left: 14px;
+    border-left: 1px solid var(--signal);
     color: var(--ink-soft);
   }
   .list {
